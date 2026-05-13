@@ -1,0 +1,10 @@
+{
+  "name": "运动健康助手",
+  "short_name": "健康助手",
+  "description": "运动数据智能分析，听懂你的身体",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#667eea",
+  "orientation": "portrait"
+}

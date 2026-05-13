@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>运动健康助手</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #333;
+            padding-bottom: 80px;
+        }
+        .header {
+            padding: 50px 20px 30px;
+            text-align: center;
+            color: white;
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 8px; }
+        .header p { font-size: 0.9em; opacity: 0.8; }
+        .main-card {
+            background: white;
+            border-radius: 24px;
+            margin: 0 20px 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8f9ff;
+            cursor: pointer;
+        }
+        .upload-area .icon { font-size: 3em; margin-bottom: 15px; }
+        .upload-area h3 { color: #667eea; margin-bottom: 8px; }
+        .upload-area p { color: #888; font-size: 0.85em; }
+        #fileInput { display: none; }
+        .history-section {
+            background: white;
+            border-radius: 24px;
+            margin: 0 20px 20px;
+            padding: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .history-section h2 {
+            font-size: 1.2em;
+            color: #1F4E79;
+            margin-bottom: 20px;
+        }
+        .record-item {
+            background: #f8f9ff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .record-date { font-weight: 600; color: #1F4E79; }
+        .record-type {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        .record-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+        }
+        .stat-box .val { font-size: 1.3em; font-weight: 700; color: #667eea; }
+        .stat-box .lbl { font-size: 0.7em; color: #888; }
+        .record-summary {
+            font-size: 0.85em;
+            color: #555;
+            line-height: 1.6;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            padding: 10px 0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            color: #888;
+            font-size: 0.75em;
+        }
+        .nav-item.active { color: #667eea; }
+        .nav-item .icon { font-size: 1.5em; display: block; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏃 运动健康助手</h1>
+        <p>听懂你的身体，科学运动减脂</p>
+    </div>
+    
+    <div class="main-card">
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <div class="icon">📸</div>
+            <h3>点击上传运动截图</h3>
+            <p>支持华为/苹果/小米等运动健康App截图</p>
+        </div>
+        <input type="file" id="fileInput" accept="image/*">
+    </div>
+    
+    <div class="history-section">
+        <h2>📋 历史记录</h2>
+        
+        <div class="record-item">
+            <div class="record-header">
+                <span class="record-date">2025-05-13</span>
+                <span class="record-type">户外跑步</span>
+            </div>
+            <div class="record-stats">
+                <div class="stat-box"><div class="val">31</div><div class="lbl">分钟</div></div>
+                <div class="stat-box"><div class="val">2.08</div><div class="lbl">公里</div></div>
+                <div class="stat-box"><div class="val">101</div><div class="lbl">平均心率</div></div>
+            </div>
+            <div class="record-summary">
+                ⚠️ 强度偏低，心率101bpm低于最佳减脂区间。步频124步/分偏低，建议提高到160+保护腰部。
+            </div>
+        </div>
+        
+        <div class="record-item">
+            <div class="record-header">
+                <span class="record-date">2025-05-12</span>
+                <span class="record-type">户外跑步</span>
+            </div>
+            <div class="record-stats">
+                <div class="stat-box"><div class="val">51</div><div class="lbl">分钟</div></div>
+                <div class="stat-box"><div class="val">4.10</div><div class="lbl">公里</div></div>
+                <div class="stat-box"><div class="val">109</div><div class="lbl">平均心率</div></div>
+            </div>
+            <div class="record-summary">
+                ✅ 优秀！心率109bpm精准处于最佳减脂区间，时长51分钟达标。注意步频149偏低，目标160+。
+            </div>
+        </div>
+    </div>
+    
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <span class="icon">🏠</span>
+            <span>首页</span>
+        </div>
+        <div class="nav-item">
+            <span class="icon">📊</span>
+            <span>统计</span>
+        </div>
+        <div class="nav-item">
+            <span class="icon">👤</span>
+            <span>我的</span>
+        </div>
+    </div>
+</body>
+</html>
