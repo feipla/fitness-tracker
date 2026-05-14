@@ -6,175 +6,1133 @@
 <title>运动健康助手</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563EB">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-:root{--primary:#2563EB;--primary-light:#3B82F6;--secondary:#8B5CF6;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;--bg:#F8FAFC;--card:#fff;--text:#1E293B;--text2:#64748B;--border:#E2E8F0}
+:root{--primary:#2563EB;--primary-light:#3B82F6;--secondary:#8B5CF6;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;--bg:#F0F2F5;--card:#fff;--text:#1E293B;--text2:#64748B;--text3:#94A3B8;--border:#E2E8F0;--radius:16px;--shadow:0 2px 12px rgba(0,0,0,.06)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
-.header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);padding:60px 24px 40px;position:relative;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+input,select,textarea,button{font-family:inherit;outline:none;border:none;background:none}
+button{cursor:pointer}
+.page{display:none;padding-bottom:80px}
+.page.active{display:block}
+
+/* Header */
+.header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);padding:52px 24px 36px;position:relative;overflow:hidden}
 .header::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:rgba(255,255,255,.1);border-radius:50%}
 .header::after{content:'';position:absolute;bottom:-30%;left:-10%;width:200px;height:200px;background:rgba(255,255,255,.08);border-radius:50%}
 .header-content{position:relative;z-index:1}
-.header h1{font-size:24px;font-weight:700;color:#fff;margin-bottom:6px}
-.header p{font-size:14px;color:rgba(255,255,255,.85)}
-.user-card{background:var(--card);border-radius:16px;padding:20px;margin:-30px 20px 20px;box-shadow:0 4px 20px rgba(0,0,0,.08);position:relative;z-index:2}
-.user-info{display:flex;align-items:center;gap:16px;margin-bottom:16px}
-.user-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center}
-.user-avatar svg{width:32px;height:32px}
-.user-meta h3{font-size:16px;font-weight:600;margin-bottom:4px}
-.user-meta p{font-size:13px;color:var(--text2)}
-.user-tags{display:flex;gap:8px;flex-wrap:wrap}
-.user-tag{background:#F1F5F9;padding:6px 12px;border-radius:20px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px}
-.user-tag svg{width:14px;height:14px}
-.section{padding:0 20px 20px}
-.section-title{font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.section-title svg{width:20px;height:20px;color:var(--primary)}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:var(--card);border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.stat-card .icon{width:40px;height:40px;margin:0 auto 10px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.header h1{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px}
+.header p{font-size:13px;color:rgba(255,255,255,.8)}
+
+/* User Card */
+.user-card{background:var(--card);border-radius:var(--radius);padding:18px;margin:-24px 16px 16px;box-shadow:var(--shadow);position:relative;z-index:2}
+.user-info{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.user-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.user-avatar svg{width:28px;height:28px}
+.user-meta h3{font-size:15px;font-weight:600;margin-bottom:2px}
+.user-meta p{font-size:12px;color:var(--text2)}
+.user-tags{display:flex;gap:6px;flex-wrap:wrap}
+.user-tag{background:#F1F5F9;padding:5px 10px;border-radius:20px;font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px}
+.user-tag svg{width:12px;height:12px}
+
+/* Section */
+.section{padding:0 16px 16px}
+.section-title{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.section-title svg{width:18px;height:18px;color:var(--primary)}
+
+/* Stats Grid */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat-card{background:var(--card);border-radius:12px;padding:14px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.stat-card .icon{width:36px;height:36px;margin:0 auto 8px;border-radius:10px;display:flex;align-items:center;justify-content:center}
 .stat-card .icon.blue{background:#EFF6FF}
 .stat-card .icon.purple{background:#F5F3FF}
 .stat-card .icon.green{background:#ECFDF5}
-.stat-card .icon svg{width:24px;height:24px}
-.stat-card .num{font-size:24px;font-weight:700;color:var(--text);margin-bottom:2px}
-.stat-card .lbl{font-size:12px;color:var(--text2)}
-.record-card{background:var(--card);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.record-date{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600}
-.record-date svg{width:18px;height:18px;color:var(--primary)}
-.record-status{font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;display:flex;align-items:center;gap:4px}
+.stat-card .icon svg{width:20px;height:20px}
+.stat-card .num{font-size:22px;font-weight:700;color:var(--text);margin-bottom:1px}
+.stat-card .lbl{font-size:11px;color:var(--text2)}
+
+/* Record Card */
+.record-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.record-card.has-img{cursor:pointer}
+.record-card .delete-btn{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;z-index:3;opacity:0;transition:opacity .2s}
+.record-card:hover .delete-btn,.record-card:active .delete-btn{opacity:1}
+.record-card .delete-btn svg{width:14px;height:14px;color:var(--danger)}
+.record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.record-date{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600}
+.record-date svg{width:16px;height:16px;color:var(--primary)}
+.record-status{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:3px}
 .record-status.good{background:#D1FAE5;color:#059669}
 .record-status.warn{background:#FEF3C7;color:#D97706}
-.record-status svg{width:14px;height:14px}
-.record-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;padding:16px;background:#F8FAFC;border-radius:12px}
+.record-status.bad{background:#FEE2E2;color:#DC2626}
+.record-status svg{width:12px;height:12px}
+.record-thumb{width:100%;height:120px;border-radius:10px;object-fit:cover;margin-bottom:14px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.record-thumb img{width:100%;height:100%;object-fit:cover}
+.record-thumb .no-img{color:var(--text3);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.record-thumb .no-img svg{width:24px;height:24px}
+.record-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;padding:12px;background:#F8FAFC;border-radius:12px}
 .record-metric{text-align:center}
-.record-metric .val{font-size:20px;font-weight:700;color:var(--text)}
-.record-metric .unit{font-size:11px;color:var(--text2);margin-left:2px}
-.record-metric .lbl{font-size:11px;color:var(--text2);margin-top:4px}
-.record-analysis{background:#F8FAFC;border-radius:12px;padding:16px}
-.record-analysis .analysis-title{font-size:13px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.record-analysis .analysis-title svg{width:16px;height:16px}
+.record-metric .val{font-size:18px;font-weight:700;color:var(--text)}
+.record-metric .unit{font-size:10px;color:var(--text2);margin-left:1px}
+.record-metric .lbl{font-size:10px;color:var(--text2);margin-top:3px}
+.record-analysis{background:#F8FAFC;border-radius:12px;padding:14px}
+.record-analysis .analysis-title{font-size:12px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.record-analysis .analysis-title svg{width:14px;height:14px}
 .record-analysis.good .analysis-title{color:#059669}
 .record-analysis.warn .analysis-title{color:#D97706}
-.record-analysis p{font-size:13px;color:var(--text2);line-height:1.8}
+.record-analysis.bad .analysis-title{color:#DC2626}
+.record-analysis p{font-size:12px;color:var(--text2);line-height:1.8}
 .record-analysis p strong{color:var(--text);font-weight:600}
-.upload-card{background:var(--card);border-radius:16px;padding:32px 24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06);border:2px dashed var(--border)}
-.upload-icon{width:64px;height:64px;margin:0 auto 16px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center}
-.upload-icon svg{width:32px;height:32px;color:#fff}
-.upload-card h3{font-size:15px;font-weight:600;margin-bottom:6px}
-.upload-card p{font-size:13px;color:var(--text2)}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;padding:8px 0 20px}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text2);font-size:11px}
+.record-guidance{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+.record-guidance .guidance-title{font-size:12px;font-weight:600;color:var(--primary);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.record-guidance .guidance-title svg{width:14px;height:14px}
+.record-guidance ul{list-style:none;padding:0}
+.record-guidance li{font-size:12px;color:var(--text2);line-height:1.8;padding-left:14px;position:relative}
+.record-guidance li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary);opacity:.5}
+
+/* Upload Zone */
+.upload-zone{background:var(--card);border-radius:var(--radius);padding:28px 20px;text-align:center;box-shadow:var(--shadow);border:2px dashed var(--border);transition:all .3s;cursor:pointer}
+.upload-zone:active,.upload-zone.dragover{border-color:var(--primary);background:#F8FAFF}
+.upload-icon{width:56px;height:56px;margin:0 auto 12px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center}
+.upload-icon svg{width:28px;height:28px;color:#fff}
+.upload-zone h3{font-size:14px;font-weight:600;margin-bottom:4px}
+.upload-zone p{font-size:12px;color:var(--text2)}
+
+/* Bottom Nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;padding:6px 0 18px;z-index:100}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text3);font-size:10px;transition:color .2s}
 .nav-item.active{color:var(--primary)}
-.nav-item svg{width:24px;height:24px}
+.nav-item svg{width:22px;height:22px}
+
+/* Modal / Overlay */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;padding:24px 20px 40px;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-header h2{font-size:18px;font-weight:700}
+.modal-close{width:32px;height:32px;border-radius:50%;background:#F1F5F9;display:flex;align-items:center;justify-content:center}
+.modal-close svg{width:18px;height:18px;color:var(--text2)}
+
+/* Form */
+.form-group{margin-bottom:16px}
+.form-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;display:block}
+.form-input{width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;color:var(--text);transition:border-color .2s;background:var(--card)}
+.form-input:focus{border-color:var(--primary)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-select{width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;color:var(--text);appearance:none;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center}
+.img-preview-area{width:100%;min-height:160px;border:2px dashed var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:16px;position:relative;background:#F8FAFC}
+.img-preview-area img{max-width:100%;max-height:240px;object-fit:contain}
+.img-preview-area .placeholder{color:var(--text3);font-size:13px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.img-preview-area .placeholder svg{width:32px;height:32px}
+.img-preview-area .change-img{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px}
+.btn-primary{width:100%;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity .2s}
+.btn-primary:active{opacity:.85}
+.btn-primary svg{width:18px;height:18px}
+
+/* Stats Page */
+.chart-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.chart-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.chart-title svg{width:16px;height:16px;color:var(--primary)}
+.chart-container{width:100%;height:200px;position:relative}
+.chart-container canvas{width:100%!important;height:100%!important}
+.bar-chart{display:flex;align-items:flex-end;gap:8px;height:160px;padding:0 4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar{width:100%;border-radius:6px 6px 2px 2px;min-height:4px;transition:height .5s ease;position:relative}
+.bar .bar-val{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;color:var(--text);white-space:nowrap}
+.bar-label{font-size:10px;color:var(--text2)}
+.hr-zone-bar{display:flex;height:24px;border-radius:12px;overflow:hidden;margin:12px 0}
+.hr-zone-seg{display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:600}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+
+/* Profile Page */
+.profile-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.profile-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #F1F5F9}
+.profile-row:last-child{border-bottom:none}
+.profile-row .label{font-size:13px;color:var(--text2)}
+.profile-row .value{font-size:14px;font-weight:600;color:var(--text)}
+.profile-row .value.editable{color:var(--primary);cursor:pointer}
+.profile-row .value input{width:80px;text-align:right;font-size:14px;font-weight:600;color:var(--primary);border:none;background:none}
+.btn-outline{width:100%;height:44px;border-radius:12px;border:1.5px solid var(--border);color:var(--text2);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px}
+.btn-danger{width:100%;height:44px;border-radius:12px;border:1.5px solid #FEE2E2;color:var(--danger);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px}
+
+/* Weekly Report */
+.weekly-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.weekly-card h3{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.weekly-card h3 svg{width:18px;height:18px;color:var(--secondary)}
+.weekly-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.weekly-item{background:#F8FAFC;border-radius:10px;padding:12px;text-align:center}
+.weekly-item .val{font-size:20px;font-weight:700;color:var(--text)}
+.weekly-item .lbl{font-size:11px;color:var(--text2);margin-top:2px}
+.weekly-text{font-size:13px;color:var(--text2);line-height:1.8}
+.weekly-text strong{color:var(--text);font-weight:600}
+
+/* Image Viewer */
+.img-viewer{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.95);z-index:300;display:none;align-items:center;justify-content:center;flex-direction:column}
+.img-viewer.show{display:flex}
+.img-viewer img{max-width:95%;max-height:80vh;object-fit:contain;border-radius:8px}
+.img-viewer .close-viewer{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center}
+.img-viewer .close-viewer svg{width:20px;height:20px;color:#fff}
+
+/* Empty State */
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-state svg{width:48px;height:48px;margin-bottom:12px;opacity:.5}
+.empty-state p{font-size:13px}
+
+/* Toast */
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* Confirm Dialog */
+.confirm-dialog{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:350;display:none;align-items:center;justify-content:center;padding:20px}
+.confirm-dialog.show{display:flex}
+.confirm-box{background:var(--card);border-radius:16px;padding:24px;width:100%;max-width:320px;text-align:center}
+.confirm-box h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.confirm-box p{font-size:13px;color:var(--text2);margin-bottom:20px}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btns button{flex:1;height:40px;border-radius:10px;font-size:14px;font-weight:600}
+.btn-cancel{background:#F1F5F9;color:var(--text2)}
+.btn-confirm-del{background:var(--danger);color:#fff}
 </style>
 </head>
 <body>
-<div class="header">
-<div class="header-content">
-<h1>运动健康助手</h1>
-<p>科学运动 · 智能分析 · 健康减脂</p>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Image Viewer -->
+<div class="img-viewer" id="imgViewer">
+  <div class="close-viewer" onclick="closeViewer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+  <img id="viewerImg" src="" alt="">
 </div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-dialog" id="confirmDialog">
+  <div class="confirm-box">
+    <h3 id="confirmTitle">确认删除？</h3>
+    <p id="confirmMsg">删除后数据无法恢复</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="closeConfirm()">取消</button>
+      <button class="btn-confirm-del" id="confirmBtn" onclick="confirmAction()">删除</button>
+    </div>
+  </div>
 </div>
-<div class="user-card">
-<div class="user-info">
-<div class="user-avatar">
-<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+
+<!-- ==================== PAGE: HOME ==================== -->
+<div class="page active" id="pageHome">
+  <div class="header">
+    <div class="header-content">
+      <h1>运动健康助手</h1>
+      <p>科学运动 · 智能分析 · 健康减脂</p>
+    </div>
+  </div>
+  <div class="user-card" id="userCard"></div>
+  <div class="section" id="weeklySection"></div>
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      运动记录
+    </div>
+    <div id="recordsList"></div>
+    <div class="upload-zone" id="uploadZone" onclick="openAddModal()">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <h3>上传运动截图</h3>
+      <p>华为 / 苹果 / 小米运动健康App</p>
+    </div>
+  </div>
 </div>
-<div class="user-meta">
-<h3>健康档案</h3>
-<p>46岁 · 176cm · 79kg · 腰肌劳损</p>
+
+<!-- ==================== PAGE: STATS ==================== -->
+<div class="page" id="pageStats">
+  <div class="header" style="padding-bottom:28px">
+    <div class="header-content">
+      <h1>数据统计</h1>
+      <p>运动趋势一目了然</p>
+    </div>
+  </div>
+  <div class="section" id="statsContent"></div>
 </div>
+
+<!-- ==================== PAGE: PROFILE ==================== -->
+<div class="page" id="pageProfile">
+  <div class="header" style="padding-bottom:28px">
+    <div class="header-content">
+      <h1>我的档案</h1>
+      <p>个性化健康数据</p>
+    </div>
+  </div>
+  <div class="section" id="profileContent"></div>
 </div>
-<div class="user-tags">
-<span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>减脂心率 104-122</span>
-<span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>目标减重 5-7kg</span>
+
+<!-- ==================== ADD RECORD MODAL ==================== -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>添加运动记录</h2>
+      <div class="modal-close" onclick="closeAddModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+    </div>
+
+    <div class="img-preview-area" id="imgPreviewArea" onclick="document.getElementById('fileInput').click()">
+      <div class="placeholder" id="imgPlaceholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>点击上传运动截图</span>
+      </div>
+      <img id="imgPreview" src="" style="display:none" alt="">
+      <span class="change-img" id="changeImgBtn" style="display:none">更换图片</span>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">运动日期</label>
+        <input type="date" class="form-input" id="formDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">运动类型</label>
+        <select class="form-select" id="formType">
+          <option value="户外跑步">户外跑步</option>
+          <option value="室内跑步">室内跑步</option>
+          <option value="户外步行">户外步行</option>
+          <option value="快走">快走</option>
+          <option value="骑行">骑行</option>
+          <option value="游泳">游泳</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">运动时长(分钟)</label>
+        <input type="number" class="form-input" id="formDuration" placeholder="如：45">
+      </div>
+      <div class="form-group">
+        <label class="form-label">距离(km)</label>
+        <input type="number" step="0.01" class="form-input" id="formDistance" placeholder="如：4.5">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">平均心率(bpm)</label>
+        <input type="number" class="form-input" id="formAvgHR" placeholder="如：110">
+      </div>
+      <div class="form-group">
+        <label class="form-label">最大心率(bpm)</label>
+        <input type="number" class="form-input" id="formMaxHR" placeholder="如：135">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">消耗热量(大卡)</label>
+        <input type="number" class="form-input" id="formCalories" placeholder="如：320">
+      </div>
+      <div class="form-group">
+        <label class="form-label">平均步频(步/分)</label>
+        <input type="number" class="form-input" id="formCadence" placeholder="如：155">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">总步数</label>
+        <input type="number" class="form-input" id="formSteps" placeholder="如：7000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">平均配速(分/km)</label>
+        <input type="number" step="0.01" class="form-input" id="formPace" placeholder="如：10.5">
+      </div>
+    </div>
+    <button class="btn-primary" onclick="saveRecord()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      保存记录
+    </button>
+  </div>
 </div>
-</div>
-<div class="section">
-<div class="section-title">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
-本周概览
-</div>
-<div class="stats-grid">
-<div class="stat-card">
-<div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-<div class="num">2</div>
-<div class="lbl">锻炼次数</div>
-</div>
-<div class="stat-card">
-<div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-<div class="num">82</div>
-<div class="lbl">总时长(分)</div>
-</div>
-<div class="stat-card">
-<div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-<div class="num">493</div>
-<div class="lbl">总消耗(大卡)</div>
-</div>
-</div>
-</div>
-<div class="section">
-<div class="section-title">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-运动记录
-</div>
-<div class="record-card">
-<div class="record-header">
-<div class="record-date">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-5月12日
-</div>
-<span class="record-status warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>强度偏低</span>
-</div>
-<div class="record-metrics">
-<div class="record-metric"><div class="val">31<span class="unit">分钟</span></div><div class="lbl">运动时长</div></div>
-<div class="record-metric"><div class="val">2.08<span class="unit">km</span></div><div class="lbl">距离</div></div>
-<div class="record-metric"><div class="val">101<span class="unit">bpm</span></div><div class="lbl">平均心率</div></div>
-</div>
-<div class="record-analysis warn">
-<div class="analysis-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>运动分析</div>
-<p><strong>心率偏低：</strong>101bpm低于最佳减脂区间(104-122)，燃脂效率打折。<br><strong>步频过低：</strong>124步/分，步幅大→腾空高→<strong>对腰部冲击大</strong>。<br><strong>时长不足：</strong>31分钟偏短，建议45-60分钟。</p>
-</div>
-</div>
-<div class="record-card">
-<div class="record-header">
-<div class="record-date">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-5月11日
-</div>
-<span class="record-status good"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>表现优秀</span>
-</div>
-<div class="record-metrics">
-<div class="record-metric"><div class="val">51<span class="unit">分钟</span></div><div class="lbl">运动时长</div></div>
-<div class="record-metric"><div class="val">4.10<span class="unit">km</span></div><div class="lbl">距离</div></div>
-<div class="record-metric"><div class="val">109<span class="unit">bpm</span></div><div class="lbl">平均心率</div></div>
-</div>
-<div class="record-analysis good">
-<div class="analysis-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>运动分析</div>
-<p><strong>心率完美：</strong>109bpm精准处于最佳减脂区间(104-122)。<br><strong>时长达标：</strong>51分钟，减脂效果合格。<br><strong>注意步频：</strong>149步/分偏低，目标160+保护腰部。</p>
-</div>
-</div>
-<div class="upload-card">
-<div class="upload-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-</div>
-<h3>上传运动截图</h3>
-<p>华为 / 苹果 / 小米运动健康App</p>
-</div>
-</div>
+
+<!-- ==================== BOTTOM NAV ==================== -->
 <div class="bottom-nav">
-<div class="nav-item active">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-首页
+  <div class="nav-item active" onclick="switchPage('Home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    首页
+  </div>
+  <div class="nav-item" onclick="switchPage('Stats')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    统计
+  </div>
+  <div class="nav-item" onclick="switchPage('Profile')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    我的
+  </div>
 </div>
-<div class="nav-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-统计
-</div>
-<div class="nav-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-我的
-</div>
-</div>
+
+<script>
+// ===================== DATA LAYER =====================
+const STORAGE_KEY = 'fitness_records';
+const PROFILE_KEY = 'fitness_profile';
+
+const defaultProfile = {
+  name: '运动达人',
+  age: 46,
+  height: 176,
+  weight: 79,
+  condition: '腰肌劳损轻症',
+  targetWeight: 73,
+  exerciseFreq: 3
+};
+
+function getProfile() {
+  try {
+    const d = localStorage.getItem(PROFILE_KEY);
+    return d ? { ...defaultProfile, ...JSON.parse(d) } : { ...defaultProfile };
+  } catch { return { ...defaultProfile }; }
+}
+
+function saveProfile(p) {
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(p));
+}
+
+function getRecords() {
+  try {
+    const d = localStorage.getItem(STORAGE_KEY);
+    return d ? JSON.parse(d) : [];
+  } catch { return []; }
+}
+
+function saveRecords(records) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+
+function addRecord(record) {
+  const records = getRecords();
+  records.unshift(record);
+  saveRecords(records);
+}
+
+function deleteRecord(id) {
+  const records = getRecords().filter(r => r.id !== id);
+  saveRecords(records);
+}
+
+// ===================== ANALYSIS ENGINE =====================
+function calcMaxHR(age) { return 220 - age; }
+
+function getHRZones(age) {
+  const max = calcMaxHR(age);
+  return {
+    max,
+    warmUp: { min: Math.round(max * 0.5), max: Math.round(max * 0.6), label: '热身区', color: '#94A3B8' },
+    fatBurn: { min: Math.round(max * 0.6), max: Math.round(max * 0.7), label: '减脂区', color: '#10B981' },
+    cardio: { min: Math.round(max * 0.7), max: Math.round(max * 0.8), label: '有氧区', color: '#F59E0B' },
+    anaerobic: { min: Math.round(max * 0.8), max: Math.round(max * 0.9), label: '无氧区', color: '#EF4444' },
+    maxZone: { min: Math.round(max * 0.9), max: max, label: '极限区', color: '#DC2626' }
+  };
+}
+
+function analyzeRecord(record, profile) {
+  const zones = getHRZones(profile.age);
+  const avgHR = record.avgHR || 0;
+  const maxHR = record.maxHR || 0;
+  const duration = record.duration || 0;
+  const cadence = record.cadence || 0;
+  const distance = record.distance || 0;
+  const pace = record.pace || 0;
+
+  let score = 100;
+  let issues = [];
+  let goods = [];
+  let guidance = [];
+  let status = 'good';
+  let statusText = '表现优秀';
+
+  // Heart rate analysis
+  if (avgHR >= zones.fatBurn.min && avgHR <= zones.fatBurn.max) {
+    goods.push(`心率${avgHR}bpm精准处于最佳减脂区间(${zones.fatBurn.min}-${zones.fatBurn.max})`);
+    score += 5;
+  } else if (avgHR >= zones.warmUp.min && avgHR < zones.fatBurn.min) {
+    issues.push(`心率${avgHR}bpm偏低，未达到最佳减脂区间(${zones.fatBurn.min}-${zones.fatBurn.max})`);
+    guidance.push(`下次尝试提速或加大摆臂，让心率升到${zones.fatBurn.min}-${zones.fatBurn.max}之间`);
+    score -= 15;
+    if (status === 'good') { status = 'warn'; statusText = '强度偏低'; }
+  } else if (avgHR > zones.fatBurn.max && avgHR <= zones.cardio.max) {
+    goods.push(`心率${avgHR}bpm处于有氧区，心肺锻炼效果好`);
+    guidance.push('心率偏高，如目标是减脂可适当放慢速度');
+    score -= 5;
+  } else if (avgHR > zones.cardio.max) {
+    issues.push(`心率${avgHR}bpm过高，超过有氧区间`);
+    guidance.push('注意控制强度，避免过度疲劳，保护心血管');
+    score -= 25;
+    status = 'bad'; statusText = '强度过高';
+  }
+
+  // Duration analysis
+  if (duration >= 45) {
+    goods.push(`运动时长${duration}分钟，达标`);
+  } else if (duration >= 30) {
+    goods.push(`运动时长${duration}分钟，基本合格`);
+    guidance.push('建议逐步延长到45-60分钟，减脂效果更佳');
+    score -= 5;
+    if (status === 'good') { status = 'warn'; statusText = '时长偏短'; }
+  } else {
+    issues.push(`运动时长仅${duration}分钟，不足`);
+    guidance.push('每次运动建议至少30分钟，目标45-60分钟');
+    score -= 20;
+    if (status !== 'bad') { status = 'warn'; statusText = '时长不足'; }
+  }
+
+  // Cadence analysis (for running/walking)
+  if (cadence > 0) {
+    if (record.type.includes('跑') && cadence < 155) {
+      issues.push(`步频${cadence}步/分偏低，步幅过大增加关节冲击`);
+      guidance.push('提高步频至160+，减小步幅，降低腰部和膝盖冲击');
+      score -= 10;
+      if (status === 'good') { status = 'warn'; statusText = '注意步频'; }
+    } else if (record.type.includes('跑') && cadence >= 160) {
+      goods.push(`步频${cadence}步/分，节奏良好`);
+      score += 5;
+    }
+    if (record.type.includes('跑') && cadence < 140) {
+      issues.push(`步频${cadence}步/分过低，对腰部冲击较大`);
+      guidance.push('强烈建议提高步频！小步快跑，保护腰肌');
+      score -= 15;
+      if (status !== 'bad') { status = 'warn'; statusText = '步频过低'; }
+    }
+  }
+
+  // Lumbar protection
+  if (profile.condition.includes('腰')) {
+    if (record.type.includes('跑') && cadence > 0 && cadence < 150) {
+      guidance.push('⚠️ 腰肌劳损提醒：低步频+大步幅对腰椎冲击大，务必提高步频');
+    }
+    if (record.type.includes('跑') && duration > 60) {
+      guidance.push('⚠️ 腰肌劳损提醒：单次跑步超过60分钟建议适当休息，避免腰部过劳');
+    }
+    guidance.push('跑后建议做腰部拉伸：猫牛式、婴儿式各保持30秒');
+  }
+
+  // Distance / pace
+  if (distance > 0 && pace > 0) {
+    if (pace > 15) {
+      guidance.push('配速偏慢，可以尝试快走或慢跑交替提升效率');
+    }
+  }
+
+  // Calories
+  if (record.calories > 0) {
+    if (record.calories >= 300) {
+      goods.push(`消耗${record.calories}大卡，减脂贡献可观`);
+    } else {
+      guidance.push(`消耗${record.calories}大卡，增加时长或强度可提升消耗`);
+    }
+  }
+
+  score = Math.max(0, Math.min(100, score));
+
+  // Build analysis text
+  let analysisText = '';
+  if (goods.length > 0) {
+    analysisText += goods.map(g => `<strong>✓</strong> ${g}`).join('<br>');
+  }
+  if (issues.length > 0) {
+    analysisText += (analysisText ? '<br>' : '') + issues.map(i => `<strong>!</strong> ${i}`).join('<br>');
+  }
+
+  return { score, status, statusText, analysisText, guidance, goods, issues };
+}
+
+function generateWeeklyReport(records, profile) {
+  if (records.length === 0) return null;
+
+  const now = new Date();
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - now.getDay() + 1);
+  weekStart.setHours(0, 0, 0, 0);
+
+  const weekRecords = records.filter(r => new Date(r.date) >= weekStart);
+  if (weekRecords.length === 0) return null;
+
+  const totalDuration = weekRecords.reduce((s, r) => s + (r.duration || 0), 0);
+  const totalDistance = weekRecords.reduce((s, r) => s + (r.distance || 0), 0);
+  const totalCalories = weekRecords.reduce((s, r) => s + (r.calories || 0), 0);
+  const avgHR = weekRecords.length > 0 ? Math.round(weekRecords.reduce((s, r) => s + (r.avgHR || 0), 0) / weekRecords.length) : 0;
+  const zones = getHRZones(profile.age);
+  const inZone = weekRecords.filter(r => r.avgHR >= zones.fatBurn.min && r.avgHR <= zones.fatBurn.max).length;
+  const avgScore = Math.round(weekRecords.reduce((s, r) => {
+    const a = analyzeRecord(r, profile);
+    return s + a.score;
+  }, 0) / weekRecords.length);
+
+  let summary = '';
+  summary += `本周共运动<strong>${weekRecords.length}</strong>次，累计<strong>${totalDuration}</strong>分钟，总距离<strong>${totalDistance.toFixed(2)}km</strong>，消耗<strong>${totalCalories}</strong>大卡。`;
+  summary += `平均心率<strong>${avgHR}bpm</strong>，其中<strong>${inZone}</strong>次处于最佳减脂区间。`;
+
+  let advice = '';
+  if (weekRecords.length >= 3) {
+    advice += '✅ 运动频率达标，保持这个节奏！';
+  } else {
+    advice += `⚠️ 本周仅运动${weekRecords.length}次，距离目标${profile.exerciseFreq}次还差${profile.exerciseFreq - weekRecords.length}次。`;
+  }
+  if (avgScore >= 80) {
+    advice += ' 整体运动质量优秀，继续保持。';
+  } else if (avgScore >= 60) {
+    advice += ' 运动质量中等，注意控制心率和步频。';
+  } else {
+    advice += ' 运动质量有待提升，建议关注心率区间和运动时长。';
+  }
+
+  if (profile.condition.includes('腰')) {
+    advice += ' 腰肌劳损期间注意：跑前热身、跑后拉伸、控制步频保护腰椎。';
+  }
+
+  return {
+    count: weekRecords.length,
+    totalDuration,
+    totalDistance: totalDistance.toFixed(2),
+    totalCalories,
+    avgHR,
+    inZone,
+    avgScore,
+    summary,
+    advice
+  };
+}
+
+// ===================== RENDERING =====================
+function renderUserCard() {
+  const p = getProfile();
+  const bmi = (p.weight / ((p.height / 100) ** 2)).toFixed(1);
+  const zones = getHRZones(p.age);
+  document.getElementById('userCard').innerHTML = `
+    <div class="user-info">
+      <div class="user-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="user-meta">
+        <h3>${p.name}</h3>
+        <p>${p.age}岁 · ${p.height}cm · ${p.weight}kg · BMI ${bmi}</p>
+      </div>
+    </div>
+    <div class="user-tags">
+      <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>减脂心率 ${zones.fatBurn.min}-${zones.fatBurn.max}</span>
+      <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>目标 ${p.targetWeight}kg</span>
+      <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>每周${p.exerciseFreq}次</span>
+    </div>
+  `;
+}
+
+function renderWeeklySection() {
+  const records = getRecords();
+  const profile = getProfile();
+  const report = generateWeeklyReport(records, profile);
+  const container = document.getElementById('weeklySection');
+
+  if (!report) {
+    container.innerHTML = `
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        本周概览
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">0</div><div class="lbl">锻炼次数</div></div>
+        <div class="stat-card"><div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="num">0</div><div class="lbl">总时长(分)</div></div>
+        <div class="stat-card"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">0</div><div class="lbl">总消耗(大卡)</div></div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+      本周概览
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">${report.count}</div><div class="lbl">锻炼次数</div></div>
+      <div class="stat-card"><div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="num">${report.totalDuration}</div><div class="lbl">总时长(分)</div></div>
+      <div class="stat-card"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${report.totalCalories}</div><div class="lbl">总消耗(大卡)</div></div>
+    </div>
+    <div class="weekly-card">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>本周总结</h3>
+      <div class="weekly-summary">
+        <div class="weekly-item"><div class="val">${report.totalDistance}<span style="font-size:12px;font-weight:400">km</span></div><div class="lbl">总距离</div></div>
+        <div class="weekly-item"><div class="val">${report.avgHR}<span style="font-size:12px;font-weight:400">bpm</span></div><div class="lbl">平均心率</div></div>
+        <div class="weekly-item"><div class="val">${report.inZone}/${report.count}</div><div class="lbl">减脂区间次数</div></div>
+        <div class="weekly-item"><div class="val">${report.avgScore}<span style="font-size:12px;font-weight:400">分</span></div><div class="lbl">平均质量分</div></div>
+      </div>
+      <div class="weekly-text">${report.summary}</div>
+      <div class="weekly-text" style="margin-top:8px">${report.advice}</div>
+    </div>
+  `;
+}
+
+function renderRecords() {
+  const records = getRecords();
+  const profile = getProfile();
+  const container = document.getElementById('recordsList');
+
+  if (records.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <p>还没有运动记录<br>点击下方按钮添加第一条</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = records.map(r => {
+    const a = analyzeRecord(r, profile);
+    const d = new Date(r.date);
+    const dateStr = `${d.getMonth() + 1}月${d.getDate()}日`;
+    const statusIcon = a.status === 'good'
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
+      : a.status === 'warn'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+
+    const thumbHtml = r.image
+      ? `<div class="record-thumb" onclick="event.stopPropagation();viewImage('${r.image}')"><img src="${r.image}" alt="运动截图"></div>`
+      : '';
+
+    const guidanceHtml = a.guidance.length > 0
+      ? `<div class="record-guidance"><div class="guidance-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>改进建议</div><ul>${a.guidance.map(g => `<li>${g}</li>`).join('')}</ul></div>`
+      : '';
+
+    return `
+      <div class="record-card" onclick="viewRecordDetail('${r.id}')">
+        <div class="delete-btn" onclick="event.stopPropagation();confirmDelete('${r.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </div>
+        <div class="record-header">
+          <div class="record-date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            ${dateStr} · ${r.type}
+          </div>
+          <span class="record-status ${a.status}">${statusIcon}${a.statusText}</span>
+        </div>
+        ${thumbHtml}
+        <div class="record-metrics">
+          <div class="record-metric"><div class="val">${r.duration}<span class="unit">分</span></div><div class="lbl">时长</div></div>
+          <div class="record-metric"><div class="val">${r.distance ? r.distance.toFixed(2) : '-'}<span class="unit">km</span></div><div class="lbl">距离</div></div>
+          <div class="record-metric"><div class="val">${r.avgHR || '-'}<span class="unit">bpm</span></div><div class="lbl">平均心率</div></div>
+          <div class="record-metric"><div class="val">${r.calories || '-'}<span class="unit">大卡</span></div><div class="lbl">消耗</div></div>
+        </div>
+        <div class="record-analysis ${a.status}">
+          <div class="analysis-title">${statusIcon}运动分析</div>
+          <p>${a.analysisText}</p>
+          ${guidanceHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderStats() {
+  const records = getRecords();
+  const profile = getProfile();
+  const container = document.getElementById('statsContent');
+
+  if (records.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <p>暂无数据<br>添加运动记录后即可查看统计</p>
+      </div>
+    `;
+    return;
+  }
+
+  const zones = getHRZones(profile.age);
+  const sorted = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const last10 = sorted.slice(-10);
+
+  // Duration bar chart
+  const maxDur = Math.max(...last10.map(r => r.duration || 0), 1);
+  const durBars = last10.map(r => {
+    const d = new Date(r.date);
+    const label = `${d.getMonth() + 1}/${d.getDate()}`;
+    const h = Math.max(4, ((r.duration || 0) / maxDur) * 120);
+    return `<div class="bar-col"><div class="bar" style="height:${h}px;background:linear-gradient(180deg,var(--primary),var(--secondary))"><span class="bar-val">${r.duration}分</span></div><span class="bar-label">${label}</span></div>`;
+  }).join('');
+
+  // HR bar chart
+  const maxHRVal = Math.max(...last10.map(r => r.avgHR || 0), 1);
+  const hrBars = last10.map(r => {
+    const d = new Date(r.date);
+    const label = `${d.getMonth() + 1}/${d.getDate()}`;
+    const h = Math.max(4, ((r.avgHR || 0) / maxHRVal) * 120);
+    const inZone = r.avgHR >= zones.fatBurn.min && r.avgHR <= zones.fatBurn.max;
+    const color = inZone ? '#10B981' : (r.avgHR < zones.fatBurn.min ? '#94A3B8' : '#F59E0B');
+    return `<div class="bar-col"><div class="bar" style="height:${h}px;background:${color}"><span class="bar-val">${r.avgHR || '-'}</span></div><span class="bar-label">${label}</span></div>`;
+  }).join('');
+
+  // HR zone distribution
+  const zoneCounts = { warmUp: 0, fatBurn: 0, cardio: 0, anaerobic: 0, maxZone: 0 };
+  records.forEach(r => {
+    const hr = r.avgHR || 0;
+    if (hr >= zones.maxZone.min) zoneCounts.maxZone++;
+    else if (hr >= zones.anaerobic.min) zoneCounts.anaerobic++;
+    else if (hr >= zones.cardio.min) zoneCounts.cardio++;
+    else if (hr >= zones.fatBurn.min) zoneCounts.fatBurn++;
+    else if (hr >= zones.warmUp.min) zoneCounts.warmUp++;
+  });
+  const total = records.length || 1;
+
+  // Cumulative stats
+  const totalDur = records.reduce((s, r) => s + (r.duration || 0), 0);
+  const totalDist = records.reduce((s, r) => s + (r.distance || 0), 0);
+  const totalCal = records.reduce((s, r) => s + (r.calories || 0), 0);
+  const totalSteps = records.reduce((s, r) => s + (r.steps || 0), 0);
+
+  container.innerHTML = `
+    <div class="stats-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">${records.length}</div><div class="lbl">总运动次数</div></div>
+      <div class="stat-card"><div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="num">${totalDur}</div><div class="lbl">总时长(分)</div></div>
+      <div class="stat-card"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${totalDist.toFixed(1)}</div><div class="lbl">总距离(km)</div></div>
+      <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${totalCal}</div><div class="lbl">总消耗(大卡)</div></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>运动时长趋势（最近${last10.length}次）</div>
+      <div class="bar-chart">${durBars}</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>平均心率趋势（最近${last10.length}次）</div>
+      <div class="bar-chart">${hrBars}</div>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#10B981"></span>减脂区</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#94A3B8"></span>偏低</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span>偏高</span>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>心率区间分布</div>
+      <div class="hr-zone-bar">
+        <div class="hr-zone-seg" style="width:${(zoneCounts.warmUp/total)*100}%;background:#94A3B8">${zoneCounts.warmUp || ''}</div>
+        <div class="hr-zone-seg" style="width:${(zoneCounts.fatBurn/total)*100}%;background:#10B981">${zoneCounts.fatBurn || ''}</div>
+        <div class="hr-zone-seg" style="width:${(zoneCounts.cardio/total)*100}%;background:#F59E0B">${zoneCounts.cardio || ''}</div>
+        <div class="hr-zone-seg" style="width:${(zoneCounts.anaerobic/total)*100}%;background:#EF4444">${zoneCounts.anaerobic || ''}</div>
+        <div class="hr-zone-seg" style="width:${(zoneCounts.maxZone/total)*100}%;background:#DC2626">${zoneCounts.maxZone || ''}</div>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#94A3B8"></span>热身 ${zoneCounts.warmUp}次</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#10B981"></span>减脂 ${zoneCounts.fatBurn}次</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span>有氧 ${zoneCounts.cardio}次</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#EF4444"></span>无氧 ${zoneCounts.anaerobic}次</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#DC2626"></span>极限 ${zoneCounts.maxZone}次</span>
+      </div>
+    </div>
+
+    ${totalSteps > 0 ? `<div class="stats-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat-card"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${totalSteps.toLocaleString()}</div><div class="lbl">总步数</div></div>
+      <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">${records.length > 0 ? Math.round(totalDist / records.length * 10) / 10 : 0}</div><div class="lbl">平均距离(km)</div></div>
+    </div>` : ''}
+  `;
+}
+
+function renderProfile() {
+  const p = getProfile();
+  const bmi = (p.weight / ((p.height / 100) ** 2)).toFixed(1);
+  const zones = getHRZones(p.age);
+  const container = document.getElementById('profileContent');
+
+  container.innerHTML = `
+    <div class="profile-card">
+      <div class="profile-row"><span class="label">昵称</span><span class="value editable" onclick="editField('name','${p.name}')">${p.name}</span></div>
+      <div class="profile-row"><span class="label">年龄</span><span class="value editable" onclick="editField('age',${p.age})">${p.age}岁</span></div>
+      <div class="profile-row"><span class="label">身高</span><span class="value editable" onclick="editField('height',${p.height})">${p.height}cm</span></div>
+      <div class="profile-row"><span class="label">体重</span><span class="value editable" onclick="editField('weight',${p.weight})">${p.weight}kg</span></div>
+      <div class="profile-row"><span class="label">BMI</span><span class="value">${bmi} ${bmi < 18.5 ? '偏瘦' : bmi < 24 ? '正常' : bmi < 28 ? '偏胖' : '肥胖'}</span></div>
+      <div class="profile-row"><span class="label">目标体重</span><span class="value editable" onclick="editField('targetWeight',${p.targetWeight})">${p.targetWeight}kg</span></div>
+      <div class="profile-row"><span class="label">每周运动次数</span><span class="value editable" onclick="editField('exerciseFreq',${p.exerciseFreq})">${p.exerciseFreq}次</span></div>
+      <div class="profile-row"><span class="label">健康状况</span><span class="value editable" onclick="editField('condition','${p.condition}')">${p.condition}</span></div>
+    </div>
+
+    <div class="profile-card">
+      <div class="section-title" style="margin-bottom:8px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        心率区间参考
+      </div>
+      <div class="profile-row"><span class="label">最大心率</span><span class="value">${zones.max}bpm</span></div>
+      <div class="profile-row"><span class="label">热身区</span><span class="value">${zones.warmUp.min}-${zones.warmUp.max}bpm</span></div>
+      <div class="profile-row"><span class="label" style="color:#10B981;font-weight:600">减脂区(推荐)</span><span class="value" style="color:#10B981">${zones.fatBurn.min}-${zones.fatBurn.max}bpm</span></div>
+      <div class="profile-row"><span class="label">有氧区</span><span class="value">${zones.cardio.min}-${zones.cardio.max}bpm</span></div>
+      <div class="profile-row"><span class="label">无氧区</span><span class="value">${zones.anaerobic.min}-${zones.anaerobic.max}bpm</span></div>
+    </div>
+
+    <div class="profile-card">
+      <button class="btn-outline" onclick="exportData()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        导出所有数据
+      </button>
+      <button class="btn-outline" onclick="importDataTrigger()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        导入数据
+      </button>
+      <input type="file" id="importInput" accept=".json" style="display:none" onchange="importData(event)">
+      <button class="btn-danger" onclick="confirmClearAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        清除所有数据
+      </button>
+    </div>
+  `;
+}
+
+// ===================== NAVIGATION =====================
+function switchPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach((n, i) => {
+    n.classList.toggle('active', ['Home', 'Stats', 'Profile'][i] === name);
+  });
+  if (name === 'Home') { renderUserCard(); renderWeeklySection(); renderRecords(); }
+  if (name === 'Stats') renderStats();
+  if (name === 'Profile') renderProfile();
+  window.scrollTo(0, 0);
+}
+
+// ===================== ADD RECORD MODAL =====================
+let currentImage = '';
+
+function openAddModal() {
+  document.getElementById('addModal').classList.add('show');
+  document.getElementById('formDate').value = new Date().toISOString().split('T')[0];
+  resetForm();
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('show');
+  resetForm();
+}
+
+function resetForm() {
+  currentImage = '';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('imgPlaceholder').style.display = 'flex';
+  document.getElementById('changeImgBtn').style.display = 'none';
+  document.getElementById('formType').value = '户外跑步';
+  document.getElementById('formDuration').value = '';
+  document.getElementById('formDistance').value = '';
+  document.getElementById('formAvgHR').value = '';
+  document.getElementById('formMaxHR').value = '';
+  document.getElementById('formCalories').value = '';
+  document.getElementById('formCadence').value = '';
+  document.getElementById('formSteps').value = '';
+  document.getElementById('formPace').value = '';
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    currentImage = ev.target.result;
+    document.getElementById('imgPreview').src = currentImage;
+    document.getElementById('imgPreview').style.display = 'block';
+    document.getElementById('imgPlaceholder').style.display = 'none';
+    document.getElementById('changeImgBtn').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveRecord() {
+  const date = document.getElementById('formDate').value;
+  const type = document.getElementById('formType').value;
+  const duration = parseInt(document.getElementById('formDuration').value) || 0;
+  const distance = parseFloat(document.getElementById('formDistance').value) || 0;
+  const avgHR = parseInt(document.getElementById('formAvgHR').value) || 0;
+  const maxHR = parseInt(document.getElementById('formMaxHR').value) || 0;
+  const calories = parseInt(document.getElementById('formCalories').value) || 0;
+  const cadence = parseInt(document.getElementById('formCadence').value) || 0;
+  const steps = parseInt(document.getElementById('formSteps').value) || 0;
+  const pace = parseFloat(document.getElementById('formPace').value) || 0;
+
+  if (!date) { showToast('请选择运动日期'); return; }
+  if (duration <= 0) { showToast('请填写运动时长'); return; }
+
+  const record = {
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+    date, type, duration, distance, avgHR, maxHR, calories, cadence, steps, pace,
+    image: currentImage,
+    createdAt: new Date().toISOString()
+  };
+
+  addRecord(record);
+  closeAddModal();
+  renderUserCard();
+  renderWeeklySection();
+  renderRecords();
+  showToast('✅ 记录已保存');
+}
+
+// ===================== DELETE =====================
+let pendingDeleteId = '';
+let pendingAction = null;
+
+function confirmDelete(id) {
+  pendingDeleteId = id;
+  pendingAction = 'delete';
+  document.getElementById('confirmTitle').textContent = '确认删除？';
+  document.getElementById('confirmMsg').textContent = '删除后数据无法恢复';
+  document.getElementById('confirmBtn').textContent = '删除';
+  document.getElementById('confirmDialog').classList.add('show');
+}
+
+function confirmClearAll() {
+  pendingAction = 'clearAll';
+  document.getElementById('confirmTitle').textContent = '清除所有数据？';
+  document.getElementById('confirmMsg').textContent = '包括所有运动记录和个人档案，此操作不可撤销';
+  document.getElementById('confirmBtn').textContent = '全部清除';
+  document.getElementById('confirmDialog').classList.add('show');
+}
+
+function closeConfirm() {
+  document.getElementById('confirmDialog').classList.remove('show');
+  pendingDeleteId = '';
+  pendingAction = null;
+}
+
+function confirmAction() {
+  if (pendingAction === 'delete' && pendingDeleteId) {
+    deleteRecord(pendingDeleteId);
+    renderUserCard();
+    renderWeeklySection();
+    renderRecords();
+    showToast('已删除');
+  } else if (pendingAction === 'clearAll') {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(PROFILE_KEY);
+    renderUserCard();
+    renderWeeklySection();
+    renderRecords();
+    showToast('已清除所有数据');
+  }
+  closeConfirm();
+}
+
+// ===================== IMAGE VIEWER =====================
+function viewImage(src) {
+  document.getElementById('viewerImg').src = src;
+  document.getElementById('imgViewer').classList.add('show');
+}
+
+function closeViewer() {
+  document.getElementById('imgViewer').classList.remove('show');
+}
+
+function viewRecordDetail(id) {
+  const record = getRecords().find(r => r.id === id);
+  if (record && record.image) {
+    viewImage(record.image);
+  }
+}
+
+// ===================== PROFILE EDIT =====================
+function editField(field, currentVal) {
+  const val = prompt(`请输入新的${field === 'name' ? '昵称' : field === 'age' ? '年龄' : field === 'height' ? '身高(cm)' : field === 'weight' ? '体重(kg)' : field === 'targetWeight' ? '目标体重(kg)' : field === 'exerciseFreq' ? '每周运动次数' : '健康状况'}`, currentVal);
+  if (val === null || val.trim() === '') return;
+  const p = getProfile();
+  if (['age', 'height', 'weight', 'targetWeight', 'exerciseFreq'].includes(field)) {
+    p[field] = parseInt(val) || p[field];
+  } else {
+    p[field] = val.trim();
+  }
+  saveProfile(p);
+  renderProfile();
+  renderUserCard();
+  renderWeeklySection();
+  renderRecords();
+  showToast('已更新');
+}
+
+// ===================== DATA EXPORT/IMPORT =====================
+function exportData() {
+  const data = {
+    profile: getProfile(),
+    records: getRecords(),
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `运动健康数据_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('数据已导出');
+}
+
+function importDataTrigger() {
+  document.getElementById('importInput').click();
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (data.profile) saveProfile(data.profile);
+      if (data.records) {
+        const existing = getRecords();
+        const existingIds = new Set(existing.map(r => r.id));
+        const newRecords = data.records.filter(r => !existingIds.has(r.id));
+        saveRecords([...newRecords, ...existing]);
+      }
+      renderAll();
+      showToast(`导入成功`);
+    } catch {
+      showToast('导入失败，文件格式不正确');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ===================== TOAST =====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ===================== INIT =====================
+function renderAll() {
+  renderUserCard();
+  renderWeeklySection();
+  renderRecords();
+}
+
+// Drag & drop support
+const uploadZone = document.getElementById('uploadZone');
+if (uploadZone) {
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      openAddModal();
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      document.getElementById('fileInput').files = dt.files;
+      handleFileSelect({ target: { files: [file] } });
+    }
+  });
+}
+
+// Init
+renderAll();
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
 </body>
 </html>
