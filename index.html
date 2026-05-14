@@ -5,112 +5,176 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>运动健康助手</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4338CA">
+<meta name="theme-color" content="#2563EB">
 <style>
+:root{--primary:#2563EB;--primary-light:#3B82F6;--secondary:#8B5CF6;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;--bg:#F8FAFC;--card:#fff;--text:#1E293B;--text2:#64748B;--border:#E2E8F0}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#F5F5F7;min-height:100vh;padding-bottom:70px}
-.header{background:#4338CA;color:#fff;padding:48px 20px 24px}
-.header h1{font-size:22px;font-weight:600;margin-bottom:4px}
-.header p{font-size:13px;opacity:.8}
-.tags{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-.tag{background:rgba(255,255,255,.15);padding:5px 12px;border-radius:6px;font-size:12px}
-.tag b{font-weight:600}
-.section{padding:16px}
-.section-title{font-size:15px;font-weight:600;color:#1F2937;margin-bottom:12px;padding-left:2px}
-.summary{display:flex;gap:10px;margin-bottom:8px}
-.sum-card{flex:1;background:#fff;border-radius:8px;padding:16px 12px;text-align:center}
-.sum-card .num{font-size:26px;font-weight:700;color:#4338CA}
-.sum-card .lbl{font-size:11px;color:#6B7280;margin-top:2px}
-.record{background:#fff;border-radius:8px;padding:16px;margin-bottom:10px;border-left:3px solid}
-.record.good{border-left-color:#10B981}
-.record.warn{border-left-color:#F59E0B}
-.record-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.record-date{font-size:15px;font-weight:600;color:#1F2937}
-.record-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px}
-.record-badge.good{background:#D1FAE5;color:#059669}
-.record-badge.warn{background:#FEF3C7;color:#D97706}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.metric{background:#F9FAFB;border-radius:6px;padding:12px 8px;text-align:center}
-.metric .val{font-size:20px;font-weight:700;color:#1F2937}
-.metric .unit{font-size:11px;color:#9CA3AF;font-weight:400}
-.metric .lbl{font-size:10px;color:#6B7280;margin-top:2px}
-.analysis{background:#F9FAFB;border-radius:6px;padding:12px}
-.analysis .tag{display:inline-block;font-size:11px;font-weight:600;margin-bottom:8px;padding:3px 8px;border-radius:4px}
-.analysis .tag.good{background:#D1FAE5;color:#059669}
-.analysis .tag.warn{background:#FEF3C7;color:#D97706}
-.analysis p{font-size:12px;color:#4B5563;line-height:1.7}
-.analysis strong{color:#1F2937}
-.upload{background:#fff;border-radius:8px;padding:24px;text-align:center;border:2px dashed #D1D5DB}
-.upload .icon{width:48px;height:48px;background:#EEF2FF;border-radius:8px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px}
-.upload h3{font-size:14px;font-weight:600;color:#4338CA;margin-bottom:4px}
-.upload p{font-size:12px;color:#9CA3AF}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E5E7EB;display:flex;padding:6px 0}
-.nav-item{flex:1;text-align:center;padding:6px 0;color:#9CA3AF;font-size:10px}
-.nav-item.on{color:#4338CA}
-.nav-item .ico{font-size:20px;display:block;margin-bottom:2px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
+.header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);padding:60px 24px 40px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:rgba(255,255,255,.1);border-radius:50%}
+.header::after{content:'';position:absolute;bottom:-30%;left:-10%;width:200px;height:200px;background:rgba(255,255,255,.08);border-radius:50%}
+.header-content{position:relative;z-index:1}
+.header h1{font-size:24px;font-weight:700;color:#fff;margin-bottom:6px}
+.header p{font-size:14px;color:rgba(255,255,255,.85)}
+.user-card{background:var(--card);border-radius:16px;padding:20px;margin:-30px 20px 20px;box-shadow:0 4px 20px rgba(0,0,0,.08);position:relative;z-index:2}
+.user-info{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.user-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center}
+.user-avatar svg{width:32px;height:32px}
+.user-meta h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.user-meta p{font-size:13px;color:var(--text2)}
+.user-tags{display:flex;gap:8px;flex-wrap:wrap}
+.user-tag{background:#F1F5F9;padding:6px 12px;border-radius:20px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px}
+.user-tag svg{width:14px;height:14px}
+.section{padding:0 20px 20px}
+.section-title{font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title svg{width:20px;height:20px;color:var(--primary)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--card);border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.stat-card .icon{width:40px;height:40px;margin:0 auto 10px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.stat-card .icon.blue{background:#EFF6FF}
+.stat-card .icon.purple{background:#F5F3FF}
+.stat-card .icon.green{background:#ECFDF5}
+.stat-card .icon svg{width:24px;height:24px}
+.stat-card .num{font-size:24px;font-weight:700;color:var(--text);margin-bottom:2px}
+.stat-card .lbl{font-size:12px;color:var(--text2)}
+.record-card{background:var(--card);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.record-date{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600}
+.record-date svg{width:18px;height:18px;color:var(--primary)}
+.record-status{font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;display:flex;align-items:center;gap:4px}
+.record-status.good{background:#D1FAE5;color:#059669}
+.record-status.warn{background:#FEF3C7;color:#D97706}
+.record-status svg{width:14px;height:14px}
+.record-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;padding:16px;background:#F8FAFC;border-radius:12px}
+.record-metric{text-align:center}
+.record-metric .val{font-size:20px;font-weight:700;color:var(--text)}
+.record-metric .unit{font-size:11px;color:var(--text2);margin-left:2px}
+.record-metric .lbl{font-size:11px;color:var(--text2);margin-top:4px}
+.record-analysis{background:#F8FAFC;border-radius:12px;padding:16px}
+.record-analysis .analysis-title{font-size:13px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.record-analysis .analysis-title svg{width:16px;height:16px}
+.record-analysis.good .analysis-title{color:#059669}
+.record-analysis.warn .analysis-title{color:#D97706}
+.record-analysis p{font-size:13px;color:var(--text2);line-height:1.8}
+.record-analysis p strong{color:var(--text);font-weight:600}
+.upload-card{background:var(--card);border-radius:16px;padding:32px 24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06);border:2px dashed var(--border)}
+.upload-icon{width:64px;height:64px;margin:0 auto 16px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center}
+.upload-icon svg{width:32px;height:32px;color:#fff}
+.upload-card h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.upload-card p{font-size:13px;color:var(--text2)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;padding:8px 0 20px}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text2);font-size:11px}
+.nav-item.active{color:var(--primary)}
+.nav-item svg{width:24px;height:24px}
 </style>
 </head>
 <body>
 <div class="header">
-<h1>🏃 运动健康助手</h1>
-<p>听懂你的身体 · 科学运动减脂</p>
-<div class="tags">
-<span class="tag">👤 <b>46岁</b></span>
-<span class="tag">📏 <b>176cm / 79kg</b></span>
-<span class="tag">❤️ <b>减脂区间 104-122</b></span>
-<span class="tag">⚠️ <b>腰肌劳损</b></span>
+<div class="header-content">
+<h1>运动健康助手</h1>
+<p>科学运动 · 智能分析 · 健康减脂</p>
+</div>
+</div>
+<div class="user-card">
+<div class="user-info">
+<div class="user-avatar">
+<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+</div>
+<div class="user-meta">
+<h3>健康档案</h3>
+<p>46岁 · 176cm · 79kg · 腰肌劳损</p>
+</div>
+</div>
+<div class="user-tags">
+<span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>减脂心率 104-122</span>
+<span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>目标减重 5-7kg</span>
 </div>
 </div>
 <div class="section">
-<div class="section-title">📊 本周概览</div>
-<div class="summary">
-<div class="sum-card"><div class="num">2</div><div class="lbl">锻炼次数</div></div>
-<div class="sum-card"><div class="num">82</div><div class="lbl">总时长(分)</div></div>
-<div class="sum-card"><div class="num">493</div><div class="lbl">总消耗(大卡)</div></div>
+<div class="section-title">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+本周概览
+</div>
+<div class="stats-grid">
+<div class="stat-card">
+<div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+<div class="num">2</div>
+<div class="lbl">锻炼次数</div>
+</div>
+<div class="stat-card">
+<div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+<div class="num">82</div>
+<div class="lbl">总时长(分)</div>
+</div>
+<div class="stat-card">
+<div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+<div class="num">493</div>
+<div class="lbl">总消耗(大卡)</div>
+</div>
 </div>
 </div>
 <div class="section">
-<div class="section-title">📋 运动记录</div>
-<div class="record warn">
-<div class="record-head">
-<span class="record-date">5月12日</span>
-<span class="record-badge warn">⚠️ 强度偏低</span>
+<div class="section-title">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+运动记录
 </div>
-<div class="metrics">
-<div class="metric"><div class="val">31<span class="unit">分钟</span></div><div class="lbl">时长</div></div>
-<div class="metric"><div class="val">2.08<span class="unit">km</span></div><div class="lbl">距离</div></div>
-<div class="metric"><div class="val">101<span class="unit">bpm</span></div><div class="lbl">心率</div></div>
+<div class="record-card">
+<div class="record-header">
+<div class="record-date">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+5月12日
 </div>
-<div class="analysis">
-<span class="tag warn">⚠️ 需改善</span>
-<p><strong>心率偏低</strong>：101bpm低于减脂区间(104-122)<br><strong>步频过低</strong>：124步/分，对腰部冲击大<br><strong>时长不足</strong>：建议45-60分钟</p>
+<span class="record-status warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>强度偏低</span>
 </div>
+<div class="record-metrics">
+<div class="record-metric"><div class="val">31<span class="unit">分钟</span></div><div class="lbl">运动时长</div></div>
+<div class="record-metric"><div class="val">2.08<span class="unit">km</span></div><div class="lbl">距离</div></div>
+<div class="record-metric"><div class="val">101<span class="unit">bpm</span></div><div class="lbl">平均心率</div></div>
 </div>
-<div class="record good">
-<div class="record-head">
-<span class="record-date">5月11日</span>
-<span class="record-badge good">✅ 优秀</span>
-</div>
-<div class="metrics">
-<div class="metric"><div class="val">51<span class="unit">分钟</span></div><div class="lbl">时长</div></div>
-<div class="metric"><div class="val">4.10<span class="unit">km</span></div><div class="lbl">距离</div></div>
-<div class="metric"><div class="val">109<span class="unit">bpm</span></div><div class="lbl">心率</div></div>
-</div>
-<div class="analysis">
-<span class="tag good">✅ 优秀</span>
-<p><strong>心率完美</strong>：109bpm精准处于减脂区间<br><strong>时长达标</strong>：51分钟减脂效果合格<br><strong>注意步频</strong>：149偏低，目标160+</p>
+<div class="record-analysis warn">
+<div class="analysis-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>运动分析</div>
+<p><strong>心率偏低：</strong>101bpm低于最佳减脂区间(104-122)，燃脂效率打折。<br><strong>步频过低：</strong>124步/分，步幅大→腾空高→<strong>对腰部冲击大</strong>。<br><strong>时长不足：</strong>31分钟偏短，建议45-60分钟。</p>
 </div>
 </div>
-<div class="upload">
-<div class="icon">📸</div>
+<div class="record-card">
+<div class="record-header">
+<div class="record-date">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+5月11日
+</div>
+<span class="record-status good"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>表现优秀</span>
+</div>
+<div class="record-metrics">
+<div class="record-metric"><div class="val">51<span class="unit">分钟</span></div><div class="lbl">运动时长</div></div>
+<div class="record-metric"><div class="val">4.10<span class="unit">km</span></div><div class="lbl">距离</div></div>
+<div class="record-metric"><div class="val">109<span class="unit">bpm</span></div><div class="lbl">平均心率</div></div>
+</div>
+<div class="record-analysis good">
+<div class="analysis-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>运动分析</div>
+<p><strong>心率完美：</strong>109bpm精准处于最佳减脂区间(104-122)。<br><strong>时长达标：</strong>51分钟，减脂效果合格。<br><strong>注意步频：</strong>149步/分偏低，目标160+保护腰部。</p>
+</div>
+</div>
+<div class="upload-card">
+<div class="upload-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+</div>
 <h3>上传运动截图</h3>
 <p>华为 / 苹果 / 小米运动健康App</p>
 </div>
 </div>
-<div class="nav">
-<div class="nav-item on"><span class="ico">🏠</span>首页</div>
-<div class="nav-item"><span class="ico">📊</span>统计</div>
-<div class="nav-item"><span class="ico">👤</span>我的</div>
+<div class="bottom-nav">
+<div class="nav-item active">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+首页
+</div>
+<div class="nav-item">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+统计
+</div>
+<div class="nav-item">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+我的
+</div>
 </div>
 </body>
 </html>
