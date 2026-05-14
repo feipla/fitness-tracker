@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#2563EB">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 :root{--primary:#2563EB;--primary-light:#3B82F6;--secondary:#8B5CF6;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;--bg:#F0F2F5;--card:#fff;--text:#1E293B;--text2:#64748B;--text3:#94A3B8;--border:#E2E8F0;--radius:16px;--shadow:0 2px 12px rgba(0,0,0,.06)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -195,6 +196,11 @@ button{cursor:pointer}
 .confirm-btns button{flex:1;height:40px;border-radius:10px;font-size:14px;font-weight:600}
 .btn-cancel{background:#F1F5F9;color:var(--text2)}
 .btn-confirm-del{background:var(--danger);color:#fff}
+
+/* Recognizing Indicator */
+.recognizing{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:5;white-space:nowrap}
+.recognizing::before{content:'';display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -283,6 +289,7 @@ button{cursor:pointer}
       </div>
       <img id="imgPreview" src="" style="display:none" alt="">
       <span class="change-img" id="changeImgBtn" style="display:none">更换图片</span>
+      <div class="recognizing" id="recognizingHint" style="display:none">AI识别中...</div>
     </div>
     <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
 
@@ -934,8 +941,125 @@ function handleFileSelect(e) {
     document.getElementById('imgPreview').style.display = 'block';
     document.getElementById('imgPlaceholder').style.display = 'none';
     document.getElementById('changeImgBtn').style.display = 'block';
+    // Trigger AI OCR recognition
+    recognizeImage(currentImage);
   };
   reader.readAsDataURL(file);
+}
+
+// ===================== AI IMAGE RECOGNITION =====================
+async function recognizeImage(imageData) {
+  const hint = document.getElementById('recognizingHint');
+  hint.style.display = 'block';
+
+  try {
+    const result = await Tesseract.recognize(imageData, 'chi_sim+eng', {
+      logger: m => {
+        if (m.status === 'recognizing text') {
+          const pct = Math.round((m.progress || 0) * 100);
+          hint.textContent = 'AI识别中... ' + pct + '%';
+        }
+      }
+    });
+
+    const text = result.data.text;
+    console.log('[OCR] Extracted text:', text);
+
+    const data = parseFitnessData(text);
+    fillFormFromData(data);
+
+    hint.style.display = 'none';
+    hint.textContent = 'AI识别中...';
+
+    const filledCount = Object.keys(data).length;
+    if (filledCount > 0) {
+      showToast('AI识别完成，请确认数据（识别' + filledCount + '项）');
+    } else {
+      showToast('AI识别完成，未能提取到运动数据，请手动填写');
+    }
+  } catch (err) {
+    console.error('[OCR] Error:', err);
+    hint.style.display = 'none';
+    hint.textContent = 'AI识别中...';
+    showToast('AI识别失败，请手动填写');
+  }
+}
+
+function parseFitnessData(text) {
+  const data = {};
+
+  // Date: 2026/5/14 or 2026年5月14日
+  const dateMatch = text.match(/(\d{4})[\/年](\d{1,2})[\/月](\d{1,2})[日]?/);
+  if (dateMatch) {
+    data.date = dateMatch[1] + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[3].padStart(2, '0');
+  }
+
+  // Type
+  if (text.includes('户外跑步') || text.includes('户外跑')) data.type = '户外跑步';
+  else if (text.includes('室内跑步') || text.includes('室内跑') || text.includes('跑步机')) data.type = '室内跑步';
+  else if (text.includes('户外步行') || text.includes('户外走')) data.type = '户外步行';
+  else if (text.includes('步行') || text.includes('健走')) data.type = '快走';
+  else if (text.includes('骑行')) data.type = '骑行';
+  else if (text.includes('游泳')) data.type = '游泳';
+
+  // Duration: 50:59 format (avoid matching time like 12:34:56)
+  const durMatch = text.match(/(\d{1,3}):(\d{2})/);
+  if (durMatch && !text.match(/\d{1,2}:\d{2}:\d{2}/)) {
+    data.duration = parseInt(durMatch[1]) * 60 + parseInt(durMatch[2]);
+  }
+
+  // Distance: X.XX km
+  const distMatch = text.match(/([\d.]+)\s*km/i);
+  if (distMatch) data.distance = parseFloat(distMatch[1]);
+
+  // Heart rate - look for patterns like "平均心率 109" or "109 bpm" near heart-related text
+  const hrMatches = text.match(/(\d{2,3})\s*(?:bpm|次\/分)/gi);
+  if (hrMatches && hrMatches.length >= 2) {
+    const hrs = hrMatches.map(m => parseInt(m.match(/\d+/)[0])).sort((a, b) => a - b);
+    data.avgHR = hrs[0];
+    data.maxHR = hrs[hrs.length - 1];
+  } else if (hrMatches && hrMatches.length === 1) {
+    data.avgHR = parseInt(hrMatches[0].match(/\d+/)[0]);
+  }
+
+  // Also try "平均" and "最高/最大" patterns
+  const avgHRMatch = text.match(/平均[^0-9]*(\d{2,3})/);
+  if (avgHRMatch) data.avgHR = parseInt(avgHRMatch[1]);
+  const maxHRMatch = text.match(/(?:最高|最大)[^0-9]*(\d{2,3})/);
+  if (maxHRMatch) data.maxHR = parseInt(maxHRMatch[1]);
+
+  // Calories: XXX 千卡/大卡/kcal
+  const calMatch = text.match(/(\d+)\s*(?:千卡|大卡|kcal|cal)/i);
+  if (calMatch) data.calories = parseInt(calMatch[1]);
+
+  // Cadence: XXX 步/分 or spm
+  const cadMatch = text.match(/(\d{2,3})\s*(?:步\/分|spm)/i);
+  if (cadMatch) data.cadence = parseInt(cadMatch[1]);
+
+  // Steps: XXXX 步
+  const stepsMatch = text.match(/(\d{3,6})\s*步/);
+  if (stepsMatch) data.steps = parseInt(stepsMatch[1]);
+
+  // Pace: XX'XX"/km or XX分XX秒
+  const paceMatch = text.match(/(\d{1,2})[''\u2019\u2018分](\d{2})[""\u201d\u201c秒]/);
+  if (paceMatch) {
+    data.pace = parseInt(paceMatch[1]) + parseInt(paceMatch[2]) / 60;
+  }
+
+  return data;
+}
+
+function fillFormFromData(data) {
+  if (data.date) document.getElementById('formDate').value = data.date;
+  if (data.type) document.getElementById('formType').value = data.type;
+  if (data.duration) document.getElementById('formDuration').value = data.duration;
+  if (data.distance) document.getElementById('formDistance').value = data.distance;
+  if (data.avgHR) document.getElementById('formAvgHR').value = data.avgHR;
+  if (data.maxHR) document.getElementById('formMaxHR').value = data.maxHR;
+  if (data.calories) document.getElementById('formCalories').value = data.calories;
+  if (data.cadence) document.getElementById('formCadence').value = data.cadence;
+  if (data.steps) document.getElementById('formSteps').value = data.steps;
+  if (data.pace) document.getElementById('formPace').value = data.pace;
 }
 
 function saveRecord() {
