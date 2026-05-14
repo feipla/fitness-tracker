@@ -5,74 +5,68 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>运动健康助手</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0D1117">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#4338CA">
 <style>
-:root{--bg:#0D1117;--card:#161B22;--card2:#21262D;--border:rgba(255,255,255,.08);--text:#E6EDF3;--text2:#8B949E;--accent:#58A6FF;--green:#3FB950;--orange:#D29922;--red:#F85149;--purple:#BC8CFF}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;overflow-x:hidden}
-.header{padding:56px 24px 32px;background:linear-gradient(180deg,#0D1117 0%,#161B22 100%);border-bottom:1px solid var(--border)}
-.header h1{font-size:28px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px;background:linear-gradient(135deg,#58A6FF,#BC8CFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.header p{color:var(--text2);font-size:14px;font-weight:400}
-.profile-bar{display:flex;gap:16px;margin-top:20px;overflow-x:auto;padding-bottom:4px}
-.profile-chip{flex-shrink:0;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:8px 16px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px}
-.profile-chip b{color:var(--text);font-weight:600}
-.section{padding:20px 24px}
-.section-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
-.upload-zone{border:1px dashed rgba(88,166,255,.3);border-radius:16px;padding:36px 20px;text-align:center;background:linear-gradient(135deg,rgba(88,166,255,.04),rgba(188,140,255,.04));cursor:pointer;transition:all .2s}
-.upload-zone:active{background:linear-gradient(135deg,rgba(88,166,255,.08),rgba(188,140,255,.08));border-color:rgba(88,166,255,.5)}
-.upload-icon{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#58A6FF,#BC8CFF);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:28px}
-.upload-zone h3{color:var(--accent);font-size:15px;font-weight:600;margin-bottom:6px}
-.upload-zone p{color:var(--text2);font-size:12px}
-.record{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
-.record::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:0 3px 3px 0}
-.record.good::before{background:var(--green)}
-.record.warn::before{background:var(--orange)}
-.record-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.record-date{font-size:15px;font-weight:600;color:var(--text)}
-.record-badge{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px}
-.record-badge.good{background:rgba(63,185,80,.12);color:var(--green)}
-.record-badge.warn{background:rgba(210,153,34,.12);color:var(--orange)}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.metric{background:var(--card2);border-radius:12px;padding:14px 10px;text-align:center}
-.metric .val{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-.5px;line-height:1.2}
-.metric .val span{font-size:11px;color:var(--text2);font-weight:400}
-.metric .lbl{font-size:11px;color:var(--text2);margin-top:4px}
-.analysis{background:var(--card2);border-radius:12px;padding:14px 16px}
-.analysis .tag{font-size:11px;font-weight:600;margin-bottom:8px;display:inline-block;padding:3px 10px;border-radius:8px}
-.analysis .tag.good{background:rgba(63,185,80,.1);color:var(--green)}
-.analysis .tag.warn{background:rgba(210,153,34,.1);color:var(--orange)}
-.analysis p{font-size:13px;color:var(--text2);line-height:1.7}
-.analysis p strong{color:var(--text);font-weight:600}
-.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(22,27,34,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;padding:8px 0 env(safe-area-inset-bottom,8px)}
-.nav-item{flex:1;text-align:center;padding:8px 0;color:var(--text2);font-size:10px;font-weight:500;transition:color .2s}
-.nav-item.on{color:var(--accent)}
-.nav-item .ico{font-size:22px;display:block;margin-bottom:2px}
-.summary-row{display:flex;gap:10px;margin-bottom:16px}
-.summary-card{flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
-.summary-card .num{font-size:24px;font-weight:700;background:linear-gradient(135deg,#58A6FF,#BC8CFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.summary-card .txt{font-size:11px;color:var(--text2);margin-top:4px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#F5F5F7;min-height:100vh;padding-bottom:70px}
+.header{background:#4338CA;color:#fff;padding:48px 20px 24px}
+.header h1{font-size:22px;font-weight:600;margin-bottom:4px}
+.header p{font-size:13px;opacity:.8}
+.tags{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.tag{background:rgba(255,255,255,.15);padding:5px 12px;border-radius:6px;font-size:12px}
+.tag b{font-weight:600}
+.section{padding:16px}
+.section-title{font-size:15px;font-weight:600;color:#1F2937;margin-bottom:12px;padding-left:2px}
+.summary{display:flex;gap:10px;margin-bottom:8px}
+.sum-card{flex:1;background:#fff;border-radius:8px;padding:16px 12px;text-align:center}
+.sum-card .num{font-size:26px;font-weight:700;color:#4338CA}
+.sum-card .lbl{font-size:11px;color:#6B7280;margin-top:2px}
+.record{background:#fff;border-radius:8px;padding:16px;margin-bottom:10px;border-left:3px solid}
+.record.good{border-left-color:#10B981}
+.record.warn{border-left-color:#F59E0B}
+.record-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.record-date{font-size:15px;font-weight:600;color:#1F2937}
+.record-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px}
+.record-badge.good{background:#D1FAE5;color:#059669}
+.record-badge.warn{background:#FEF3C7;color:#D97706}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.metric{background:#F9FAFB;border-radius:6px;padding:12px 8px;text-align:center}
+.metric .val{font-size:20px;font-weight:700;color:#1F2937}
+.metric .unit{font-size:11px;color:#9CA3AF;font-weight:400}
+.metric .lbl{font-size:10px;color:#6B7280;margin-top:2px}
+.analysis{background:#F9FAFB;border-radius:6px;padding:12px}
+.analysis .tag{display:inline-block;font-size:11px;font-weight:600;margin-bottom:8px;padding:3px 8px;border-radius:4px}
+.analysis .tag.good{background:#D1FAE5;color:#059669}
+.analysis .tag.warn{background:#FEF3C7;color:#D97706}
+.analysis p{font-size:12px;color:#4B5563;line-height:1.7}
+.analysis strong{color:#1F2937}
+.upload{background:#fff;border-radius:8px;padding:24px;text-align:center;border:2px dashed #D1D5DB}
+.upload .icon{width:48px;height:48px;background:#EEF2FF;border-radius:8px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.upload h3{font-size:14px;font-weight:600;color:#4338CA;margin-bottom:4px}
+.upload p{font-size:12px;color:#9CA3AF}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E5E7EB;display:flex;padding:6px 0}
+.nav-item{flex:1;text-align:center;padding:6px 0;color:#9CA3AF;font-size:10px}
+.nav-item.on{color:#4338CA}
+.nav-item .ico{font-size:20px;display:block;margin-bottom:2px}
 </style>
 </head>
 <body>
 <div class="header">
 <h1>🏃 运动健康助手</h1>
 <p>听懂你的身体 · 科学运动减脂</p>
-<div class="profile-bar">
-<div class="profile-chip">👤 <b>46岁</b></div>
-<div class="profile-chip">📏 <b>176cm / 79kg</b></div>
-<div class="profile-chip">❤️ <b>减脂区间 104-122</b></div>
-<div class="profile-chip">⚠️ <b>腰肌劳损</b></div>
+<div class="tags">
+<span class="tag">👤 <b>46岁</b></span>
+<span class="tag">📏 <b>176cm / 79kg</b></span>
+<span class="tag">❤️ <b>减脂区间 104-122</b></span>
+<span class="tag">⚠️ <b>腰肌劳损</b></span>
 </div>
 </div>
 <div class="section">
 <div class="section-title">📊 本周概览</div>
-<div class="summary-row">
-<div class="summary-card"><div class="num">2</div><div class="txt">锻炼次数</div></div>
-<div class="summary-card"><div class="num">82</div><div class="txt">总时长(分)</div></div>
-<div class="summary-card"><div class="num">493</div><div class="txt">总消耗(大卡)</div></div>
+<div class="summary">
+<div class="sum-card"><div class="num">2</div><div class="lbl">锻炼次数</div></div>
+<div class="sum-card"><div class="num">82</div><div class="lbl">总时长(分)</div></div>
+<div class="sum-card"><div class="num">493</div><div class="lbl">总消耗(大卡)</div></div>
 </div>
 </div>
 <div class="section">
@@ -83,13 +77,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC"
 <span class="record-badge warn">⚠️ 强度偏低</span>
 </div>
 <div class="metrics">
-<div class="metric"><div class="val">31<span>分钟</span></div><div class="lbl">运动时长</div></div>
-<div class="metric"><div class="val">2.08<span>km</span></div><div class="lbl">距离</div></div>
-<div class="metric"><div class="val">101<span>bpm</span></div><div class="lbl">平均心率</div></div>
+<div class="metric"><div class="val">31<span class="unit">分钟</span></div><div class="lbl">时长</div></div>
+<div class="metric"><div class="val">2.08<span class="unit">km</span></div><div class="lbl">距离</div></div>
+<div class="metric"><div class="val">101<span class="unit">bpm</span></div><div class="lbl">心率</div></div>
 </div>
 <div class="analysis">
-<span class="tag warn">⚠️ 需要改善</span>
-<p><strong>心率偏低</strong>：101bpm低于最佳减脂区间(104-122)，燃脂效率打折。<br><strong>步频过低</strong>：124步/分，步幅大→腾空高→<strong>对腰部冲击大</strong>。<br><strong>时长不足</strong>：31分钟偏短，建议45-60分钟。</p>
+<span class="tag warn">⚠️ 需改善</span>
+<p><strong>心率偏低</strong>：101bpm低于减脂区间(104-122)<br><strong>步频过低</strong>：124步/分，对腰部冲击大<br><strong>时长不足</strong>：建议45-60分钟</p>
 </div>
 </div>
 <div class="record good">
@@ -98,21 +92,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC"
 <span class="record-badge good">✅ 优秀</span>
 </div>
 <div class="metrics">
-<div class="metric"><div class="val">51<span>分钟</span></div><div class="lbl">运动时长</div></div>
-<div class="metric"><div class="val">4.10<span>km</span></div><div class="lbl">距离</div></div>
-<div class="metric"><div class="val">109<span>bpm</span></div><div class="lbl">平均心率</div></div>
+<div class="metric"><div class="val">51<span class="unit">分钟</span></div><div class="lbl">时长</div></div>
+<div class="metric"><div class="val">4.10<span class="unit">km</span></div><div class="lbl">距离</div></div>
+<div class="metric"><div class="val">109<span class="unit">bpm</span></div><div class="lbl">心率</div></div>
 </div>
 <div class="analysis">
-<span class="tag good">✅ 表现优秀</span>
-<p><strong>心率完美</strong>：109bpm精准处于最佳减脂区间(104-122)。<br><strong>时长达标</strong>：51分钟，减脂效果合格。<br><strong>注意步频</strong>：149步/分偏低，目标160+保护腰部。</p>
+<span class="tag good">✅ 优秀</span>
+<p><strong>心率完美</strong>：109bpm精准处于减脂区间<br><strong>时长达标</strong>：51分钟减脂效果合格<br><strong>注意步频</strong>：149偏低，目标160+</p>
 </div>
 </div>
-<div class="card">
-<div class="upload-zone">
-<div class="upload-icon">📸</div>
+<div class="upload">
+<div class="icon">📸</div>
 <h3>上传运动截图</h3>
 <p>华为 / 苹果 / 小米运动健康App</p>
-</div>
 </div>
 </div>
 <div class="nav">
