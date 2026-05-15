@@ -877,7 +877,7 @@ function renderProfile() {
       </div>
       <div class="profile-row">
         <span class="label">识别引擎</span>
-        <span class="value">腾讯云OCR ✓</span>
+        <span class="value">OCR.space ✓</span>
       </div>
       <div class="profile-row">
         <span class="label">免费额度</span>
@@ -963,20 +963,10 @@ function handleFileSelect(e) {
   reader.readAsDataURL(file);
 }
 
-// ===================== AI IMAGE RECOGNITION (腾讯云OCR) =====================
-const TENCENT_SECRET_ID = 'AKIDmsnV0KSN5atzsY40lMtEMn380gASaVbe';
-const TENCENT_SECRET_KEY = 'ykMjz62naHwTq23vd9TefU7ZtIBuTt9I';
-const TENCENT_REGION = 'ap-guangzhou';
-
-// HMAC-SHA256签名
-async function hmacSha256(key, message) {
-  const encoder = new TextEncoder();
-  const cryptoKey = await crypto.subtle.importKey(
-    'raw', encoder.encode(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-  );
-  const signature = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(message));
-  return Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
+// ===================== AI IMAGE RECOGNITION (OCR.space) =====================
+// OCR.space API - 免费、支持CORS、无需翻墙
+// 免费额度：1000次/月
+const OCR_API_KEY = 'K88906358888957'; // 免费试用Key
 
 async function recognizeImage(imageData) {
   const hint = document.getElementById('recognizingHint');
@@ -984,53 +974,45 @@ async function recognizeImage(imageData) {
   hint.textContent = 'AI识别中...';
 
   try {
+    // Convert base64 to blob for FormData
     const base64 = imageData.split(',')[1];
-    
-    // 腾讯云API签名
-    const timestamp = Math.floor(Date.now() / 1000);
-    const date = new Date(timestamp * 1000).toISOString().split('T')[0];
-    
-    const payload = JSON.stringify({ ImageBase64: base64 });
-    const payloadHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(payload))
-      .then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join(''));
-    
-    const canonicalRequest = `POST\n/\n\ncontent-type:application/json\nhost:ocr.tencentcloudapi.com\n\ncontent-type;host\n${payloadHash}`;
-    const credentialScope = `${date}/ocr/tc3_request`;
-    const stringToSign = `TC3-HMAC-SHA256\n${timestamp}\n${credentialScope}\n` + 
-      await crypto.subtle.digest('SHA-256', new TextEncoder().encode(canonicalRequest))
-        .then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join(''));
-    
-    const secretDate = await hmacSha256(`TC3${TENCENT_SECRET_KEY}`, date);
-    const secretService = await hmacSha256(secretDate, 'ocr');
-    const secretSigning = await hmacSha256(secretService, 'tc3_request');
-    const signature = await hmacSha256(secretSigning, stringToSign);
-    
-    const authorization = `TC3-HMAC-SHA256 Credential=${TENCENT_SECRET_ID}/${credentialScope}, SignedHeaders=content-type;host, Signature=${signature}`;
-    
-    const resp = await fetch('https://ocr.tencentcloudapi.com/', {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/png' });
+
+    const formData = new FormData();
+    formData.append('file', blob, 'screenshot.png');
+    formData.append('apikey', OCR_API_KEY);
+    formData.append('language', 'chi_sim'); // 简体中文
+    formData.append('isOverlayRequired', 'false');
+    formData.append('detectOrientation', 'true');
+    formData.append('scale', 'true');
+
+    const resp = await fetch('https://api.ocr.space/parse/image', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Host': 'ocr.tencentcloudapi.com',
-        'X-TC-Action': 'GeneralAccurateOCR',
-        'X-TC-Version': '2018-11-19',
-        'X-TC-Timestamp': timestamp.toString(),
-        'X-TC-Region': TENCENT_REGION,
-        'Authorization': authorization
-      },
-      body: payload
+      body: formData
     });
 
     const result = await resp.json();
-    console.log('[腾讯云OCR] Response:', result);
+    console.log('[OCR.space] Response:', result);
 
-    if (result.Response && result.Response.TextDetections) {
-      const text = result.Response.TextDetections.map(t => t.DetectedText).join('\n');
-      console.log('[腾讯云OCR] Extracted text:', text);
-      
+    if (result.IsErroredOnProcessing) {
+      hint.style.display = 'none';
+      showToast('AI识别失败：' + (result.ErrorMessage?.[0] || '未知错误'));
+      return;
+    }
+
+    if (result.ParsedResults && result.ParsedResults.length > 0) {
+      const text = result.ParsedResults[0].ParsedText || '';
+      console.log('[OCR.space] Extracted text:', text);
+
       const data = parseFitnessData(text);
       fillFormFromData(data);
-      
+
       const filledCount = Object.values(data).filter(v => v && v !== 0).length;
       hint.style.display = 'none';
       if (filledCount > 0) {
@@ -1040,10 +1022,10 @@ async function recognizeImage(imageData) {
       }
     } else {
       hint.style.display = 'none';
-      showToast('AI识别失败：' + (result.Response?.Error?.Message || '未知错误'));
+      showToast('AI未能识别运动数据，请手动填写');
     }
   } catch (err) {
-    console.error('[腾讯云OCR] Error:', err);
+    console.error('[OCR.space] Error:', err);
     hint.style.display = 'none';
     hint.textContent = 'AI识别中...';
     showToast('AI识别失败，请手动填写');
