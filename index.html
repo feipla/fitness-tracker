@@ -987,7 +987,7 @@ async function recognizeImage(imageData) {
     const formData = new FormData();
     formData.append('file', blob, 'screenshot.png');
     formData.append('apikey', OCR_API_KEY);
-    formData.append('language', 'chi_sim'); // 简体中文
+    formData.append('language', 'chs'); // 简体中文
     formData.append('isOverlayRequired', 'false');
     formData.append('detectOrientation', 'true');
     formData.append('scale', 'true');
