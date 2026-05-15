@@ -877,21 +877,13 @@ function renderProfile() {
       </div>
       <div class="profile-row">
         <span class="label">识别引擎</span>
-        <span class="value">腾讯云OCR</span>
+        <span class="value">腾讯云OCR ✓</span>
       </div>
       <div class="profile-row">
         <span class="label">免费额度</span>
         <span class="value">1000次/月</span>
       </div>
-      <div class="profile-row">
-        <span class="label">SecretId</span>
-        <span class="value editable" onclick="setTencentKey('id')">${TENCENT_SECRET_ID ? '已设置 ✓' : '未设置'}</span>
-      </div>
-      <div class="profile-row">
-        <span class="label">SecretKey</span>
-        <span class="value editable" onclick="setTencentKey('key')">${TENCENT_SECRET_KEY ? '已设置 ✓' : '未设置'}</span>
-      </div>
-      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">获取地址：console.cloud.tencent.com/cam/capi</p>
+      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">已配置，无需翻墙，国内直接使用</p>
     </div>
 
     <div class="profile-card">
@@ -972,10 +964,8 @@ function handleFileSelect(e) {
 }
 
 // ===================== AI IMAGE RECOGNITION (腾讯云OCR) =====================
-// 请在此填入你的腾讯云API凭证（免费额度1000次/月）
-// 获取地址：https://console.cloud.tencent.com/cam/capi
-const TENCENT_SECRET_ID = localStorage.getItem('tencent_secret_id') || '';
-const TENCENT_SECRET_KEY = localStorage.getItem('tencent_secret_key') || '';
+const TENCENT_SECRET_ID = 'AKIDmsnV0KSN5atzsY40lMtEMn380gASaVbe';
+const TENCENT_SECRET_KEY = 'ykMjz62naHwTq23vd9TefU7ZtIBuTt9I';
 const TENCENT_REGION = 'ap-guangzhou';
 
 // HMAC-SHA256签名
@@ -994,12 +984,6 @@ async function recognizeImage(imageData) {
   hint.textContent = 'AI识别中...';
 
   try {
-    if (!TENCENT_SECRET_ID || !TENCENT_SECRET_KEY) {
-      hint.style.display = 'none';
-      showToast('请先设置腾讯云API凭证');
-      switchPage('Profile');
-      return;
-    }
     const base64 = imageData.split(',')[1];
     
     // 腾讯云API签名
@@ -1233,23 +1217,6 @@ function viewRecordDetail(id) {
   if (record && record.image) {
     viewImage(record.image);
   }
-}
-
-// ===================== TENCENT KEY =====================
-function setTencentKey(type) {
-  const keyName = type === 'id' ? 'tencent_secret_id' : 'tencent_secret_key';
-  const label = type === 'id' ? 'SecretId' : 'SecretKey';
-  const current = localStorage.getItem(keyName) || '';
-  const val = prompt(`请输入腾讯云${label}`, current);
-  if (val === null) return;
-  if (val.trim()) {
-    localStorage.setItem(keyName, val.trim());
-    showToast(`${label}已保存`);
-  } else {
-    localStorage.removeItem(keyName);
-    showToast(`${label}已清除`);
-  }
-  renderProfile();
 }
 
 // ===================== PROFILE EDIT =====================
