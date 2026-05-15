@@ -201,6 +201,63 @@ button{cursor:pointer}
 .recognizing{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:5;white-space:nowrap}
 .recognizing::before{content:'';display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* HRV Gauge Rings */
+.gauge-ring{width:80px;height:80px;border-radius:50%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge-ring svg{position:absolute;top:0;left:0;width:100%;height:100%;transform:rotate(-90deg)}
+.gauge-ring circle{fill:none;stroke-width:6;stroke-linecap:round}
+.gauge-ring .bg{stroke:#E2E8F0}
+.gauge-ring .fg{transition:stroke-dashoffset 1s ease}
+.gauge-ring .val{font-size:20px;font-weight:700;line-height:1}
+.gauge-ring .lbl{font-size:10px;color:var(--text2);margin-top:2px}
+
+/* HRV Status Card */
+.hrv-status-card{background:var(--card);border-radius:var(--radius);padding:20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.hrv-gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.hrv-gauge-item{display:flex;flex-direction:column;align-items:center;gap:6px}
+.hrv-gauge-label{font-size:12px;font-weight:600;color:var(--text)}
+.hrv-gauge-status{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+.hrv-gauge-status.excellent{background:#D1FAE5;color:#059669}
+.hrv-gauge-status.good{background:#DBEAFE;color:#2563EB}
+.hrv-gauge-status.normal{background:#FEF3C7;color:#D97706}
+.hrv-gauge-status.low{background:#FEE2E2;color:#DC2626}
+.hrv-gauge-status.alert{background:#FEE2E2;color:#DC2626}
+
+/* HRV Trend Chart */
+.hrv-trend-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.hrv-trend-card h3{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.hrv-trend-card h3 svg{width:16px;height:16px;color:var(--primary)}
+.hrv-chart{width:100%;height:180px;position:relative;overflow:hidden}
+.hrv-chart svg{width:100%;height:100%}
+.hrv-chart-tabs{display:flex;gap:8px;margin-bottom:14px}
+.hrv-chart-tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:#F1F5F9;color:var(--text2);cursor:pointer;transition:all .2s}
+.hrv-chart-tab.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
+
+/* HRV Record Card */
+.hrv-record-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hrv-record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.hrv-record-date{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600}
+.hrv-record-date svg{width:16px;height:16px;color:var(--primary)}
+.hrv-record-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;padding:12px;background:#F8FAFC;border-radius:12px}
+.hrv-record-metric{text-align:center}
+.hrv-record-metric .val{font-size:18px;font-weight:700;color:var(--text)}
+.hrv-record-metric .unit{font-size:10px;color:var(--text2);margin-left:1px}
+.hrv-record-metric .lbl{font-size:10px;color:var(--text2);margin-top:3px}
+.hrv-analysis-item{padding:10px 0;border-bottom:1px dashed #F1F5F9}
+.hrv-analysis-item:last-child{border-bottom:none}
+.hrv-analysis-item .metric-name{font-size:12px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.hrv-analysis-item .metric-name .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hrv-analysis-item .metric-desc{font-size:12px;color:var(--text2);line-height:1.7}
+.hrv-analysis-item .metric-advice{font-size:11px;color:var(--primary);line-height:1.7;margin-top:4px;padding-left:10px;border-left:2px solid var(--primary)}
+
+/* HRV Weekly Summary */
+.hrv-weekly-summary{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.hrv-weekly-summary h3{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.hrv-weekly-summary h3 svg{width:18px;height:18px;color:var(--secondary)}
+.hrv-weekly-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+.hrv-weekly-item{background:#F8FAFC;border-radius:10px;padding:12px;text-align:center}
+.hrv-weekly-item .val{font-size:20px;font-weight:700;color:var(--text)}
+.hrv-weekly-item .lbl{font-size:11px;color:var(--text2);margin-top:2px}
 </style>
 </head>
 <body>
@@ -272,6 +329,17 @@ button{cursor:pointer}
     </div>
   </div>
   <div class="section" id="profileContent"></div>
+</div>
+
+<!-- ==================== PAGE: HRV ==================== -->
+<div class="page" id="pageHRV">
+  <div class="header" style="padding-bottom:28px">
+    <div class="header-content">
+      <h1>心率变异性</h1>
+      <p>了解你的身体状态</p>
+    </div>
+  </div>
+  <div class="section" id="hrvContent"></div>
 </div>
 
 <!-- ==================== ADD RECORD MODAL ==================== -->
@@ -358,6 +426,62 @@ button{cursor:pointer}
   </div>
 </div>
 
+<!-- ==================== ADD HRV RECORD MODAL ==================== -->
+<div class="modal-overlay" id="hrvModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>添加HRV记录</h2>
+      <div class="modal-close" onclick="closeHRVModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+    </div>
+
+    <div class="img-preview-area" id="hrvImgPreviewArea" onclick="document.getElementById('hrvFileInput').click()">
+      <div class="placeholder" id="hrvImgPlaceholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>点击上传HRV截图</span>
+      </div>
+      <img id="hrvImgPreview" src="" style="display:none" alt="">
+      <span class="change-img" id="hrvChangeImgBtn" style="display:none">更换图片</span>
+      <div class="recognizing" id="hrvRecognizingHint" style="display:none">AI识别中...</div>
+    </div>
+    <input type="file" id="hrvFileInput" accept="image/*" style="display:none" onchange="handleHRVFileSelect(event)">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">测量日期</label>
+        <input type="date" class="form-input" id="hrvFormDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">测量时间</label>
+        <input type="time" class="form-input" id="hrvFormTime">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">HRV值(ms)</label>
+        <input type="number" step="0.1" class="form-input" id="hrvFormHRV" placeholder="如：42.5">
+      </div>
+      <div class="form-group">
+        <label class="form-label">静息心率(bpm)</label>
+        <input type="number" class="form-input" id="hrvFormRestingHR" placeholder="如：62">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">压力值(0-100)</label>
+        <input type="number" class="form-input" id="hrvFormStress" placeholder="如：35">
+      </div>
+      <div class="form-group">
+        <label class="form-label">睡眠HRV均值(ms)</label>
+        <input type="number" step="0.1" class="form-input" id="hrvFormSleepHRV" placeholder="选填">
+      </div>
+    </div>
+    <button class="btn-primary" onclick="saveHRVRecord()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      保存HRV记录
+    </button>
+  </div>
+</div>
+
 <!-- ==================== BOTTOM NAV ==================== -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="switchPage('Home')">
@@ -371,6 +495,10 @@ button{cursor:pointer}
   <div class="nav-item" onclick="switchPage('Profile')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     我的
+  </div>
+  <div class="nav-item" onclick="switchPage('HRV')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    HRV
   </div>
 </div>
 
@@ -904,16 +1032,675 @@ function renderProfile() {
   `;
 }
 
+// ===================== HRV DATA LAYER =====================
+const HRV_STORAGE_KEY = 'hrv_records';
+
+function getHRVRecords() {
+  try {
+    const d = localStorage.getItem(HRV_STORAGE_KEY);
+    return d ? JSON.parse(d) : [];
+  } catch { return []; }
+}
+
+function saveHRVRecords(records) {
+  localStorage.setItem(HRV_STORAGE_KEY, JSON.stringify(records));
+}
+
+function addHRVRecord(record) {
+  const records = getHRVRecords();
+  records.unshift(record);
+  saveHRVRecords(records);
+}
+
+function deleteHRVRecord(id) {
+  const records = getHRVRecords().filter(r => r.id !== id);
+  saveHRVRecords(records);
+}
+
+// ===================== HRV ANALYSIS ENGINE =====================
+function analyzeHRV(record, profile) {
+  const hrv = record.hrv || 0;
+  const restingHR = record.restingHR || 0;
+  const age = profile.age || 46;
+
+  // Age-adjusted HRV norms (approximate)
+  const hrvMin = Math.max(15, 65 - age);
+  const hrvMax = Math.max(40, 120 - age);
+  const hrvMid = (hrvMin + hrvMax) / 2;
+
+  // Health score (0-100)
+  let health;
+  if (hrv >= hrvMax) health = 95;
+  else if (hrv >= hrvMid) health = 70 + ((hrv - hrvMid) / (hrvMax - hrvMid)) * 25;
+  else if (hrv >= hrvMin) health = 40 + ((hrv - hrvMin) / (hrvMid - hrvMin)) * 30;
+  else health = Math.max(5, (hrv / hrvMin) * 40);
+
+  // Stress score (0-100, higher = more stressed)
+  let stress;
+  if (hrv >= hrvMax) stress = 10;
+  else if (hrv >= hrvMid) stress = 20 + ((hrvMax - hrv) / (hrvMax - hrvMid)) * 20;
+  else if (hrv >= hrvMin) stress = 40 + ((hrvMid - hrv) / (hrvMid - hrvMin)) * 30;
+  else stress = Math.min(95, 70 + ((hrvMin - hrv) / hrvMin) * 30);
+  if (restingHR > 80) stress = Math.min(95, stress + 15);
+  if (restingHR > 90) stress = Math.min(95, stress + 10);
+
+  // Energy score (0-100)
+  let energy = Math.round(health * 0.6 + (100 - stress) * 0.4);
+
+  // Focus score (0-100)
+  let focus = Math.round((100 - stress) * 0.5 + energy * 0.3 + health * 0.2);
+
+  // Clamp scores
+  health = Math.round(Math.max(0, Math.min(100, health)));
+  stress = Math.round(Math.max(0, Math.min(100, stress)));
+  energy = Math.round(Math.max(0, Math.min(100, energy)));
+  focus = Math.round(Math.max(0, Math.min(100, focus)));
+
+  // Generate status labels
+  function getStatus(score) {
+    if (score >= 85) return { label: '优秀', cls: 'excellent' };
+    if (score >= 70) return { label: '良好', cls: 'good' };
+    if (score >= 50) return { label: '一般', cls: 'normal' };
+    if (score >= 30) return { label: '偏低', cls: 'low' };
+    return { label: '注意', cls: 'alert' };
+  }
+
+  const healthStatus = getStatus(health);
+  const stressStatus = getStatus(100 - stress); // invert: low stress = good
+  const energyStatus = getStatus(energy);
+  const focusStatus = getStatus(focus);
+
+  // Plain-language explanations (Chinese)
+  let healthDesc = '';
+  if (health >= 85) healthDesc = `你的HRV值${hrv}ms，处于同龄人优秀水平，说明自主神经系统调节能力很强，身体恢复状态很好。`;
+  else if (health >= 70) healthDesc = `你的HRV值${hrv}ms，处于同龄人良好水平，身体状态不错，继续保持健康的生活方式。`;
+  else if (health >= 50) healthDesc = `你的HRV值${hrv}ms，处于同龄人正常范围，但还有提升空间。注意规律作息和适度运动。`;
+  else if (health >= 30) healthDesc = `你的HRV值${hrv}ms，偏低于同龄人平均水平，可能存在疲劳积累或睡眠不足，建议关注休息质量。`;
+  else healthDesc = `你的HRV值${hrv}ms，明显偏低，身体可能处于高压状态。建议减少高强度运动，增加休息，必要时咨询医生。`;
+
+  let stressDesc = '';
+  if (stress <= 20) stressDesc = `当前压力水平很低，身心放松，适合进行高强度训练或挑战性工作。`;
+  else if (stress <= 40) stressDesc = `压力水平适中，身体状态良好，可以正常工作和运动。`;
+  else if (stress <= 60) stressDesc = `存在一定压力，建议适当放松，避免过度劳累。可以做深呼吸或轻度拉伸。`;
+  else if (stress <= 80) stressDesc = `压力较大，身体处于紧张状态。建议减少运动强度，增加休息时间，尝试冥想放松。`;
+  else stressDesc = `压力过大，身体可能处于疲劳或应激状态。强烈建议充分休息，暂停高强度运动，关注睡眠质量。`;
+
+  let energyDesc = '';
+  if (energy >= 85) energyDesc = `精力充沛！你的身体恢复能力很强，今天是运动和工作的好时机。`;
+  else if (energy >= 70) energyDesc = `精力良好，可以正常进行日常活动和中等强度运动。`;
+  else if (energy >= 50) energyDesc = `精力中等，建议以轻度运动为主，如散步、快走，避免高强度训练。`;
+  else if (energy >= 30) energyDesc = `精力偏低，身体可能还没完全恢复。建议以休息为主，做做拉伸和放松。`;
+  else energyDesc = `精力不足，身体需要充分恢复。建议今天休息，早睡早起，补充营养。`;
+
+  let focusDesc = '';
+  if (focus >= 85) focusDesc = `专注力极佳，头脑清晰，适合处理复杂任务或学习新知识。`;
+  else if (focus >= 70) focusDesc = `专注力良好，可以高效完成日常工作。`;
+  else if (focus >= 50) focusDesc = `专注力一般，容易分心。建议将重要任务安排在精力最好的时段。`;
+  else if (focus >= 30) focusDesc = `专注力偏低，注意力难以集中。建议先休息放松，再处理重要事务。`;
+  else focusDesc = `专注力很差，头脑昏沉。建议先小睡或冥想15分钟，恢复后再工作。`;
+
+  // Actionable advice
+  let healthAdvice = [];
+  if (health < 50) {
+    healthAdvice.push('保证每晚7-8小时高质量睡眠');
+    healthAdvice.push('减少咖啡因和酒精摄入');
+    healthAdvice.push('尝试4-7-8呼吸法：吸气4秒，屏息7秒，呼气8秒');
+  } else if (health < 70) {
+    healthAdvice.push('保持规律作息，尽量在11点前入睡');
+    healthAdvice.push('每周进行3-4次中等强度有氧运动');
+  } else {
+    healthAdvice.push('继续保持当前的健康生活方式');
+    healthAdvice.push('可以尝试增加运动多样性，如游泳、瑜伽');
+  }
+
+  let stressAdvice = [];
+  if (stress > 60) {
+    stressAdvice.push('每天安排15-20分钟冥想或深呼吸练习');
+    stressAdvice.push('减少看手机和电脑的时间');
+    stressAdvice.push('到户外散步，接触自然环境');
+  } else if (stress > 40) {
+    stressAdvice.push('工作每50分钟休息5-10分钟');
+    stressAdvice.push('适当进行轻度运动帮助减压');
+  } else {
+    stressAdvice.push('当前压力管理良好，继续保持');
+  }
+
+  let energyAdvice = [];
+  if (energy < 50) {
+    energyAdvice.push('今天以低强度运动为主，如散步或瑜伽');
+    energyAdvice.push('注意补充水分和营养');
+    energyAdvice.push('如果持续疲劳，建议增加休息日');
+  } else if (energy < 70) {
+    energyAdvice.push('可以进行中等强度运动，如快走、慢跑');
+    energyAdvice.push('运动后注意补充蛋白质和碳水化合物');
+  } else {
+    energyAdvice.push('精力充沛，适合进行较高强度训练');
+    energyAdvice.push('注意运动后充分拉伸和恢复');
+  }
+
+  let focusAdvice = [];
+  if (focus < 50) {
+    focusAdvice.push('使用番茄工作法：25分钟专注+5分钟休息');
+    focusAdvice.push('减少多任务处理，一次只做一件事');
+    focusAdvice.push('保持工作环境整洁，减少干扰');
+  } else {
+    focusAdvice.push('利用好高效时段处理重要工作');
+    focusAdvice.push('适当休息保持专注力的持续性');
+  }
+
+  return {
+    health, stress, energy, focus,
+    healthStatus, stressStatus, energyStatus, focusStatus,
+    healthDesc, stressDesc, energyDesc, focusDesc,
+    healthAdvice, stressAdvice, energyAdvice, focusAdvice,
+    hrvMin, hrvMax, hrvMid
+  };
+}
+
+// ===================== HRV OCR PARSING =====================
+function parseHRVData(text) {
+  const data = {};
+
+  // Date: 2026/5/12 or 2026年5月12日
+  const dateMatch = text.match(/(\d{4})[\/年](\d{1,2})[\/月](\d{1,2})[日]?/);
+  if (dateMatch) {
+    data.date = dateMatch[1] + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[3].padStart(2, '0');
+  }
+
+  // Time: HH:MM or HH:MM:SS
+  const timeMatch = text.match(/(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (timeMatch && !text.match(/(\d{1,2}):(\d{2}):(\d{2})/) || timeMatch) {
+    // Only use if it looks like a time (not duration) - check context
+    const timeIdx = text.indexOf(timeMatch[0]);
+    const beforeText = text.substring(Math.max(0, timeIdx - 10), timeIdx);
+    if (beforeText.match(/时间|测量|早上|上午|下午|晚上|早晨/)) {
+      data.measurementTime = timeMatch[1].padStart(2, '0') + ':' + timeMatch[2];
+    }
+  }
+
+  // HRV: "心率变异性" or "HRV" + number + "ms"
+  const hrvMatch1 = text.match(/心率变异性[^\d]*(\d{1,3}[.\d]*)\s*ms/i);
+  const hrvMatch2 = text.match(/HRV[^\d]*(\d{1,3}[.\d]*)\s*ms/i);
+  const hrvMatch3 = text.match(/(?:心率变异|HRV)[^\d]*(\d{1,3}[.\d]*)/i);
+  if (hrvMatch1) data.hrv = parseFloat(hrvMatch1[1]);
+  else if (hrvMatch2) data.hrv = parseFloat(hrvMatch2[1]);
+  else if (hrvMatch3) data.hrv = parseFloat(hrvMatch3[1]);
+
+  // Resting HR: "静息心率" + number + "bpm" or "次/分"
+  const restingHRMatch1 = text.match(/静息心率[^\d]*(\d{2,3})\s*(?:bpm|次\/分(?:钟)?)/i);
+  const restingHRMatch2 = text.match(/静息心率[^\d]*(\d{2,3})/);
+  if (restingHRMatch1) data.restingHR = parseInt(restingHRMatch1[1]);
+  else if (restingHRMatch2) data.restingHR = parseInt(restingHRMatch2[1]);
+
+  // Stress: "压力" + number (0-100)
+  const stressMatch = text.match(/压力[^\d]*(\d{1,3})/);
+  if (stressMatch) {
+    const val = parseInt(stressMatch[1]);
+    if (val >= 0 && val <= 100) data.stress = val;
+  }
+
+  // Sleep HRV: "睡眠HRV" or "睡眠心率变异" + number + "ms"
+  const sleepHRVMatch1 = text.match(/睡眠HRV[^\d]*(\d{1,3}[.\d]*)\s*ms/i);
+  const sleepHRVMatch2 = text.match(/睡眠心率变异[^\d]*(\d{1,3}[.\d]*)\s*ms/i);
+  const sleepHRVMatch3 = text.match(/睡眠.*?HRV[^\d]*(\d{1,3}[.\d]*)/i);
+  if (sleepHRVMatch1) data.sleepHRV = parseFloat(sleepHRVMatch1[1]);
+  else if (sleepHRVMatch2) data.sleepHRV = parseFloat(sleepHRVMatch2[1]);
+  else if (sleepHRVMatch3) data.sleepHRV = parseFloat(sleepHRVMatch3[1]);
+
+  // Validation
+  if (data.hrv && (data.hrv < 5 || data.hrv > 200)) delete data.hrv;
+  if (data.restingHR && (data.restingHR < 30 || data.restingHR > 150)) delete data.restingHR;
+  if (data.sleepHRV && (data.sleepHRV < 5 || data.sleepHRV > 200)) delete data.sleepHRV;
+
+  return data;
+}
+
+// ===================== HRV MODAL FUNCTIONS =====================
+let currentHRVImage = '';
+
+function openHRVModal() {
+  document.getElementById('hrvModal').classList.add('show');
+  document.getElementById('hrvFormDate').value = new Date().toISOString().split('T')[0];
+  resetHRVForm();
+}
+
+function closeHRVModal() {
+  document.getElementById('hrvModal').classList.remove('show');
+  resetHRVForm();
+}
+
+function resetHRVForm() {
+  currentHRVImage = '';
+  document.getElementById('hrvImgPreview').style.display = 'none';
+  document.getElementById('hrvImgPlaceholder').style.display = 'flex';
+  document.getElementById('hrvChangeImgBtn').style.display = 'none';
+  document.getElementById('hrvFormDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('hrvFormTime').value = '';
+  document.getElementById('hrvFormHRV').value = '';
+  document.getElementById('hrvFormRestingHR').value = '';
+  document.getElementById('hrvFormStress').value = '';
+  document.getElementById('hrvFormSleepHRV').value = '';
+}
+
+function handleHRVFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    currentHRVImage = ev.target.result;
+    document.getElementById('hrvImgPreview').src = currentHRVImage;
+    document.getElementById('hrvImgPreview').style.display = 'block';
+    document.getElementById('hrvImgPlaceholder').style.display = 'none';
+    document.getElementById('hrvChangeImgBtn').style.display = 'block';
+    recognizeHRVImage(currentHRVImage);
+  };
+  reader.readAsDataURL(file);
+}
+
+async function recognizeHRVImage(imageData) {
+  const hint = document.getElementById('hrvRecognizingHint');
+  hint.style.display = 'block';
+  hint.textContent = 'AI识别中...';
+
+  try {
+    const base64 = imageData.split(',')[1];
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/png' });
+
+    const formData = new FormData();
+    formData.append('file', blob, 'hrv_screenshot.png');
+    formData.append('apikey', OCR_API_KEY);
+    formData.append('language', 'chs');
+    formData.append('isOverlayRequired', 'false');
+    formData.append('detectOrientation', 'true');
+    formData.append('scale', 'true');
+
+    const resp = await fetch('https://api.ocr.space/parse/image', {
+      method: 'POST',
+      body: formData
+    });
+
+    const result = await resp.json();
+    console.log('[HRV OCR] Response:', result);
+
+    if (result.IsErroredOnProcessing) {
+      hint.style.display = 'none';
+      showToast('AI识别失败：' + (result.ErrorMessage?.[0] || '未知错误'));
+      return;
+    }
+
+    if (result.ParsedResults && result.ParsedResults.length > 0) {
+      const text = result.ParsedResults[0].ParsedText || '';
+      console.log('[HRV OCR] Extracted text:', text);
+
+      const data = parseHRVData(text);
+      fillHRVFormFromData(data);
+
+      const filledCount = Object.values(data).filter(v => v && v !== 0).length;
+      hint.style.display = 'none';
+      if (filledCount > 0) {
+        showToast('AI识别完成，请确认HRV数据（识别' + filledCount + '项）');
+      } else {
+        showToast('AI未能识别HRV数据，请手动填写');
+      }
+    } else {
+      hint.style.display = 'none';
+      showToast('AI未能识别HRV数据，请手动填写');
+    }
+  } catch (err) {
+    console.error('[HRV OCR] Error:', err);
+    hint.style.display = 'none';
+    showToast('AI识别失败，请手动填写');
+  }
+}
+
+function fillHRVFormFromData(data) {
+  if (data.date) document.getElementById('hrvFormDate').value = data.date;
+  if (data.measurementTime) document.getElementById('hrvFormTime').value = data.measurementTime;
+  if (data.hrv) document.getElementById('hrvFormHRV').value = data.hrv;
+  if (data.restingHR) document.getElementById('hrvFormRestingHR').value = data.restingHR;
+  if (data.stress) document.getElementById('hrvFormStress').value = data.stress;
+  if (data.sleepHRV) document.getElementById('hrvFormSleepHRV').value = data.sleepHRV;
+}
+
+function saveHRVRecord() {
+  const date = document.getElementById('hrvFormDate').value;
+  const measurementTime = document.getElementById('hrvFormTime').value;
+  const hrv = parseFloat(document.getElementById('hrvFormHRV').value) || 0;
+  const restingHR = parseInt(document.getElementById('hrvFormRestingHR').value) || 0;
+  const stress = parseInt(document.getElementById('hrvFormStress').value) || 0;
+  const sleepHRV = parseFloat(document.getElementById('hrvFormSleepHRV').value) || 0;
+
+  if (!date) { showToast('请选择测量日期'); return; }
+  if (hrv <= 0) { showToast('请填写HRV值'); return; }
+
+  const record = {
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+    date, hrv, restingHR, stress, sleepHRV, measurementTime,
+    image: currentHRVImage,
+    createdAt: new Date().toISOString()
+  };
+
+  addHRVRecord(record);
+  closeHRVModal();
+  renderHRV();
+  showToast('HRV记录已保存');
+}
+
+function confirmDeleteHRV(id) {
+  pendingDeleteId = id;
+  pendingAction = 'deleteHRV';
+  document.getElementById('confirmTitle').textContent = '确认删除？';
+  document.getElementById('confirmMsg').textContent = '删除后HRV数据无法恢复';
+  document.getElementById('confirmBtn').textContent = '删除';
+  document.getElementById('confirmDialog').classList.add('show');
+}
+
+// ===================== HRV RENDERING =====================
+function createGaugeSVG(score, color) {
+  const r = 34;
+  const c = 2 * Math.PI * r;
+  const offset = c - (score / 100) * c;
+  return `<svg viewBox="0 0 80 80"><circle class="bg" cx="40" cy="40" r="${r}"/><circle class="fg" cx="40" cy="40" r="${r}" stroke="${color}" stroke-dasharray="${c}" stroke-dashoffset="${offset}"/></svg>`;
+}
+
+function renderHRV() {
+  const records = getHRVRecords();
+  const profile = getProfile();
+  const container = document.getElementById('hrvContent');
+
+  if (records.length === 0) {
+    container.innerHTML = `
+      <div class="upload-zone" onclick="openHRVModal()" style="margin-bottom:16px">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3>上传HRV截图</h3>
+        <p>华为健康App心率变异性截图</p>
+      </div>
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <p>还没有HRV记录<br>上传华为健康截图开始分析</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Latest record analysis
+  const latest = records[0];
+  const analysis = analyzeHRV(latest, profile);
+
+  // Build gauges
+  const gauges = [
+    { key: 'health', label: '健康', score: analysis.health, status: analysis.healthStatus, color: '#10B981' },
+    { key: 'stress', label: '压力', score: analysis.stress, status: analysis.stressStatus, color: '#EF4444' },
+    { key: 'energy', label: '能量', score: analysis.energy, status: analysis.energyStatus, color: '#F59E0B' },
+    { key: 'focus', label: '专注力', score: analysis.focus, status: analysis.focusStatus, color: '#8B5CF6' }
+  ];
+
+  const gaugesHtml = gauges.map(g => `
+    <div class="hrv-gauge-item">
+      <div class="gauge-ring">
+        ${createGaugeSVG(g.score, g.color)}
+        <span class="val">${g.score}</span>
+      </div>
+      <span class="hrv-gauge-label">${g.label}</span>
+      <span class="hrv-gauge-status ${g.status.cls}">${g.status.label}</span>
+    </div>
+  `).join('');
+
+  // Latest record date
+  const latestDate = new Date(latest.date);
+  const latestDateStr = `${latestDate.getFullYear()}年${latestDate.getMonth() + 1}月${latestDate.getDate()}日`;
+
+  // HRV trend chart
+  const trendHtml = renderHRVTrend(records, 7);
+
+  // Records list
+  const recordsHtml = records.slice(0, 10).map(r => {
+    const a = analyzeHRV(r, profile);
+    const d = new Date(r.date);
+    const dateStr = `${d.getMonth() + 1}月${d.getDate()}日`;
+    const timeStr = r.measurementTime || '';
+
+    return `
+      <div class="hrv-record-card">
+        <div class="delete-btn" style="position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;z-index:3;opacity:0;transition:opacity .2s" onclick="event.stopPropagation();confirmDeleteHRV('${r.id}')" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--danger)"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </div>
+        <div class="hrv-record-header">
+          <div class="hrv-record-date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            ${dateStr}${timeStr ? ' ' + timeStr : ''}
+          </div>
+          <span class="record-status ${a.healthStatus.cls === 'excellent' || a.healthStatus.cls === 'good' ? 'good' : a.healthStatus.cls === 'normal' ? 'warn' : 'bad'}">
+            ${a.healthStatus.label}
+          </span>
+        </div>
+        <div class="hrv-record-metrics">
+          <div class="hrv-record-metric"><div class="val">${r.hrv}<span class="unit">ms</span></div><div class="lbl">HRV</div></div>
+          <div class="hrv-record-metric"><div class="val">${r.restingHR || '-'}<span class="unit">bpm</span></div><div class="lbl">静息心率</div></div>
+          <div class="hrv-record-metric"><div class="val">${r.stress || '-'}<span class="unit"></span></div><div class="lbl">压力值</div></div>
+        </div>
+        <div class="hrv-analysis-item">
+          <div class="metric-name"><span class="dot" style="background:#10B981"></span>健康 (${a.health}分)</div>
+          <div class="metric-desc">${a.healthDesc}</div>
+          ${a.healthAdvice.length > 0 ? `<div class="metric-advice">${a.healthAdvice[0]}</div>` : ''}
+        </div>
+        <div class="hrv-analysis-item">
+          <div class="metric-name"><span class="dot" style="background:#EF4444"></span>压力 (${a.stress}分)</div>
+          <div class="metric-desc">${a.stressDesc}</div>
+          ${a.stressAdvice.length > 0 ? `<div class="metric-advice">${a.stressAdvice[0]}</div>` : ''}
+        </div>
+        <div class="hrv-analysis-item">
+          <div class="metric-name"><span class="dot" style="background:#F59E0B"></span>能量 (${a.energy}分)</div>
+          <div class="metric-desc">${a.energyDesc}</div>
+          ${a.energyAdvice.length > 0 ? `<div class="metric-advice">${a.energyAdvice[0]}</div>` : ''}
+        </div>
+        <div class="hrv-analysis-item">
+          <div class="metric-name"><span class="dot" style="background:#8B5CF6"></span>专注力 (${a.focus}分)</div>
+          <div class="metric-desc">${a.focusDesc}</div>
+          ${a.focusAdvice.length > 0 ? `<div class="metric-advice">${a.focusAdvice[0]}</div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Weekly HRV summary
+  const weeklyHtml = renderHRVWeeklySummary(records, profile);
+
+  container.innerHTML = `
+    <div class="upload-zone" onclick="openHRVModal()" style="margin-bottom:16px;padding:18px 20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="upload-icon" style="width:44px;height:44px;margin:0;flex-shrink:0;border-radius:12px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:22px;height:22px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <div style="text-align:left">
+          <h3 style="font-size:14px;font-weight:600;margin-bottom:2px">上传HRV截图</h3>
+          <p style="font-size:12px;color:var(--text2)">华为健康App心率变异性截图</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hrv-status-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div>
+          <div style="font-size:16px;font-weight:700">当前状态</div>
+          <div style="font-size:12px;color:var(--text2)">${latestDateStr} 测量</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:28px;font-weight:700;color:var(--primary)">${latest.hrv}<span style="font-size:14px;font-weight:400;color:var(--text2)">ms</span></div>
+          <div style="font-size:11px;color:var(--text2)">HRV值</div>
+        </div>
+      </div>
+      <div class="hrv-gauges">${gaugesHtml}</div>
+    </div>
+
+    ${trendHtml}
+    ${weeklyHtml}
+
+    <div class="section-title" style="margin-top:4px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      HRV记录
+    </div>
+    ${recordsHtml}
+  `;
+}
+
+function renderHRVTrend(records, days) {
+  const now = new Date();
+  const cutoff = new Date(now);
+  cutoff.setDate(now.getDate() - days);
+  cutoff.setHours(0, 0, 0, 0);
+
+  const filtered = records.filter(r => new Date(r.date) >= cutoff).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  if (filtered.length < 2) {
+    return `
+      <div class="hrv-trend-card">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>HRV趋势</h3>
+        <div class="empty-state" style="padding:20px"><p>需要至少2条记录才能显示趋势</p></div>
+      </div>
+    `;
+  }
+
+  const hrvValues = filtered.map(r => r.hrv);
+  const minVal = Math.max(0, Math.min(...hrvValues) - 5);
+  const maxVal = Math.max(...hrvValues) + 5;
+  const range = Math.max(1, maxVal - minVal);
+
+  const chartW = 300;
+  const chartH = 140;
+  const padL = 35;
+  const padR = 10;
+  const padT = 10;
+  const padB = 30;
+  const plotW = chartW - padL - padR;
+  const plotH = chartH - padT - padB;
+
+  // Build data points
+  const points = hrvValues.map((v, i) => {
+    const x = padL + (i / (hrvValues.length - 1)) * plotW;
+    const y = padT + plotH - ((v - minVal) / range) * plotH;
+    return { x, y, v };
+  });
+
+  // Build polyline
+  const linePoints = points.map(p => `${p.x},${p.y}`).join(' ');
+
+  // Build area fill
+  const areaPoints = `${padL},${padT + plotH} ${linePoints} ${points[points.length - 1].x},${padT + plotH}`;
+
+  // Build date labels
+  const labels = filtered.map((r, i) => {
+    const d = new Date(r.date);
+    const x = points[i].x;
+    const label = `${d.getMonth() + 1}/${d.getDate()}`;
+    return `<text x="${x}" y="${chartH - 5}" text-anchor="middle" fill="#94A3B8" font-size="9">${label}</text>`;
+  }).join('');
+
+  // Build Y axis labels
+  const yLabels = [
+    { val: maxVal, y: padT },
+    { val: Math.round((minVal + maxVal) / 2), y: padT + plotH / 2 },
+    { val: minVal, y: padT + plotH }
+  ];
+  const yAxisLabels = yLabels.map(l => `
+    <text x="${padL - 5}" y="${l.y + 3}" text-anchor="end" fill="#94A3B8" font-size="9">${l.val}</text>
+    <line x1="${padL}" y1="${l.y}" x2="${chartW - padR}" y2="${l.y}" stroke="#F1F5F9" stroke-width="1"/>
+  `).join('');
+
+  // Build data point dots
+  const dots = points.map(p => `
+    <circle cx="${p.x}" cy="${p.y}" r="4" fill="white" stroke="#2563EB" stroke-width="2"/>
+    <text x="${p.x}" y="${p.y - 8}" text-anchor="middle" fill="#1E293B" font-size="9" font-weight="600">${p.v}</text>
+  `).join('');
+
+  // Average line
+  const avg = Math.round(hrvValues.reduce((s, v) => s + v, 0) / hrvValues.length);
+  const avgY = padT + plotH - ((avg - minVal) / range) * plotH;
+
+  return `
+    <div class="hrv-trend-card">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>HRV趋势（近${days}天）<span style="margin-left:auto;font-size:12px;color:var(--text2);font-weight:400">均值 ${avg}ms</span></h3>
+      <div class="hrv-chart">
+        <svg viewBox="0 0 ${chartW} ${chartH}" preserveAspectRatio="xMidYMid meet">
+          ${yAxisLabels}
+          <polygon points="${areaPoints}" fill="url(#hrvGrad)" opacity="0.3"/>
+          <polyline points="${linePoints}" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="${padL}" y1="${avgY}" x2="${chartW - padR}" y2="${avgY}" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+          ${dots}
+          ${labels}
+          <defs>
+            <linearGradient id="hrvGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2563EB" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#2563EB" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  `;
+}
+
+function renderHRVWeeklySummary(records, profile) {
+  const now = new Date();
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - now.getDay() + 1);
+  weekStart.setHours(0, 0, 0, 0);
+
+  const weekRecords = records.filter(r => new Date(r.date) >= weekStart);
+  if (weekRecords.length === 0) return '';
+
+  const avgHRV = weekRecords.length > 0 ? (weekRecords.reduce((s, r) => s + r.hrv, 0) / weekRecords.length).toFixed(1) : 0;
+  const maxHRV = weekRecords.length > 0 ? Math.max(...weekRecords.map(r => r.hrv)) : 0;
+  const minHRV = weekRecords.length > 0 ? Math.min(...weekRecords.map(r => r.hrv)) : 0;
+  const avgRestingHR = weekRecords.filter(r => r.restingHR > 0).length > 0
+    ? Math.round(weekRecords.filter(r => r.restingHR > 0).reduce((s, r) => s + r.restingHR, 0) / weekRecords.filter(r => r.restingHR > 0).length)
+    : '-';
+
+  // Analyze the latest record for overall status
+  const latestAnalysis = analyzeHRV(weekRecords[0], profile);
+
+  let summaryText = `本周共测量<strong>${weekRecords.length}</strong>次HRV，平均值为<strong>${avgHRV}ms</strong>。`;
+  if (parseFloat(avgHRV) >= latestAnalysis.hrvMid) {
+    summaryText += 'HRV整体水平良好，身体恢复状态不错。';
+  } else if (parseFloat(avgHRV) >= latestAnalysis.hrvMin) {
+    summaryText += 'HRV处于正常范围，注意保持规律作息。';
+  } else {
+    summaryText += 'HRV偏低，建议增加休息，减少高强度运动。';
+  }
+
+  return `
+    <div class="hrv-weekly-summary">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>本周HRV总结</h3>
+      <div class="hrv-weekly-grid">
+        <div class="hrv-weekly-item"><div class="val">${avgHRV}<span style="font-size:12px;font-weight:400">ms</span></div><div class="lbl">平均HRV</div></div>
+        <div class="hrv-weekly-item"><div class="val">${weekRecords.length}<span style="font-size:12px;font-weight:400">次</span></div><div class="lbl">测量次数</div></div>
+        <div class="hrv-weekly-item"><div class="val">${maxHRV}<span style="font-size:12px;font-weight:400">ms</span></div><div class="lbl">最高HRV</div></div>
+        <div class="hrv-weekly-item"><div class="val">${avgRestingHR}<span style="font-size:12px;font-weight:400">${avgRestingHR !== '-' ? 'bpm' : ''}</span></div><div class="lbl">平均静息心率</div></div>
+      </div>
+      <div class="weekly-text">${summaryText}</div>
+    </div>
+  `;
+}
+
 // ===================== NAVIGATION =====================
 function switchPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach((n, i) => {
-    n.classList.toggle('active', ['Home', 'Stats', 'Profile'][i] === name);
+    n.classList.toggle('active', ['Home', 'Stats', 'Profile', 'HRV'][i] === name);
   });
   if (name === 'Home') { renderUserCard(); renderWeeklySection(); renderRecords(); }
   if (name === 'Stats') renderStats();
   if (name === 'Profile') renderProfile();
+  if (name === 'HRV') renderHRV();
   window.scrollTo(0, 0);
 }
 
@@ -1179,12 +1966,18 @@ function confirmAction() {
     renderWeeklySection();
     renderRecords();
     showToast('已删除');
+  } else if (pendingAction === 'deleteHRV' && pendingDeleteId) {
+    deleteHRVRecord(pendingDeleteId);
+    renderHRV();
+    showToast('已删除');
   } else if (pendingAction === 'clearAll') {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(PROFILE_KEY);
+    localStorage.removeItem(HRV_STORAGE_KEY);
     renderUserCard();
     renderWeeklySection();
     renderRecords();
+    renderHRV();
     showToast('已清除所有数据');
   }
   closeConfirm();
@@ -1230,6 +2023,7 @@ function exportData() {
   const data = {
     profile: getProfile(),
     records: getRecords(),
+    hrvRecords: getHRVRecords(),
     exportedAt: new Date().toISOString()
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1259,6 +2053,12 @@ function importData(e) {
         const existingIds = new Set(existing.map(r => r.id));
         const newRecords = data.records.filter(r => !existingIds.has(r.id));
         saveRecords([...newRecords, ...existing]);
+      }
+      if (data.hrvRecords) {
+        const existingHRV = getHRVRecords();
+        const existingHRVIds = new Set(existingHRV.map(r => r.id));
+        const newHRVRecords = data.hrvRecords.filter(r => !existingHRVIds.has(r.id));
+        saveHRVRecords([...newHRVRecords, ...existingHRV]);
       }
       renderAll();
       showToast(`导入成功`);
