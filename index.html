@@ -1755,26 +1755,82 @@ function handleFileSelect(e) {
 // 免费额度：1000次/月
 const OCR_API_KEY = 'K88906358888957'; // 免费试用Key
 
+// 图片预处理：裁掉地图区域 + 压缩 + 黑白增强
+function preprocessImage(imageData) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const w = img.width;
+      const h = img.height;
+
+      // 裁掉上半部分地图区域（保留下方40%的数据区域）
+      const cropY = Math.floor(h * 0.35);
+      const cropH = h - cropY;
+      canvas.width = w;
+      canvas.height = cropH;
+      ctx.drawImage(img, 0, cropY, w, cropH, 0, 0, w, cropH);
+
+      // 压缩：缩小到最大宽度1200px
+      const maxW = 1200;
+      if (w > maxW) {
+        const scale = maxW / w;
+        const smallCanvas = document.createElement('canvas');
+        smallCanvas.width = maxW;
+        smallCanvas.height = Math.floor(cropH * scale);
+        const sCtx = smallCanvas.getContext('2d');
+        sCtx.drawImage(canvas, 0, 0, maxW, smallCanvas.height);
+        canvas.width = maxW;
+        canvas.height = smallCanvas.height;
+        ctx.drawImage(smallCanvas, 0, 0);
+      }
+
+      // 黑白增强：提高对比度，转灰度
+      const imageData2 = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const d = imageData2.data;
+      for (let i = 0; i < d.length; i += 4) {
+        // 灰度化
+        let gray = d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114;
+        // 增强对比度
+        gray = gray < 128 ? Math.max(0, gray * 0.7) : Math.min(255, gray * 1.1 + 20);
+        d[i] = d[i+1] = d[i+2] = gray;
+      }
+      ctx.putImageData(imageData2, 0, 0);
+
+      // 导出为JPEG（比PNG小很多）
+      const processed = canvas.toDataURL('image/jpeg', 0.85);
+      console.log('[预处理] 原图→裁剪+压缩+黑白增强完成');
+      resolve(processed);
+    };
+    img.src = imageData;
+  });
+}
+
 async function recognizeImage(imageData) {
   const hint = document.getElementById('recognizingHint');
   hint.style.display = 'block';
-  hint.textContent = 'AI识别中...';
+  hint.textContent = '图片预处理中...';
 
   try {
+    // 预处理图片
+    const processed = await preprocessImage(imageData);
+    hint.textContent = 'AI识别中...';
+
     // Convert base64 to blob for FormData
-    const base64 = imageData.split(',')[1];
+    const base64 = processed.split(',')[1];
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'image/png' });
+    const blob = new Blob([byteArray], { type: 'image/jpeg' });
 
     const formData = new FormData();
-    formData.append('file', blob, 'screenshot.png');
+    formData.append('file', blob, 'screenshot.jpg');
     formData.append('apikey', OCR_API_KEY);
-    formData.append('language', 'chs'); // 简体中文
+    formData.append('language', 'chs');
     formData.append('isOverlayRequired', 'false');
     formData.append('detectOrientation', 'true');
     formData.append('scale', 'true');
@@ -1821,71 +1877,79 @@ async function recognizeImage(imageData) {
 
 function parseFitnessData(text) {
   const data = {};
-  
-  // Date: 2026/5/12 or 2026年5月12日
-  const dateMatch = text.match(/(\d{4})[\/年](\d{1,2})[\/月](\d{1,2})[日]?/);
+
+  // 预处理OCR文本：统一全角/半角，清理乱码
+  let t = text.replace(/\uff1a/g, ':').replace(/\uff0f/g, '/').replace(/\uff0c/g, ',').replace(/\u00b7/g, '.').replace(/\u2103/g, "'").replace(/\u201c/g, '"').replace(/\u201d/g, '"').replace(/\u2018/g, "'").replace(/\u2019/g, "'").replace(/\u3001/g, ',');
+  t = t.replace(/\n{2,}/g, ' ');
+
+  // Date
+  const dateMatch = t.match(/(\d{4})[\/\u5e74](\d{1,2})[\/\u6708](\d{1,2})/);
   if (dateMatch) {
-    data.date = dateMatch[1] + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[3].padStart(2, '0');
-  }
-  
-  // Type - 华为健康格式
-  if (text.includes('户外跑步') || text.includes('户外跑')) data.type = '户外跑步';
-  else if (text.includes('室内跑步') || text.includes('室内跑') || text.includes('跑步机')) data.type = '室内跑步';
-  else if (text.includes('户外步行') || text.includes('户外走')) data.type = '户外步行';
-  else if (text.includes('步行') || text.includes('健走') || text.includes('快走')) data.type = '快走';
-  else if (text.includes('骑行')) data.type = '骑行';
-  else if (text.includes('游泳')) data.type = '游泳';
-  
-  // Duration: 00:31:27 format (HH:MM:SS or MM:SS)
-  const durMatchHH = text.match(/(\d{1,2}):(\d{2}):(\d{2})/);
-  if (durMatchHH) {
-    data.duration = parseInt(durMatchHH[1]) * 60 + parseInt(durMatchHH[2]);
-  } else {
-    const durMatch = text.match(/(\d{1,3}):(\d{2})/);
-    if (durMatch) {
-      data.duration = parseInt(durMatch[1]) * 60 + parseInt(durMatch[2]);
+    const y = parseInt(dateMatch[1]), m = parseInt(dateMatch[2]), d = parseInt(dateMatch[3]);
+    if (y >= 2020 && y <= 2030 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+      data.date = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
     }
   }
-  
-  // Distance: X.XX km (look for number near "公里")
-  const distMatch = text.match(/([\d.]+)\s*(?:公里|km)/i);
-  if (distMatch) data.distance = parseFloat(distMatch[1]);
-  
-  // Heart rate - 华为格式: "平均心率" + number + "次/分钟"
-  const avgHRMatch = text.match(/平均心率[^\d]*(\d{2,3})/);
-  if (avgHRMatch) data.avgHR = parseInt(avgHRMatch[1]);
-  const maxHRMatch = text.match(/最大心率[^\d]*(\d{2,3})/);
-  if (maxHRMatch) data.maxHR = parseInt(maxHRMatch[1]);
-  
-  // Calories: 华为格式 "总消耗热量" or "消耗" + number + "千卡/大卡/kcal"
-  const calMatch = text.match(/(?:总消耗热量|消耗热量?|消耗)[^\d]*(\d+)\s*(?:千卡|大卡|kcal|cal)/i);
-  if (calMatch) data.calories = parseInt(calMatch[1]);
-  
-  // Cadence: 华为格式 "平均步频" + number + "步/分钟"
-  const cadMatch = text.match(/平均步频[^\d]*(\d{2,3})/);
-  if (cadMatch) data.cadence = parseInt(cadMatch[1]);
-  
-  // Steps: 华为格式 "步数" + number + "步"
-  const stepsMatch = text.match(/步数[^\d]*(\d[\d,]*)\s*步/);
-  if (stepsMatch) data.steps = parseInt(stepsMatch[1].replace(',', ''));
-  
-  // Pace: 华为格式 15'07"/公里 or 15'07"/km
-  const paceMatch = text.match(/(\d{1,2})[''\u2019\u2018分](\d{2})[""\u201d\u201c秒]\s*\/\s*(?:公里|km)/i);
+
+  // Type
+  if (t.includes('户外跑步') || t.includes('户外跑')) data.type = '户外跑步';
+  else if (t.includes('室内跑步') || t.includes('室内跑') || t.includes('跑步机')) data.type = '室内跑步';
+  else if (t.includes('户外步行') || t.includes('户外走')) data.type = '户外步行';
+  else if (t.includes('步行') || t.includes('健走') || t.includes('快走')) data.type = '快走';
+  else if (t.includes('骑行')) data.type = '骑行';
+  else if (t.includes('游泳')) data.type = '游泳';
+
+  // Duration: 00:42:12
+  const durMatchHH = t.match(/(\d{1,2}):(\d{2}):(\d{2})/);
+  if (durMatchHH) {
+    const mins = parseInt(durMatchHH[1]) * 60 + parseInt(durMatchHH[2]);
+    if (mins > 0 && mins <= 300) data.duration = mins;
+  }
+  if (!data.duration) {
+    const durMatch = t.match(/(\d{1,3}):(\d{2})/);
+    if (durMatch) {
+      const mins = parseInt(durMatch[1]) * 60 + parseInt(durMatch[2]);
+      if (mins > 0 && mins <= 300) data.duration = mins;
+    }
+  }
+
+  // Distance: X.XX 公里
+  const distMatch = t.match(/([\d]+\.[\d]+)\s*(?:\u516c\u91cc|km)/i);
+  if (distMatch) {
+    const dist = parseFloat(distMatch[1]);
+    if (dist >= 0.1 && dist <= 100) data.distance = dist;
+  }
+
+  // Heart rate - 标签和数字可能隔空格
+  const avgHRMatch = t.match(/\u5e73\u5747\u5fc3\u7387\s{0,5}(\d{2,3})/);
+  if (avgHRMatch) { const v = parseInt(avgHRMatch[1]); if (v >= 50 && v <= 200) data.avgHR = v; }
+  const maxHRMatch = t.match(/\u6700\u5927\u5fc3\u7387\s{0,5}(\d{2,3})/);
+  if (maxHRMatch) { const v = parseInt(maxHRMatch[1]); if (v >= 60 && v <= 220) data.maxHR = v; }
+
+  // Calories
+  const calMatch = t.match(/(\d{2,4})\s*(?:\u5343\u5361|\u5927\u5361|kcal|cal)/i);
+  if (calMatch) { const v = parseInt(calMatch[1]); if (v >= 10 && v <= 5000) data.calories = v; }
+
+  // Cadence
+  const cadMatch = t.match(/\u5e73\u5747\u6b65\u9891\s{0,5}(\d{2,3})/);
+  if (cadMatch) { const v = parseInt(cadMatch[1]); if (v >= 60 && v <= 250) data.cadence = v; }
+
+  // Steps
+  const stepsMatch = t.match(/(\d[\d,.\s]{2,6})\s*\u6b65/);
+  if (stepsMatch) { const v = parseInt(stepsMatch[1].replace(/[,.\s]/g, '')); if (v >= 100 && v <= 100000) data.steps = v; }
+
+  // Pace: 14'21"/公里
+  const paceMatch = t.match(/(\d{1,2})[''\u2019\u2018\u2103\u00b0](\d{2})[""\u201d\u201c\u00b2\u00b0]\s*\/\s*(?:\u516c\u91cc|km)/i);
   if (paceMatch) {
-    data.pace = parseInt(paceMatch[1]) + parseInt(paceMatch[2]) / 60;
+    const pace = parseInt(paceMatch[1]) + parseInt(paceMatch[2]) / 60;
+    if (pace >= 1 && pace <= 30) data.pace = Math.round(pace * 100) / 100;
   }
-  
-  // Data validation - remove unreasonable values
-  if (data.avgHR && data.avgHR < 50) delete data.avgHR;
-  if (data.maxHR && data.maxHR < 60) delete data.maxHR;
+
+  // Data validation
   if (data.avgHR && data.maxHR && data.avgHR > data.maxHR) {
-    const tmp = data.avgHR;
-    data.avgHR = data.maxHR;
-    data.maxHR = tmp;
+    const tmp = data.avgHR; data.avgHR = data.maxHR; data.maxHR = tmp;
   }
-  if (data.duration && data.duration > 300) delete data.duration;
-  if (data.distance && data.distance > 100) delete data.distance;
-  
+
   return data;
 }
 
