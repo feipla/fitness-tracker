@@ -1005,13 +1005,13 @@ function renderProfile() {
       </div>
       <div class="profile-row">
         <span class="label">识别引擎</span>
-        <span class="value">OCR.space ✓</span>
+        <span class="value">通义千问VL</span>
       </div>
       <div class="profile-row">
-        <span class="label">免费额度</span>
-        <span class="value">1000次/月</span>
+        <span class="label">API Key</span>
+        <span class="value editable" onclick="setAIKey()">' + (AI_API_KEY ? '已设置 ✓' : '未设置') + '</span>
       </div>
-      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">已配置，无需翻墙，国内直接使用</p>
+      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">免费获取：bailian.console.aliyun.com → API Key管理 → 创建</p>
     </div>
 
     <div class="profile-card">
@@ -1750,118 +1750,76 @@ function handleFileSelect(e) {
   reader.readAsDataURL(file);
 }
 
-// ===================== AI IMAGE RECOGNITION (OCR.space) =====================
-// OCR.space API - 免费、支持CORS、无需翻墙
-// 免费额度：1000次/月
-const OCR_API_KEY = 'K88906358888957'; // 免费试用Key
-
-// 图片预处理：裁掉地图区域 + 压缩 + 黑白增强
-function preprocessImage(imageData) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = function() {
-      const w = img.width;
-      const h = img.height;
-      const maxW = 800;
-      const ratio = Math.min(maxW / w, 1);
-      const newW = Math.floor(w * ratio);
-      const newH = Math.floor(h * ratio);
-
-      // Draw resized grayscale enhanced image
-      const canvas = document.createElement('canvas');
-      canvas.width = newW;
-      canvas.height = newH;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, newW, newH);
-
-      // Grayscale + contrast enhance
-      const imageData2 = ctx.getImageData(0, 0, newW, newH);
-      const d = imageData2.data;
-      for (let i = 0; i < d.length; i += 4) {
-        let gray = d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114;
-        gray = gray < 128 ? Math.max(0, gray * 0.7) : Math.min(255, gray * 1.1 + 20);
-        d[i] = d[i+1] = d[i+2] = gray;
-      }
-      ctx.putImageData(imageData2, 0, 0);
-
-      // Split into segments
-      const segH = 2000;
-      const overlap = 100;
-      const segments = [];
-      let y = 0;
-      while (y < newH) {
-        const segCanvas = document.createElement('canvas');
-        const curH = Math.min(segH, newH - y);
-        segCanvas.width = newW;
-        segCanvas.height = curH;
-        const segCtx = segCanvas.getContext('2d');
-        segCtx.drawImage(canvas, 0, y, newW, curH, 0, 0, newW, curH);
-        segments.push(segCanvas.toDataURL('image/jpeg', 0.85));
-        y += segH - overlap;
-        if (y >= newH) break;
-      }
-
-      console.log('[预处理] 缩放' + newW + 'x' + newH + ', 分' + segments.length + '段');
-      resolve(segments);
-    };
-    img.src = imageData;
-  });
-}
+// ===================== AI IMAGE RECOGNITION (通义千问VL) =====================
+// 使用阿里云百炼通义千问视觉模型 - 国内免费、识别精准
+// 免费注册：https://bailian.console.aliyun.com/ → API Key管理 → 创建
+// 免费额度：100万Token（约可识别3000+张图）
+const AI_API_KEY = localStorage.getItem('ai_api_key') || '';
+const AI_API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
+const AI_MODEL = 'qwen-vl-plus';
 
 async function recognizeImage(imageData) {
   const hint = document.getElementById('recognizingHint');
   hint.style.display = 'block';
-  hint.textContent = '图片预处理中...';
+  hint.textContent = 'AI识别中...';
 
   try {
-    const segments = await preprocessImage(imageData);
-    let allText = '';
-
-    for (let i = 0; i < segments.length; i++) {
-      hint.textContent = 'AI识别中... (' + (i+1) + '/' + segments.length + ')';
-
-      const base64 = segments[i].split(',')[1];
-      const byteCharacters = atob(base64);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let j = 0; j < byteCharacters.length; j++) {
-        byteNumbers[j] = byteCharacters.charCodeAt(j);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: 'image/jpeg' });
-
-      const formData = new FormData();
-      formData.append('file', blob, 's.jpg');
-      formData.append('apikey', OCR_API_KEY);
-      formData.append('language', 'chs');
-      formData.append('isOverlayRequired', 'false');
-      formData.append('detectOrientation', 'true');
-      formData.append('scale', 'true');
-
-      const resp = await fetch('https://api.ocr.space/parse/image', {
-        method: 'POST',
-        body: formData
-      });
-
-      const result = await resp.json();
-      if (result.ParsedResults && result.ParsedResults.length > 0) {
-        allText += result.ParsedResults[0].ParsedText + '\n';
-      }
+    if (!AI_API_KEY) {
+      hint.style.display = 'none';
+      showToast('请先设置AI API Key（我的→AI识别服务）');
+      switchPage('Profile');
+      return;
     }
 
-    console.log('[OCR] 合并文本:', allText);
+    const prompt = '你是一个运动数据识别专家。请识别这张华为运动健康App截图中的所有运动数据，严格按以下JSON格式返回，不要返回其他任何内容：\n{"date":"YYYY-MM-DD","type":"户外跑步","duration":42,"distance":2.94,"avgHR":95,"maxHR":115,"calories":221,"cadence":104,"steps":4392,"pace":14.35}\n\n规则：\n1. date: 截图中的运动日期，格式YYYY-MM-DD\n2. type: 运动类型（户外跑步/室内跑步/户外步行/快走/骑行/游泳）\n3. duration: 运动时长，取整数分钟（如00:42:12则转为42分钟）\n4. distance: 距离(公里)，保留两位小数\n5. avgHR: 平均心率(整数bpm)\n6. maxHR: 最大心率(整数bpm)\n7. calories: 消耗热量(整数大卡)\n8. cadence: 平均步频(整数步/分钟)\n9. steps: 总步数(整数)\n10. pace: 平均配速(分钟/公里，如14分21秒则转为14.35)\n11. 如果某项数据找不到，该项设为0\n12. 只返回JSON，不要任何其他文字';
 
-    const data = parseFitnessData(allText);
-    fillFormFromData(data);
+    const body = {
+      model: AI_MODEL,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'text', text: prompt },
+          { type: 'image_url', image_url: { url: imageData } }
+        ]
+      }],
+      max_tokens: 500,
+      temperature: 0.1
+    };
 
-    const filledCount = Object.values(data).filter(v => v && v !== 0).length;
-    hint.style.display = 'none';
-    if (filledCount > 0) {
+    const resp = await fetch(AI_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + AI_API_KEY
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      console.error('[AI] API error:', errText);
+      hint.style.display = 'none';
+      showToast('AI识别失败，请检查API Key');
+      return;
+    }
+
+    const result = await resp.json();
+    const text = result.choices && result.choices[0] && result.choices[0].message ? result.choices[0].message.content : '';
+    console.log('[AI] Response:', text);
+
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const data = JSON.parse(jsonMatch[0]);
+      fillFormFromData(data);
+      const filledCount = Object.values(data).filter(function(v) { return v && v !== 0; }).length;
+      hint.style.display = 'none';
       showToast('AI识别完成，请确认数据（识别' + filledCount + '项）');
     } else {
+      hint.style.display = 'none';
       showToast('AI未能识别运动数据，请手动填写');
     }
   } catch (err) {
-    console.error('[OCR] Error:', err);
+    console.error('[AI] Error:', err);
     hint.style.display = 'none';
     hint.textContent = 'AI识别中...';
     showToast('AI识别失败，请手动填写');
@@ -2049,6 +2007,21 @@ function viewRecordDetail(id) {
   if (record && record.image) {
     viewImage(record.image);
   }
+}
+
+// ===================== AI KEY =====================
+function setAIKey() {
+  var current = localStorage.getItem('ai_api_key') || '';
+  var key = prompt('请输入通义千问API Key（免费获取：bailian.console.aliyun.com）', current);
+  if (key === null) return;
+  if (key.trim()) {
+    localStorage.setItem('ai_api_key', key.trim());
+    showToast('API Key已保存');
+  } else {
+    localStorage.removeItem('ai_api_key');
+    showToast('API Key已清除');
+  }
+  renderProfile();
 }
 
 // ===================== PROFILE EDIT =====================
