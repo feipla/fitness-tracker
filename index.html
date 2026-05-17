@@ -1005,13 +1005,13 @@ function renderProfile() {
       </div>
       <div class="profile-row">
         <span class="label">识别引擎</span>
-        <span class="value">DeepSeek AI</span>
+        <span class="value">Kimi AI 视觉</span>
       </div>
       <div class="profile-row">
         <span class="label">API Key</span>
-        <span class="value editable" onclick="setDeepSeekKey()">' + (AI_API_KEY ? '已设置 ✓' : '点击设置') + '</span>
+        <span class="value editable" onclick="setKimiKey()">${AI_API_KEY ? '已设置 ✓' : '点击设置'}</span>
       </div>
-      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">获取地址：platform.deepseek.com → API Keys</p>
+      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">获取地址：platform.moonshot.cn → API Keys</p>
     </div>
 
     <div class="profile-card">
@@ -1750,13 +1750,12 @@ function handleFileSelect(e) {
   reader.readAsDataURL(file);
 }
 
-// ===================== AI IMAGE RECOGNITION (通义千问VL) =====================
-// 使用阿里云百炼通义千问视觉模型 - 国内免费、识别精准
-// 免费注册：https://bailian.console.aliyun.com/ → API Key管理 → 创建
-// 免费额度：100万Token（约可识别3000+张图）
-const AI_API_KEY = localStorage.getItem('deepseek_api_key') || '';
-const AI_API_URL = 'https://api.deepseek.com/chat/completions';
-const AI_MODEL = 'deepseek-chat';
+// ===================== AI IMAGE RECOGNITION (Kimi Vision) =====================
+// 使用 Kimi (月之暗面) 视觉模型 - 支持图像识别、OCR文字提取
+// 注册地址：https://platform.moonshot.cn/ → API Key管理 → 创建
+const AI_API_KEY = localStorage.getItem('kimi_api_key') || '';
+const AI_API_URL = 'https://api.moonshot.cn/v1/chat/completions';
+const AI_MODEL = 'kimi-k2.6';
 
 async function recognizeImage(imageData) {
   const hint = document.getElementById('recognizingHint');
@@ -1766,7 +1765,7 @@ async function recognizeImage(imageData) {
   try {
     if (!AI_API_KEY) {
       hint.style.display = 'none';
-      showToast('请先设置DeepSeek API Key（我的→AI识别服务）');
+      showToast('请先设置Kimi API Key（我的→AI识别服务）');
       switchPage('Profile');
       return;
     }
@@ -1777,12 +1776,10 @@ async function recognizeImage(imageData) {
       messages: [{
         role: 'user',
         content: [
-          { type: 'text', text: prompt },
-          { type: 'image_url', image_url: { url: imageData } }
+          { type: 'image_url', image_url: { url: imageData } },
+          { type: 'text', text: prompt }
         ]
-      }],
-      max_tokens: 500,
-      temperature: 0.1
+      }]
     };
 
     const resp = await fetch(AI_API_URL, {
@@ -2008,16 +2005,16 @@ function viewRecordDetail(id) {
   }
 }
 
-// ===================== DEEPSEEK KEY =====================
-function setDeepSeekKey() {
-  var current = localStorage.getItem('deepseek_api_key') || '';
-  var key = prompt('请输入DeepSeek API Key', current);
+// ===================== KIMI KEY =====================
+function setKimiKey() {
+  var current = localStorage.getItem('kimi_api_key') || '';
+  var key = prompt('请输入Kimi (Moonshot) API Key', current);
   if (key === null) return;
   if (key.trim()) {
-    localStorage.setItem('deepseek_api_key', key.trim());
+    localStorage.setItem('kimi_api_key', key.trim());
     showToast('API Key已保存');
   } else {
-    localStorage.removeItem('deepseek_api_key');
+    localStorage.removeItem('kimi_api_key');
     showToast('API Key已清除');
   }
   renderProfile();
