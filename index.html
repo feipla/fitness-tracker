@@ -1708,9 +1708,9 @@ function switchPage(name) {
 let currentImage = '';
 
 function openAddModal() {
+  resetForm();
   document.getElementById('addModal').classList.add('show');
   document.getElementById('formDate').value = new Date().toISOString().split('T')[0];
-  resetForm();
 }
 
 function closeAddModal() {
@@ -1908,33 +1908,38 @@ function fillFormFromData(data) {
 }
 
 function saveRecord() {
-  const date = document.getElementById('formDate').value;
-  const type = document.getElementById('formType').value;
-  const duration = parseInt(document.getElementById('formDuration').value) || 0;
-  const distance = parseFloat(document.getElementById('formDistance').value) || 0;
-  const avgHR = parseInt(document.getElementById('formAvgHR').value) || 0;
-  const maxHR = parseInt(document.getElementById('formMaxHR').value) || 0;
-  const calories = parseInt(document.getElementById('formCalories').value) || 0;
-  const cadence = parseInt(document.getElementById('formCadence').value) || 0;
-  const steps = parseInt(document.getElementById('formSteps').value) || 0;
-  const pace = parseFloat(document.getElementById('formPace').value) || 0;
+  try {
+    const date = document.getElementById('formDate').value;
+    const type = document.getElementById('formType').value;
+    const duration = parseInt(document.getElementById('formDuration').value) || 0;
+    const distance = parseFloat(document.getElementById('formDistance').value) || 0;
+    const avgHR = parseInt(document.getElementById('formAvgHR').value) || 0;
+    const maxHR = parseInt(document.getElementById('formMaxHR').value) || 0;
+    const calories = parseInt(document.getElementById('formCalories').value) || 0;
+    const cadence = parseInt(document.getElementById('formCadence').value) || 0;
+    const steps = parseInt(document.getElementById('formSteps').value) || 0;
+    const pace = parseFloat(document.getElementById('formPace').value) || 0;
 
-  if (!date) { showToast('请选择运动日期'); return; }
-  if (duration <= 0) { showToast('请填写运动时长'); return; }
+    if (!date) { showToast('请选择运动日期'); return; }
+    if (duration <= 0) { showToast('请填写运动时长'); return; }
 
-  const record = {
-    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-    date, type, duration, distance, avgHR, maxHR, calories, cadence, steps, pace,
-    image: currentImage,
-    createdAt: new Date().toISOString()
-  };
+    const record = {
+      id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+      date, type, duration, distance, avgHR, maxHR, calories, cadence, steps, pace,
+      image: currentImage || '',
+      createdAt: new Date().toISOString()
+    };
 
-  addRecord(record);
-  closeAddModal();
-  renderUserCard();
-  renderWeeklySection();
-  renderRecords();
-  showToast('✅ 记录已保存');
+    addRecord(record);
+    closeAddModal();
+    renderUserCard();
+    renderWeeklySection();
+    renderRecords();
+    showToast('✅ 记录已保存');
+  } catch (err) {
+    console.error('[SaveRecord] Error:', err);
+    showToast('保存失败: ' + err.message);
+  }
 }
 
 // ===================== DELETE =====================
