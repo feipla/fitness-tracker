@@ -1005,9 +1005,13 @@ function renderProfile() {
       </div>
       <div class="profile-row">
         <span class="label">识别引擎</span>
-        <span class="value">DeepSeek AI ✓</span>
+        <span class="value">DeepSeek AI</span>
       </div>
-      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">已配置，国内直接使用</p>
+      <div class="profile-row">
+        <span class="label">API Key</span>
+        <span class="value editable" onclick="setDeepSeekKey()">' + (AI_API_KEY ? '已设置 ✓' : '点击设置') + '</span>
+      </div>
+      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">获取地址：platform.deepseek.com → API Keys</p>
     </div>
 
     <div class="profile-card">
@@ -1750,7 +1754,7 @@ function handleFileSelect(e) {
 // 使用阿里云百炼通义千问视觉模型 - 国内免费、识别精准
 // 免费注册：https://bailian.console.aliyun.com/ → API Key管理 → 创建
 // 免费额度：100万Token（约可识别3000+张图）
-const AI_API_KEY = 'sk-5407661a2a6842f7bbdb6a303d12f0e9';
+const AI_API_KEY = localStorage.getItem('deepseek_api_key') || '';
 const AI_API_URL = 'https://api.deepseek.com/chat/completions';
 const AI_MODEL = 'deepseek-chat';
 
@@ -1760,6 +1764,12 @@ async function recognizeImage(imageData) {
   hint.textContent = 'AI识别中...';
 
   try {
+    if (!AI_API_KEY) {
+      hint.style.display = 'none';
+      showToast('请先设置DeepSeek API Key（我的→AI识别服务）');
+      switchPage('Profile');
+      return;
+    }
     const prompt = '你是一个运动数据识别专家。请识别这张华为运动健康App截图中的所有运动数据，严格按以下JSON格式返回，不要返回其他任何内容：\n{"date":"YYYY-MM-DD","type":"户外跑步","duration":42,"distance":2.94,"avgHR":95,"maxHR":115,"calories":221,"cadence":104,"steps":4392,"pace":14.35}\n\n规则：\n1. date: 截图中的运动日期，格式YYYY-MM-DD\n2. type: 运动类型（户外跑步/室内跑步/户外步行/快走/骑行/游泳）\n3. duration: 运动时长，取整数分钟（如00:42:12则转为42分钟）\n4. distance: 距离(公里)，保留两位小数\n5. avgHR: 平均心率(整数bpm)\n6. maxHR: 最大心率(整数bpm)\n7. calories: 消耗热量(整数大卡)\n8. cadence: 平均步频(整数步/分钟)\n9. steps: 总步数(整数)\n10. pace: 平均配速(分钟/公里，如14分21秒则转为14.35)\n11. 如果某项数据找不到，该项设为0\n12. 只返回JSON，不要任何其他文字';
 
     const body = {
@@ -1996,6 +2006,21 @@ function viewRecordDetail(id) {
   if (record && record.image) {
     viewImage(record.image);
   }
+}
+
+// ===================== DEEPSEEK KEY =====================
+function setDeepSeekKey() {
+  var current = localStorage.getItem('deepseek_api_key') || '';
+  var key = prompt('请输入DeepSeek API Key', current);
+  if (key === null) return;
+  if (key.trim()) {
+    localStorage.setItem('deepseek_api_key', key.trim());
+    showToast('API Key已保存');
+  } else {
+    localStorage.removeItem('deepseek_api_key');
+    showToast('API Key已清除');
+  }
+  renderProfile();
 }
 
 // ===================== PROFILE EDIT =====================
