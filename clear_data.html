@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>清除数据</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: -apple-system, sans-serif; padding: 40px 20px; text-align: center; }
+    button { 
+      background: #EF4444; color: white; border: none; padding: 16px 32px; 
+      border-radius: 12px; font-size: 16px; margin: 10px; cursor: pointer;
+    }
+    .success { color: #10B981; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>数据清除工具</h2>
+  <p>点击下方按钮清除所有运动记录</p>
+  <button onclick="clearData()">清除所有数据</button>
+  <div id="result"></div>
+  
+  <script>
+    function clearData() {
+      localStorage.removeItem('fitness_records');
+      localStorage.removeItem('hrv_records');
+      document.getElementById('result').innerHTML = '<p class="success">✅ 数据已清除，请重新打开应用</p>';
+    }
+  </script>
+</body>
+</html>
