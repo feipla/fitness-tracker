@@ -1769,7 +1769,7 @@ async function recognizeImage(imageData) {
       switchPage('Profile');
       return;
     }
-    const prompt = '你是一个运动数据识别专家。请识别这张华为运动健康App截图中的所有运动数据，严格按以下JSON格式返回，不要返回其他任何内容：\n{"date":"YYYY-MM-DD","type":"户外跑步","duration":42,"distance":2.94,"avgHR":95,"maxHR":115,"calories":221,"cadence":104,"steps":4392,"pace":14.35}\n\n规则：\n1. date: 截图中的运动日期，格式YYYY-MM-DD\n2. type: 运动类型（户外跑步/室内跑步/户外步行/快走/骑行/游泳）\n3. duration: 运动时长，取整数分钟（如00:42:12则转为42分钟）\n4. distance: 距离(公里)，保留两位小数\n5. avgHR: 平均心率(整数bpm)\n6. maxHR: 最大心率(整数bpm)\n7. calories: 消耗热量(整数大卡)\n8. cadence: 平均步频(整数步/分钟)\n9. steps: 总步数(整数)\n10. pace: 平均配速(分钟/公里，如14分21秒则转为14.35)\n11. 如果某项数据找不到，该项设为0\n12. 只返回JSON，不要任何其他文字';
+    const prompt = '请判断这张图片是否为运动健康App的运动记录截图（如华为运动健康、小米运动、Apple Health、Keep等的运动数据截图）。\n\n如果是运动记录截图，请提取运动数据，返回JSON：\n{"valid":true,"date":"YYYY-MM-DD","type":"户外跑步","duration":42,"distance":2.94,"avgHR":95,"maxHR":115,"calories":221,"cadence":104,"steps":4392,"pace":14.35}\n\n如果不是运动记录截图（如风景照、文档、网页、图表等），请返回：\n{"valid":false,"reason":"不是运动健康截图，而是XXX"}\n\n数据规则：\n- date: 运动日期，格式YYYY-MM-DD\n- type: 运动类型（户外跑步/室内跑步/户外步行/快走/骑行/游泳）\n- duration: 运动时长（整数分钟）\n- distance: 距离(公里)\n- avgHR: 平均心率(bpm)\n- maxHR: 最大心率(bpm)\n- calories: 消耗热量(大卡)\n- cadence: 平均步频(步/分钟)\n- steps: 总步数\n- pace: 平均配速(分钟/公里)\n- 找不到的数据设为0\n\n只返回JSON，不要其他文字。';
 
     const body = {
       model: AI_MODEL,
@@ -1806,10 +1806,21 @@ async function recognizeImage(imageData) {
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const data = JSON.parse(jsonMatch[0]);
-      fillFormFromData(data);
-      const filledCount = Object.values(data).filter(function(v) { return v && v !== 0; }).length;
       hint.style.display = 'none';
-      showToast('AI识别完成，请确认数据（识别' + filledCount + '项）');
+      
+      // 检查是否为有效的运动截图
+      if (data.valid === false) {
+        showToast(data.reason || '图片不是运动健康截图，请更换图片');
+        return;
+      }
+      
+      if (data.valid === true || data.date || data.duration) {
+        fillFormFromData(data);
+        const filledCount = Object.values(data).filter(function(v) { return v && v !== 0; }).length;
+        showToast('AI识别完成，请确认数据（识别' + filledCount + '项）');
+      } else {
+        showToast('未能识别运动数据，请手动填写');
+      }
     } else {
       hint.style.display = 'none';
       showToast('AI未能识别运动数据，请手动填写');
@@ -1817,7 +1828,6 @@ async function recognizeImage(imageData) {
   } catch (err) {
     console.error('[AI] Error:', err);
     hint.style.display = 'none';
-    hint.textContent = 'AI识别中...';
     showToast('AI识别失败，请手动填写');
   }
 }
