@@ -798,10 +798,6 @@ function renderRecords() {
         ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
         : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
 
-    const thumbHtml = r.image
-      ? `<div class="record-thumb" onclick="event.stopPropagation();viewImage('${r.image}')"><img src="${r.image}" alt="运动截图"></div>`
-      : '';
-
     const guidanceHtml = a.guidance.length > 0
       ? `<div class="record-guidance"><div class="guidance-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>改进建议</div><ul>${a.guidance.map(g => `<li>${g}</li>`).join('')}</ul></div>`
       : '';
@@ -818,7 +814,6 @@ function renderRecords() {
           </div>
           <span class="record-status ${a.status}">${statusIcon}${a.statusText}</span>
         </div>
-        ${thumbHtml}
         <div class="record-metrics">
           <div class="record-metric"><div class="val">${r.duration}<span class="unit">分</span></div><div class="lbl">时长</div></div>
           <div class="record-metric"><div class="val">${r.distance ? r.distance.toFixed(2) : '-'}<span class="unit">km</span></div><div class="lbl">距离</div></div>
@@ -1908,7 +1903,6 @@ function saveRecord() {
     const record = {
       id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
       date, type, duration, distance, avgHR, maxHR, calories, cadence, steps, pace,
-      image: currentImage || '',
       createdAt: new Date().toISOString()
     };
 
