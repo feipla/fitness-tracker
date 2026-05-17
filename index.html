@@ -1755,7 +1755,7 @@ function handleFileSelect(e) {
 // 注册地址：https://platform.moonshot.cn/ → API Key管理 → 创建
 const AI_API_KEY = localStorage.getItem('kimi_api_key') || '';
 const AI_API_URL = 'https://api.moonshot.cn/v1/chat/completions';
-const AI_MODEL = 'kimi-k2.6';
+const AI_MODEL = 'moonshot-v1-8k-vision-preview';
 
 async function recognizeImage(imageData) {
   const hint = document.getElementById('recognizingHint');
@@ -1795,7 +1795,7 @@ async function recognizeImage(imageData) {
       const errText = await resp.text();
       console.error('[AI] API error:', errText);
       hint.style.display = 'none';
-      showToast('AI识别失败，请检查API Key');
+      showToast('AI识别失败: ' + (errText.length > 50 ? errText.substring(0, 50) + '...' : errText));
       return;
     }
 
