@@ -759,14 +759,22 @@ function renderUserCard() {
 function renderWeeklySection() {
   const records = getRecords();
   const profile = getProfile();
-  const report = generateWeeklyReport(records, profile);
   const container = document.getElementById('weeklySection');
 
-  if (!report) {
+  // 计算累计数据（所有历史记录）
+  const totalCount = records.length;
+  const totalDuration = records.reduce((s, r) => s + (r.duration || 0), 0);
+  const totalCalories = records.reduce((s, r) => s + (r.calories || 0), 0);
+  const totalDistance = records.reduce((s, r) => s + (r.distance || 0), 0);
+
+  // 计算本周数据
+  const report = generateWeeklyReport(records, profile);
+
+  if (records.length === 0) {
     container.innerHTML = `
       <div class="section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
-        本周概览
+        运动概览
       </div>
       <div class="stats-grid">
         <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">0</div><div class="lbl">锻炼次数</div></div>
@@ -780,24 +788,25 @@ function renderWeeklySection() {
   container.innerHTML = `
     <div class="section-title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
-      本周概览
+      运动概览
     </div>
     <div class="stats-grid">
-      <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">${report.count}</div><div class="lbl">锻炼次数</div></div>
-      <div class="stat-card"><div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="num">${report.totalDuration}</div><div class="lbl">总时长(分)</div></div>
-      <div class="stat-card"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${report.totalCalories}</div><div class="lbl">总消耗(大卡)</div></div>
+      <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">${totalCount}</div><div class="lbl">累计次数</div></div>
+      <div class="stat-card"><div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="num">${totalDuration}</div><div class="lbl">总时长(分)</div></div>
+      <div class="stat-card"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${totalCalories}</div><div class="lbl">总消耗(大卡)</div></div>
     </div>
+    ${report ? `
     <div class="weekly-card">
       <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>本周总结</h3>
       <div class="weekly-summary">
-        <div class="weekly-item"><div class="val">${report.totalDistance}<span style="font-size:12px;font-weight:400">km</span></div><div class="lbl">总距离</div></div>
+        <div class="weekly-item"><div class="val">${report.totalDistance}<span style="font-size:12px;font-weight:400">km</span></div><div class="lbl">本周距离</div></div>
         <div class="weekly-item"><div class="val">${report.avgHR}<span style="font-size:12px;font-weight:400">bpm</span></div><div class="lbl">平均心率</div></div>
-        <div class="weekly-item"><div class="val">${report.inZone}/${report.count}</div><div class="lbl">减脂区间次数</div></div>
-        <div class="weekly-item"><div class="val">${report.avgScore}<span style="font-size:12px;font-weight:400">分</span></div><div class="lbl">平均质量分</div></div>
+        <div class="weekly-item"><div class="val">${report.inZone}/${report.count}</div><div class="lbl">减脂区间</div></div>
+        <div class="weekly-item"><div class="val">${report.avgScore}<span style="font-size:12px;font-weight:400">分</span></div><div class="lbl">质量评分</div></div>
       </div>
       <div class="weekly-text">${report.summary}</div>
       <div class="weekly-text" style="margin-top:8px">${report.advice}</div>
-    </div>
+    </div>` : ''}
   `;
 }
 
