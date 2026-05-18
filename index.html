@@ -258,12 +258,67 @@ button{cursor:pointer}
 .hrv-weekly-item{background:#F8FAFC;border-radius:10px;padding:12px;text-align:center}
 .hrv-weekly-item .val{font-size:20px;font-weight:700;color:var(--text)}
 .hrv-weekly-item .lbl{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* Health Tip Card */
+.health-tip-card{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border-radius:var(--radius);padding:18px;margin-bottom:16px;border-left:4px solid var(--primary)}
+.health-tip-card .tip-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.health-tip-card .tip-icon{width:36px;height:36px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.health-tip-card .tip-icon svg{width:20px;height:20px;color:#fff}
+.health-tip-card .tip-title{font-size:15px;font-weight:700;color:var(--text)}
+.health-tip-card .tip-text{font-size:14px;color:var(--text2);line-height:1.8}
+
+/* Streak Card */
+.streak-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:16px}
+.streak-fire{font-size:40px;line-height:1}
+.streak-info{flex:1}
+.streak-num{font-size:28px;font-weight:800;color:var(--primary)}
+.streak-label{font-size:13px;color:var(--text2);margin-top:2px}
+.streak-best{font-size:12px;color:var(--text3);margin-top:4px}
+
+/* Login Page */
+.login-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;background:linear-gradient(135deg,var(--primary),var(--secondary))}
+.login-logo{width:80px;height:80px;border-radius:20px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.login-logo svg{width:44px;height:44px;color:#fff}
+.login-title{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px}
+.login-subtitle{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:32px}
+.login-form{width:100%;max-width:360px}
+.login-input{width:100%;height:52px;border:2px solid rgba(255,255,255,.3);border-radius:14px;padding:0 18px;font-size:15px;color:#fff;background:rgba(255,255,255,.15);margin-bottom:14px;transition:all .2s}
+.login-input::placeholder{color:rgba(255,255,255,.6)}
+.login-input:focus{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.2)}
+.login-btn{width:100%;height:52px;border-radius:14px;background:#fff;color:var(--primary);font-size:16px;font-weight:700;transition:opacity .2s;margin-bottom:12px}
+.login-btn:active{opacity:.85}
+.login-switch{color:rgba(255,255,255,.8);font-size:14px;text-align:center;cursor:pointer}
+.login-switch span{color:#fff;font-weight:600;text-decoration:underline}
 </style>
 </head>
 <body>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- Login Page -->
+<div id="loginPage" style="display:none">
+  <div class="login-page">
+    <div class="login-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+    <div class="login-title">运动健康助手</div>
+    <div class="login-subtitle">科学运动 · 智能分析 · 健康减脂</div>
+    <div class="login-form">
+      <div id="loginRegisterArea">
+        <input type="text" class="login-input" id="loginUser" placeholder="手机号 / 用户名">
+        <input type="password" class="login-input" id="loginPass" placeholder="密码">
+        <button class="login-btn" onclick="doLogin()">登 录</button>
+        <div class="login-switch">还没有账号？<span onclick="toggleLoginRegister()">立即注册</span></div>
+      </div>
+      <div id="registerArea" style="display:none">
+        <input type="text" class="login-input" id="regUser" placeholder="手机号 / 用户名">
+        <input type="password" class="login-input" id="regPass" placeholder="设置密码（至少6位）">
+        <input type="password" class="login-input" id="regPass2" placeholder="确认密码">
+        <button class="login-btn" onclick="doRegister()">注 册</button>
+        <div class="login-switch">已有账号？<span onclick="toggleLoginRegister()">去登录</span></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Image Viewer -->
 <div class="img-viewer" id="imgViewer">
@@ -292,10 +347,14 @@ button{cursor:pointer}
     </div>
   </div>
   <div class="user-card" id="userCard"></div>
-  
+
+  <div class="section" id="streakSection"></div>
+
   <!-- 上传区域 / 分析结果展示 -->
   <div class="section" id="uploadSection"></div>
-  
+
+  <div class="section" id="healthTipSection"></div>
+
   <!-- 最近运动记录 -->
   <div class="section">
     <div class="section-title">
@@ -504,6 +563,95 @@ button{cursor:pointer}
 const STORAGE_KEY = 'fitness_records';
 const PROFILE_KEY = 'fitness_profile';
 
+// ===================== STREAK DATA LAYER =====================
+const STREAK_KEY = 'fitness_streak';
+function getStreak() {
+  try { return JSON.parse(localStorage.getItem(STREAK_KEY)) || {current:0,best:0,lastDate:''}; }
+  catch { return {current:0,best:0,lastDate:''}; }
+}
+function saveStreak(s) { localStorage.setItem(STREAK_KEY, JSON.stringify(s)); }
+function updateStreak() {
+  const streak = getStreak();
+  const today = new Date().toISOString().split('T')[0];
+  if (streak.lastDate === today) return streak;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  if (streak.lastDate === yesterday) {
+    streak.current++;
+  } else {
+    streak.current = 1;
+  }
+  streak.lastDate = today;
+  if (streak.current > streak.best) streak.best = streak.current;
+  saveStreak(streak);
+  return streak;
+}
+function checkStreakBroken() {
+  const streak = getStreak();
+  if (!streak.lastDate) return;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  if (streak.lastDate !== yesterday && streak.lastDate !== new Date().toISOString().split('T')[0]) {
+    streak.current = 0;
+    saveStreak(streak);
+  }
+}
+
+// ===================== AUTH DATA LAYER =====================
+const AUTH_KEY = 'fitness_auth';
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem('fitness_users') || '{}'); }
+  catch { return {}; }
+}
+function saveUsers(u) { localStorage.setItem('fitness_users', JSON.stringify(u)); }
+function isLoggedIn() { return !!localStorage.getItem(AUTH_KEY); }
+function getCurrentUser() { return localStorage.getItem(AUTH_KEY) || ''; }
+function doLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if (!user || !pass) { showToast('请填写用户名和密码'); return; }
+  const users = getUsers();
+  if (!users[user]) { showToast('用户不存在，请先注册'); return; }
+  if (users[user] !== pass) { showToast('密码错误'); return; }
+  localStorage.setItem(AUTH_KEY, user);
+  showApp();
+  showToast('登录成功，欢迎回来！');
+}
+function doRegister() {
+  const user = document.getElementById('regUser').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const pass2 = document.getElementById('regPass2').value;
+  if (!user) { showToast('请填写用户名'); return; }
+  if (pass.length < 6) { showToast('密码至少6位'); return; }
+  if (pass !== pass2) { showToast('两次密码不一致'); return; }
+  const users = getUsers();
+  if (users[user]) { showToast('用户名已存在'); return; }
+  users[user] = pass;
+  saveUsers(users);
+  localStorage.setItem(AUTH_KEY, user);
+  showApp();
+  showToast('注册成功！');
+}
+function toggleLoginRegister() {
+  const la = document.getElementById('loginRegisterArea');
+  const ra = document.getElementById('registerArea');
+  if (la.style.display === 'none') { la.style.display = 'block'; ra.style.display = 'none'; }
+  else { la.style.display = 'none'; ra.style.display = 'block'; }
+}
+function doLogout() {
+  localStorage.removeItem(AUTH_KEY);
+  document.getElementById('loginPage').style.display = 'block';
+  document.querySelector('.bottom-nav').style.display = 'none';
+}
+function showApp() {
+  document.getElementById('loginPage').style.display = 'none';
+  document.querySelector('.bottom-nav').style.display = 'flex';
+  renderUserCard();
+  renderUploadSection();
+  renderHealthTip();
+  checkStreakBroken();
+  renderStreak();
+  renderRecords();
+}
+
 const defaultProfile = {
   name: '运动达人',
   age: 46,
@@ -661,6 +809,12 @@ function analyzeRecord(record, profile) {
 
   score = Math.max(0, Math.min(100, score));
 
+  // Color level (Noom style)
+  let colorLevel, colorLabel;
+  if (score >= 80) { colorLevel = 'green'; colorLabel = '优秀 🟢'; }
+  else if (score >= 60) { colorLevel = 'yellow'; colorLabel = '良好 🟡'; }
+  else { colorLevel = 'red'; colorLabel = '需改善 🔴'; }
+
   // Build analysis text
   let analysisText = '';
   if (goods.length > 0) {
@@ -670,7 +824,7 @@ function analyzeRecord(record, profile) {
     analysisText += (analysisText ? '<br>' : '') + issues.map(i => `<strong>!</strong> ${i}`).join('<br>');
   }
 
-  return { score, status, statusText, analysisText, guidance, goods, issues };
+  return { score, status, statusText, analysisText, guidance, goods, issues, colorLevel, colorLabel };
 }
 
 function generateWeeklyReport(records, profile) {
@@ -735,6 +889,18 @@ function renderUserCard() {
   const p = getProfile();
   const bmi = (p.weight / ((p.height / 100) ** 2)).toFixed(1);
   const zones = getHRZones(p.age);
+  const records = getRecords();
+  let healthScoreHtml = '';
+  if (records.length > 0) {
+    const lastRecord = records[0];
+    const a = analyzeRecord(lastRecord, p);
+    const scoreColor = a.colorLevel === 'green' ? '#16A34A' : a.colorLevel === 'yellow' ? '#F59E0B' : '#EF4444';
+    const scoreBg = a.colorLevel === 'green' ? '#ECFDF5' : a.colorLevel === 'yellow' ? '#FEF3C7' : '#FEE2E2';
+    healthScoreHtml = `<div style="display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px;background:${scoreBg};border-radius:12px">
+      <div style="width:48px;height:48px;border-radius:50%;background:${scoreColor};display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:800;flex-shrink:0">${a.score}</div>
+      <div><div style="font-size:14px;font-weight:700;color:${scoreColor}">${a.colorLabel}</div><div style="font-size:12px;color:var(--text2);margin-top:2px">最近运动评分</div></div>
+    </div>`;
+  }
   document.getElementById('userCard').innerHTML = `
     <div class="user-info">
       <div class="user-avatar">
@@ -750,6 +916,7 @@ function renderUserCard() {
       <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>目标 ${p.targetWeight}kg</span>
       <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>每周${p.exerciseFreq}次</span>
     </div>
+    ${healthScoreHtml}
   `;
 }
 
@@ -804,6 +971,7 @@ function renderRecords() {
 
     return `
       <div class="record-card" onclick="viewRecordDetail('${r.id}')">
+        <div style="height:4px;background:${a.colorLevel === 'green' ? 'linear-gradient(90deg,#22C55E,#16A34A)' : a.colorLevel === 'yellow' ? 'linear-gradient(90deg,#FBBF24,#F59E0B)' : 'linear-gradient(90deg,#F87171,#EF4444)'};position:absolute;top:0;left:0;right:0;z-index:2;border-radius:var(--radius) var(--radius) 0 0"></div>
         <div class="delete-btn" onclick="event.stopPropagation();confirmDelete('${r.id}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         </div>
@@ -831,6 +999,78 @@ function renderRecords() {
 }
 
 function renderStats() {
+
+// ===================== HEALTH TIP =====================
+const HEALTH_TIPS = [
+  "减脂最佳心率区间是你最大心率的60%-70%，保持在这个区间运动效果最好",
+  "步频低于155步/分时步幅过大，会增加膝盖和腰部冲击，建议提高步频",
+  "每次运动建议至少30分钟，45-60分钟减脂效果更佳",
+  "运动后做5-10分钟拉伸，可以有效预防肌肉酸痛和受伤",
+  "腰肌劳损期间建议避免高强度跑跳，选择快走或低冲击有氧运动",
+  "保持每周3-5次运动频率，比偶尔一次高强度运动更有效",
+  "运动前热身5-10分钟，让心率逐渐升高，避免心脏突然负荷",
+  "减脂不是越快越好，每周减0.5-1kg是最健康的速度",
+  "睡眠不足会影响运动恢复，保证每天7-8小时睡眠",
+  "运动后30分钟内补充蛋白质，有助于肌肉修复"
+];
+
+function renderHealthTip() {
+  const container = document.getElementById('healthTipSection');
+  const records = getRecords();
+  const profile = getProfile();
+  let tipTitle = '每日健康提示';
+  let tipText = '';
+
+  if (records.length === 0) {
+    tipTitle = '开始你的健康之旅';
+    tipText = '开始你的第一次运动吧！记录运动数据，获取个性化分析和建议，让科学运动成为习惯。';
+  } else {
+    const lastRecord = records[0];
+    const a = analyzeRecord(lastRecord, profile);
+    const streak = getStreak();
+
+    if (a.score < 60) {
+      tipTitle = '改善建议';
+      if (a.issues.length > 0) {
+        tipText = a.issues[0] + '。' + (a.guidance.length > 0 ? a.guidance[0] : '');
+      } else {
+        tipText = '最近运动评分偏低，建议关注心率和运动时长，逐步提升运动质量。';
+      }
+    } else if (streak.current >= 3) {
+      tipTitle = '连续打卡 ' + streak.current + ' 天';
+      tipText = '太棒了！你已经连续运动' + streak.current + '天，坚持就是胜利！保持这个节奏，身体会给你最好的回报。';
+    } else {
+      tipText = HEALTH_TIPS[Math.floor(Math.random() * HEALTH_TIPS.length)];
+    }
+  }
+
+  container.innerHTML = `
+    <div class="health-tip-card">
+      <div class="tip-header">
+        <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 1 4 12.9V17H8v-2.1A7 7 0 0 1 12 2z"/></svg></div>
+        <div class="tip-title">${tipTitle}</div>
+      </div>
+      <div class="tip-text">${tipText}</div>
+    </div>
+  `;
+}
+
+// ===================== STREAK RENDER =====================
+function renderStreak() {
+  const container = document.getElementById('streakSection');
+  const streak = getStreak();
+  const fireEmoji = streak.current >= 7 ? '🔥' : streak.current >= 3 ? '🔥' : streak.current > 0 ? '💪' : '😴';
+  container.innerHTML = `
+    <div class="streak-card">
+      <div class="streak-fire">${fireEmoji}</div>
+      <div class="streak-info">
+        <div class="streak-num">${streak.current} 天</div>
+        <div class="streak-label">${streak.current > 0 ? '连续打卡中' : '还没有开始打卡'}</div>
+        ${streak.best > 0 ? `<div class="streak-best">历史最佳：${streak.best} 天</div>` : ''}
+      </div>
+    </div>
+  `;
+}
   const records = getRecords();
   const profile = getProfile();
   const container = document.getElementById('statsContent');
@@ -994,6 +1234,10 @@ function renderProfile() {
       <button class="btn-danger" onclick="confirmClearAll()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         清除所有数据
+      </button>
+      <button class="btn-danger" onclick="doLogout()" style="margin-top:12px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        退出登录
       </button>
     </div>
   `;
@@ -1664,7 +1908,7 @@ function switchPage(name) {
   document.querySelectorAll('.nav-item').forEach((n, i) => {
     n.classList.toggle('active', ['Home', 'Stats', 'Profile', 'HRV'][i] === name);
   });
-  if (name === 'Home') { renderUserCard(); renderUploadSection(); renderRecords(); }
+  if (name === 'Home') { renderUserCard(); renderUploadSection(); renderHealthTip(); checkStreakBroken(); renderStreak(); renderRecords(); }
   if (name === 'Stats') renderStats();
   if (name === 'Profile') renderProfile();
   if (name === 'HRV') renderHRV();
@@ -1907,9 +2151,13 @@ function saveRecord() {
     };
 
     addRecord(record);
+    updateStreak();
     closeAddModal();
     renderUserCard();
     renderUploadSection();
+    renderHealthTip();
+    checkStreakBroken();
+    renderStreak();
     renderRecords();
     showToast('✅ 记录已保存');
   } catch (err) {
@@ -2105,7 +2353,12 @@ if (uploadZone) {
 }
 
 // Init
-renderAll();
+if (!isLoggedIn()) {
+  document.getElementById('loginPage').style.display = 'block';
+  document.querySelector('.bottom-nav').style.display = 'none';
+} else {
+  showApp();
+}
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {
