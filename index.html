@@ -338,6 +338,54 @@ button{cursor:pointer}
   </div>
 </div>
 
+<!-- ==================== PROFILE SETUP MODAL ==================== -->
+<div class="modal-overlay" id="profileSetupModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>完善个人档案</h2>
+    </div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">首次使用，请填写您的基本信息，以便我们为您提供更精准的运动建议。</p>
+    <div class="form-group">
+      <label class="form-label">昵称</label>
+      <input type="text" class="form-input" id="setupName" placeholder="如：运动达人">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">年龄</label>
+        <input type="number" class="form-input" id="setupAge" placeholder="如：35">
+      </div>
+      <div class="form-group">
+        <label class="form-label">身高(cm)</label>
+        <input type="number" class="form-input" id="setupHeight" placeholder="如：175">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">体重(kg)</label>
+        <input type="number" class="form-input" id="setupWeight" placeholder="如：70">
+      </div>
+      <div class="form-group">
+        <label class="form-label">目标体重(kg)</label>
+        <input type="number" class="form-input" id="setupTargetWeight" placeholder="如：65">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">健康状况/注意事项</label>
+      <input type="text" class="form-input" id="setupCondition" placeholder="如：腰肌劳损轻症（没有请留空）">
+    </div>
+    <div class="form-group">
+      <label class="form-label">每周运动目标（次）</label>
+      <select class="form-select" id="setupFreq">
+        <option value="2">2次</option>
+        <option value="3" selected>3次</option>
+        <option value="4">4次</option>
+        <option value="5">5次</option>
+      </select>
+    </div>
+    <button class="btn-primary" onclick="saveSetupProfile()">保存并开始使用</button>
+  </div>
+</div>
+
 <!-- ==================== PAGE: HOME ==================== -->
 <div class="page active" id="pageHome">
   <div class="header">
@@ -612,7 +660,7 @@ function doLogin() {
   if (!users[user]) { showToast('用户不存在，请先注册'); return; }
   if (users[user] !== pass) { showToast('密码错误'); return; }
   localStorage.setItem(AUTH_KEY, user);
-  showApp();
+  showApp(); // 这里会检查档案
   showToast('登录成功，欢迎回来！');
 }
 function doRegister() {
@@ -627,7 +675,7 @@ function doRegister() {
   users[user] = pass;
   saveUsers(users);
   localStorage.setItem(AUTH_KEY, user);
-  showApp();
+  showApp(); // 这里会检查档案并弹出填写窗口
   showToast('注册成功！');
 }
 function toggleLoginRegister() {
@@ -644,6 +692,13 @@ function doLogout() {
 function showApp() {
   document.getElementById('loginPage').style.display = 'none';
   document.querySelector('.bottom-nav').style.display = 'flex';
+  
+  // 检查是否需要填写档案
+  if (!hasProfile()) {
+    document.getElementById('profileSetupModal').classList.add('show');
+    return;
+  }
+  
   renderUserCard();
   renderUploadSection();
   renderHealthTip();
@@ -652,25 +707,50 @@ function showApp() {
   renderRecords();
 }
 
-const defaultProfile = {
-  name: '运动达人',
-  age: 46,
-  height: 176,
-  weight: 79,
-  condition: '腰肌劳损轻症',
-  targetWeight: 73,
-  exerciseFreq: 3
-};
+const defaultProfile = null; // 登录后首次引导填写
+
+function getProfileKey() {
+  const user = getCurrentUser();
+  return user ? 'fitness_profile_' + user : 'fitness_profile_guest';
+}
 
 function getProfile() {
+  const key = getProfileKey();
   try {
-    const d = localStorage.getItem(PROFILE_KEY);
-    return d ? { ...defaultProfile, ...JSON.parse(d) } : { ...defaultProfile };
-  } catch { return { ...defaultProfile }; }
+    const d = localStorage.getItem(key);
+    if (!d) return null;
+    return JSON.parse(d);
+  } catch { return null; }
 }
 
 function saveProfile(p) {
-  localStorage.setItem(PROFILE_KEY, JSON.stringify(p));
+  const key = getProfileKey();
+  localStorage.setItem(key, JSON.stringify(p));
+}
+
+function hasProfile() {
+  return !!getProfile();
+}
+
+function saveSetupProfile() {
+  const name = document.getElementById('setupName').value.trim() || '运动达人';
+  const age = parseInt(document.getElementById('setupAge').value) || 30;
+  const height = parseInt(document.getElementById('setupHeight').value) || 170;
+  const weight = parseInt(document.getElementById('setupWeight').value) || 70;
+  const targetWeight = parseInt(document.getElementById('setupTargetWeight').value) || weight;
+  const condition = document.getElementById('setupCondition').value.trim() || '';
+  const freq = parseInt(document.getElementById('setupFreq').value) || 3;
+  
+  if (!document.getElementById('setupAge').value || !document.getElementById('setupHeight').value || !document.getElementById('setupWeight').value) {
+    showToast('请填写年龄、身高和体重');
+    return;
+  }
+  
+  const profile = { name, age, height, weight, targetWeight, condition, exerciseFreq: freq };
+  saveProfile(profile);
+  document.getElementById('profileSetupModal').classList.remove('show');
+  showApp();
+  showToast('档案已保存，开始您的健康之旅！');
 }
 
 function getRecords() {
@@ -887,6 +967,8 @@ function generateWeeklyReport(records, profile) {
 // ===================== RENDERING =====================
 function renderUserCard() {
   const p = getProfile();
+  if (!p) return; // 未填写档案时不渲染
+  
   const bmi = (p.weight / ((p.height / 100) ** 2)).toFixed(1);
   const zones = getHRZones(p.age);
   const records = getRecords();
