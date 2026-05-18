@@ -2098,7 +2098,16 @@ async function recognizeImage(imageData) {
 
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
-      const data = JSON.parse(jsonMatch[0]);
+      let data;
+      try {
+        data = JSON.parse(jsonMatch[0]);
+      } catch (parseErr) {
+        console.error('[AI] JSON parse error:', parseErr);
+        hint.style.display = 'none';
+        showToast('AI返回格式错误，请手动填写');
+        return;
+      }
+      console.log('[AI] Parsed data:', data);
       hint.style.display = 'none';
       
       // 检查是否为有效的运动截图
@@ -2107,7 +2116,8 @@ async function recognizeImage(imageData) {
         return;
       }
       
-      if (data.valid === true || data.date || data.duration) {
+      // 只要有日期或时长就认为是有效数据
+      if (data.date || data.duration) {
         fillFormFromData(data);
         const filledCount = Object.values(data).filter(function(v) { return v && v !== 0; }).length;
         showToast('AI识别完成，请确认数据（识别' + filledCount + '项）');
