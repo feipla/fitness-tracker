@@ -233,6 +233,37 @@ button{cursor:pointer}
 .hrv-chart-tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:#F1F5F9;color:var(--text2);cursor:pointer;transition:all .2s}
 .hrv-chart-tab.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
 
+/* AI Analysis Result Card */
+.analysis-result-card{background:var(--card);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow);border-top:4px solid var(--primary)}
+.analysis-result-card.green{border-top-color:#10B981}
+.analysis-result-card.yellow{border-top-color:#F59E0B}
+.analysis-result-card.red{border-top-color:#EF4444}
+
+.analysis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.analysis-date{font-size:16px;font-weight:700;color:var(--text)}
+.analysis-score-badge{font-size:14px;font-weight:700;padding:6px 14px;border-radius:20px}
+.analysis-score-badge.green{background:#D1FAE5;color:#059669}
+.analysis-score-badge.yellow{background:#FEF3C7;color:#D97706}
+.analysis-score-badge.red{background:#FEE2E2;color:#DC2626}
+
+.analysis-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;padding:14px;background:#F8FAFC;border-radius:12px}
+.metric-item{text-align:center}
+.metric-val{font-size:20px;font-weight:800;color:var(--text)}
+.metric-unit{font-size:10px;color:var(--text2)}
+.metric-lbl{font-size:11px;color:var(--text2);margin-top:2px}
+
+.analysis-content{background:#F0FDF4;border-radius:12px;padding:16px;margin-bottom:14px}
+.analysis-content .analysis-title{font-size:16px;font-weight:700;color:#059669;margin-bottom:10px}
+.analysis-content .analysis-text{font-size:15px;color:var(--text);line-height:1.9}
+
+.guidance-content{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-radius:12px;padding:16px;margin-bottom:16px;border-left:4px solid var(--primary)}
+.guidance-content .guidance-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:10px}
+.guidance-content .guidance-text{font-size:14px;color:var(--text);line-height:2}
+
+.analysis-actions{display:flex;gap:12px}
+.btn-save{flex:1;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;font-size:15px;font-weight:700}
+.btn-retry{height:48px;padding:0 24px;border-radius:12px;border:2px solid var(--border);color:var(--text2);font-size:14px;font-weight:600;background:#fff}
+
 /* HRV Record Card */
 .hrv-record-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
 .hrv-record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
@@ -444,90 +475,6 @@ button{cursor:pointer}
     </div>
   </div>
   <div class="section" id="hrvContent"></div>
-</div>
-
-<!-- ==================== ADD RECORD MODAL ==================== -->
-<div class="modal-overlay" id="addModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>添加运动记录</h2>
-      <div class="modal-close" onclick="closeAddModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
-    </div>
-
-    <div class="img-preview-area" id="imgPreviewArea" onclick="document.getElementById('fileInput').click()">
-      <div class="placeholder" id="imgPlaceholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span>点击上传运动截图</span>
-      </div>
-      <img id="imgPreview" src="" style="display:none" alt="">
-      <span class="change-img" id="changeImgBtn" style="display:none">更换图片</span>
-      <div class="recognizing" id="recognizingHint" style="display:none">AI识别中...</div>
-    </div>
-    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
-
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">运动日期</label>
-        <input type="date" class="form-input" id="formDate">
-      </div>
-      <div class="form-group">
-        <label class="form-label">运动类型</label>
-        <select class="form-select" id="formType">
-          <option value="户外跑步">户外跑步</option>
-          <option value="室内跑步">室内跑步</option>
-          <option value="户外步行">户外步行</option>
-          <option value="快走">快走</option>
-          <option value="骑行">骑行</option>
-          <option value="游泳">游泳</option>
-          <option value="其他">其他</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">运动时长(分钟)</label>
-        <input type="number" class="form-input" id="formDuration" placeholder="如：45">
-      </div>
-      <div class="form-group">
-        <label class="form-label">距离(km)</label>
-        <input type="number" step="0.01" class="form-input" id="formDistance" placeholder="如：4.5">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">平均心率(bpm)</label>
-        <input type="number" class="form-input" id="formAvgHR" placeholder="如：110">
-      </div>
-      <div class="form-group">
-        <label class="form-label">最大心率(bpm)</label>
-        <input type="number" class="form-input" id="formMaxHR" placeholder="如：135">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">消耗热量(大卡)</label>
-        <input type="number" class="form-input" id="formCalories" placeholder="如：320">
-      </div>
-      <div class="form-group">
-        <label class="form-label">平均步频(步/分)</label>
-        <input type="number" class="form-input" id="formCadence" placeholder="如：155">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">总步数</label>
-        <input type="number" class="form-input" id="formSteps" placeholder="如：7000">
-      </div>
-      <div class="form-group">
-        <label class="form-label">平均配速(分/km)</label>
-        <input type="number" step="0.01" class="form-input" id="formPace" placeholder="如：10.5">
-      </div>
-    </div>
-    <button class="btn-primary" onclick="saveRecord()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-      保存记录
-    </button>
-  </div>
 </div>
 
 <!-- ==================== ADD HRV RECORD MODAL ==================== -->
@@ -1002,17 +949,98 @@ function renderUserCard() {
   `;
 }
 
+let currentAnalysisResult = null; // 存储当前分析结果
+
 function renderUploadSection() {
   const container = document.getElementById('uploadSection');
-  container.innerHTML = `
-    <div class="upload-zone" id="uploadZone" onclick="openAddModal()">
-      <div class="upload-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+  
+  if (currentAnalysisResult) {
+    // 显示AI分析结果
+    const a = currentAnalysisResult.analysis;
+    const data = currentAnalysisResult.data;
+    const colorClass = a.colorLevel; // green/yellow/red
+    
+    container.innerHTML = `
+      <div class="analysis-result-card ${colorClass}">
+        <div class="analysis-header">
+          <div class="analysis-date">${data.date} · ${data.type}</div>
+          <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${a.colorLabel}</div>
+        </div>
+        
+        <div class="analysis-metrics">
+          <div class="metric-item"><span class="metric-val">${data.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
+          <div class="metric-item"><span class="metric-val">${data.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
+          <div class="metric-item"><span class="metric-val">${data.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
+          <div class="metric-item"><span class="metric-val">${data.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
+        </div>
+        
+        <div class="analysis-content">
+          <div class="analysis-title">${a.statusIcon} 运动分析</div>
+          <div class="analysis-text">${a.analysisText}</div>
+        </div>
+        
+        <div class="guidance-content">
+          <div class="guidance-title">💡 专属健康指导</div>
+          <div class="guidance-text">${a.guidance.join('<br>')}</div>
+        </div>
+        
+        <div class="analysis-actions">
+          <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
+          <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
+        </div>
       </div>
-      <h3>上传运动截图</h3>
-      <p>华为 / 苹果 / 小米运动健康App</p>
-    </div>
-  `;
+    `;
+  } else {
+    // 显示上传按钮
+    container.innerHTML = `
+      <div class="upload-zone" id="uploadZone" onclick="triggerFileUpload()">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <h3>上传运动截图</h3>
+        <p>华为 / 苹果 / 小米运动健康App</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+    `;
+  }
+}
+
+function triggerFileUpload() {
+  document.getElementById('fileInput').click();
+}
+
+function clearAnalysis() {
+  currentAnalysisResult = null;
+  renderUploadSection();
+}
+
+function saveCurrentAnalysis() {
+  if (!currentAnalysisResult) return;
+  const data = currentAnalysisResult.data;
+  const record = {
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+    date: data.date,
+    type: data.type,
+    duration: data.duration,
+    distance: data.distance,
+    avgHR: data.avgHR,
+    maxHR: data.maxHR,
+    calories: data.calories,
+    cadence: data.cadence,
+    steps: data.steps,
+    pace: data.pace,
+    createdAt: new Date().toISOString()
+  };
+  addRecord(record);
+  updateStreak();
+  currentAnalysisResult = null;
+  renderUploadSection();
+  renderUserCard();
+  renderHealthTip();
+  checkStreakBroken();
+  renderStreak();
+  renderRecords();
+  showToast('✅ 记录已保存');
 }
 
 function renderWeeklySection() {
@@ -1997,36 +2025,7 @@ function switchPage(name) {
   window.scrollTo(0, 0);
 }
 
-// ===================== ADD RECORD MODAL =====================
-let currentImage = '';
-
-function openAddModal() {
-  resetForm();
-  document.getElementById('addModal').classList.add('show');
-  document.getElementById('formDate').value = new Date().toISOString().split('T')[0];
-}
-
-function closeAddModal() {
-  document.getElementById('addModal').classList.remove('show');
-  resetForm();
-}
-
-function resetForm() {
-  currentImage = '';
-  document.getElementById('imgPreview').style.display = 'none';
-  document.getElementById('imgPlaceholder').style.display = 'flex';
-  document.getElementById('changeImgBtn').style.display = 'none';
-  document.getElementById('formType').value = '户外跑步';
-  document.getElementById('formDuration').value = '';
-  document.getElementById('formDistance').value = '';
-  document.getElementById('formAvgHR').value = '';
-  document.getElementById('formMaxHR').value = '';
-  document.getElementById('formCalories').value = '';
-  document.getElementById('formCadence').value = '';
-  document.getElementById('formSteps').value = '';
-  document.getElementById('formPace').value = '';
-}
-
+// ===================== FILE UPLOAD HANDLER =====================
 function handleFileSelect(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -2052,17 +2051,55 @@ const AI_MODEL = 'moonshot-v1-8k-vision-preview';
 
 async function recognizeImage(imageData) {
   const hint = document.getElementById('recognizingHint');
-  hint.style.display = 'block';
-  hint.textContent = 'AI识别中...';
+  if (hint) {
+    hint.style.display = 'block';
+    hint.textContent = 'AI分析中，请稍候...';
+  }
 
   try {
     if (!AI_API_KEY) {
-      hint.style.display = 'none';
+      if (hint) hint.style.display = 'none';
       showToast('请先设置Kimi API Key（我的→AI识别服务）');
       switchPage('Profile');
       return;
     }
-    const prompt = '请判断这张图片是否为运动健康App的运动记录截图（如华为运动健康、小米运动、Apple Health、Keep等的运动数据截图）。\n\n如果是运动记录截图，请提取运动数据，返回JSON：\n{"valid":true,"date":"YYYY-MM-DD","type":"户外跑步","duration":42,"distance":2.94,"avgHR":95,"maxHR":115,"calories":221,"cadence":104,"steps":4392,"pace":14.35}\n\n如果不是运动记录截图（如风景照、文档、网页、图表等），请返回：\n{"valid":false,"reason":"不是运动健康截图，而是XXX"}\n\n数据规则：\n- date: 运动日期，格式YYYY-MM-DD\n- type: 运动类型（户外跑步/室内跑步/户外步行/快走/骑行/游泳）\n- duration: 运动时长（整数分钟）\n- distance: 距离(公里)\n- avgHR: 平均心率(bpm)\n- maxHR: 最大心率(bpm)\n- calories: 消耗热量(大卡)\n- cadence: 平均步频(步/分钟)\n- steps: 总步数\n- pace: 平均配速(分钟/公里)\n- 找不到的数据设为0\n\n只返回JSON，不要其他文字。';
+    const prompt = `你是一位专业的运动健康分析师。请分析这张运动健康App截图，提取运动数据并给出千人千面的个性化分析。
+
+如果是运动记录截图，请提取数据并返回以下JSON格式：
+{
+  "valid": true,
+  "date": "YYYY-MM-DD",
+  "type": "运动类型",
+  "duration": 分钟数,
+  "distance": 公里数,
+  "avgHR": 平均心率,
+  "maxHR": 最大心率,
+  "calories": 消耗大卡,
+  "cadence": 步频,
+  "steps": 步数,
+  "pace": 配速,
+  "analysis": {
+    "score": 0-100的评分,
+    "colorLevel": "green/yellow/red",
+    "colorLabel": "优秀/良好/需改善",
+    "statusIcon": "✓/⚠/✗",
+    "analysisText": "详细的差异化分析文字，根据具体数据给出个性化评价",
+    "guidance": ["针对性的健康建议1", "建议2", "建议3"]
+  }
+}
+
+分析要求（千人千面）：
+1. 根据用户的具体数据（心率、时长、步频等）给出个性化评价，不要套话
+2. 分析要具体：比如心率95bpm对于45岁用户意味着什么，是否达到减脂区间
+3. 步频160和140的评价要完全不同
+4. 时长30分钟和60分钟的评价要体现差异
+5. 结合运动类型（跑步/步行/骑行）给出针对性建议
+6. 如果检测到异常数据（如心率过高、步频过低），要特别提醒
+
+如果不是运动截图，返回：
+{"valid": false, "reason": "不是运动健康截图"}
+
+只返回JSON，不要有其他文字。`;
 
     const body = {
       model: AI_MODEL,
@@ -2103,36 +2140,44 @@ async function recognizeImage(imageData) {
         data = JSON.parse(jsonMatch[0]);
       } catch (parseErr) {
         console.error('[AI] JSON parse error:', parseErr);
-        hint.style.display = 'none';
-        showToast('AI返回格式错误，请手动填写');
+        if (hint) hint.style.display = 'none';
+        showToast('AI分析格式错误，请重试');
         return;
       }
-      console.log('[AI] Parsed data:', data);
-      hint.style.display = 'none';
       
-      // 检查是否为有效的运动截图
+      if (hint) hint.style.display = 'none';
+      
       if (data.valid === false) {
-        showToast(data.reason || '图片不是运动健康截图，请更换图片');
+        showToast(data.reason || '请上传运动健康App截图');
         return;
       }
       
-      // 只要有日期或时长就认为是有效数据
       if (data.date || data.duration) {
-        fillFormFromData(data);
-        const filledCount = Object.values(data).filter(function(v) { return v && v !== 0; }).length;
-        showToast('AI识别完成，请确认数据（识别' + filledCount + '项）');
+        // 存储分析结果
+        currentAnalysisResult = {
+          data: data,
+          analysis: data.analysis || generateDefaultAnalysis(data)
+        };
+        renderUploadSection();
+        showToast('AI分析完成！');
       } else {
-        showToast('未能识别运动数据，请手动填写');
+        showToast('未能识别运动数据，请重试');
       }
     } else {
-      hint.style.display = 'none';
-      showToast('AI未能识别运动数据，请手动填写');
+      if (hint) hint.style.display = 'none';
+      showToast('AI分析失败，请重试');
     }
   } catch (err) {
     console.error('[AI] Error:', err);
-    hint.style.display = 'none';
-    showToast('AI识别失败，请手动填写');
+    if (hint) hint.style.display = 'none';
+    showToast('AI分析出错，请重试');
   }
+}
+
+// 兼容旧版AI返回格式
+function generateDefaultAnalysis(data) {
+  const profile = getProfile();
+  return analyzeRecord(data, profile);
 }
 
 function parseFitnessData(text) {
@@ -2205,57 +2250,6 @@ function parseFitnessData(text) {
   }
 
   return data;
-}
-
-function fillFormFromData(data) {
-  if (data.date) document.getElementById('formDate').value = data.date;
-  if (data.type) document.getElementById('formType').value = data.type;
-  if (data.duration) document.getElementById('formDuration').value = data.duration;
-  if (data.distance) document.getElementById('formDistance').value = data.distance;
-  if (data.avgHR) document.getElementById('formAvgHR').value = data.avgHR;
-  if (data.maxHR) document.getElementById('formMaxHR').value = data.maxHR;
-  if (data.calories) document.getElementById('formCalories').value = data.calories;
-  if (data.cadence) document.getElementById('formCadence').value = data.cadence;
-  if (data.steps) document.getElementById('formSteps').value = data.steps;
-  if (data.pace) document.getElementById('formPace').value = data.pace;
-}
-
-function saveRecord() {
-  try {
-    const date = document.getElementById('formDate').value;
-    const type = document.getElementById('formType').value;
-    const duration = parseInt(document.getElementById('formDuration').value) || 0;
-    const distance = parseFloat(document.getElementById('formDistance').value) || 0;
-    const avgHR = parseInt(document.getElementById('formAvgHR').value) || 0;
-    const maxHR = parseInt(document.getElementById('formMaxHR').value) || 0;
-    const calories = parseInt(document.getElementById('formCalories').value) || 0;
-    const cadence = parseInt(document.getElementById('formCadence').value) || 0;
-    const steps = parseInt(document.getElementById('formSteps').value) || 0;
-    const pace = parseFloat(document.getElementById('formPace').value) || 0;
-
-    if (!date) { showToast('请选择运动日期'); return; }
-    if (duration <= 0) { showToast('请填写运动时长'); return; }
-
-    const record = {
-      id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-      date, type, duration, distance, avgHR, maxHR, calories, cadence, steps, pace,
-      createdAt: new Date().toISOString()
-    };
-
-    addRecord(record);
-    updateStreak();
-    closeAddModal();
-    renderUserCard();
-    renderUploadSection();
-    renderHealthTip();
-    checkStreakBroken();
-    renderStreak();
-    renderRecords();
-    showToast('✅ 记录已保存');
-  } catch (err) {
-    console.error('[SaveRecord] Error:', err);
-    showToast('保存失败: ' + err.message);
-  }
 }
 
 // ===================== DELETE =====================
@@ -2426,23 +2420,36 @@ function renderAll() {
 }
 
 // Drag & drop support
-const uploadZone = document.getElementById('uploadZone');
-if (uploadZone) {
-  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
-  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
-  uploadZone.addEventListener('drop', e => {
+document.addEventListener('dragover', e => { 
+  const uploadZone = document.getElementById('uploadZone');
+  if (uploadZone && uploadZone.contains(e.target)) {
+    e.preventDefault(); 
+    uploadZone.classList.add('dragover'); 
+  }
+});
+document.addEventListener('dragleave', e => {
+  const uploadZone = document.getElementById('uploadZone');
+  if (uploadZone && !uploadZone.contains(e.relatedTarget)) {
+    uploadZone.classList.remove('dragover');
+  }
+});
+document.addEventListener('drop', e => {
+  const uploadZone = document.getElementById('uploadZone');
+  if (uploadZone && uploadZone.contains(e.target)) {
     e.preventDefault();
     uploadZone.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
-      openAddModal();
       const dt = new DataTransfer();
       dt.items.add(file);
-      document.getElementById('fileInput').files = dt.files;
-      handleFileSelect({ target: { files: [file] } });
+      const fileInput = document.getElementById('fileInput');
+      if (fileInput) {
+        fileInput.files = dt.files;
+        handleFileSelect({ target: { files: [file] } });
+      }
     }
-  });
-}
+  }
+});
 
 // Init
 if (!isLoggedIn()) {
