@@ -327,6 +327,19 @@ button{cursor:pointer}
 .login-btn:active{opacity:.85}
 .login-switch{color:rgba(255,255,255,.8);font-size:14px;text-align:center;cursor:pointer}
 .login-switch span{color:#fff;font-weight:600;text-decoration:underline}
+/* Record Summary Card (折叠) */
+.record-summary-card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid var(--primary);cursor:pointer;transition:all .2s}
+.record-summary-card:active{transform:scale(.99)}
+.summary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.summary-date{font-size:14px;font-weight:600;color:var(--text)}
+.summary-badge{font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px}
+.summary-badge.green{background:#D1FAE5;color:#059669}
+.summary-badge.yellow{background:#FEF3C7;color:#D97706}
+.summary-badge.red{background:#FEE2E2;color:#DC2626}
+.summary-metrics{display:flex;gap:12px;font-size:12px;color:var(--text2);margin-bottom:8px}
+.summary-metrics span{background:#F8FAFC;padding:3px 8px;border-radius:6px}
+.summary-toggle{font-size:12px;color:var(--primary);text-align:center;font-weight:600}
+.record-detail{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
 </style>
 </head>
 <body>
@@ -433,15 +446,16 @@ button{cursor:pointer}
     </div>
   </div>
   <div class="user-card" id="userCard"></div>
-
   <div class="section" id="streakSection"></div>
-
-  <!-- 上传区域 / 分析结果展示 -->
-  <div class="section" id="uploadSection"></div>
-
   <div class="section" id="healthTipSection"></div>
-
-  <!-- 最近运动记录 -->
+  
+  <!-- 最近一次分析结果（完整展示） -->
+  <div class="section" id="latestAnalysisSection"></div>
+  
+  <!-- 上传按钮 -->
+  <div class="section" id="uploadSection"></div>
+  
+  <!-- 最近5次折叠记录 -->
   <div class="section">
     <div class="section-title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -962,35 +976,35 @@ function renderUploadSection() {
   const container = document.getElementById('uploadSection');
   
   if (currentAnalysisResult) {
-    // 显示AI分析结果
+    // 刚上传完，显示AI分析结果（临时状态，保存后移到latestAnalysisSection）
     const a = currentAnalysisResult.analysis;
     const data = currentAnalysisResult.data;
-    const colorClass = a.colorLevel; // green/yellow/red
+    const colorClass = a.colorLevel || 'green';
+    const colorLabel = a.colorLabel || '';
+    const statusIcon = a.statusIcon || '✓';
+    const guidanceArr = a.guidance || [];
     
     container.innerHTML = `
       <div class="analysis-result-card ${colorClass}">
         <div class="analysis-header">
           <div class="analysis-date">${data.date} · ${data.type}</div>
-          <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${a.colorLabel}</div>
+          <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
         </div>
-        
         <div class="analysis-metrics">
           <div class="metric-item"><span class="metric-val">${data.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
           <div class="metric-item"><span class="metric-val">${data.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
           <div class="metric-item"><span class="metric-val">${data.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
           <div class="metric-item"><span class="metric-val">${data.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
         </div>
-        
         <div class="analysis-content">
-          <div class="analysis-title">${a.statusIcon} 运动分析</div>
-          <div class="analysis-text">${a.analysisText}</div>
+          <div class="analysis-title">${statusIcon} 运动分析</div>
+          <div class="analysis-text">${a.analysisText || ''}</div>
         </div>
-        
+        ${guidanceArr.length > 0 ? `
         <div class="guidance-content">
           <div class="guidance-title">💡 专属健康指导</div>
-          <div class="guidance-text">${a.guidance.join('<br>')}</div>
-        </div>
-        
+          <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+        </div>` : ''}
         <div class="analysis-actions">
           <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
           <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
@@ -998,9 +1012,8 @@ function renderUploadSection() {
       </div>
     `;
   } else {
-    // 显示上传按钮
     container.innerHTML = `
-      <div class="upload-zone" id="uploadZone" onclick="triggerFileUpload()">
+      <div class="upload-zone" onclick="triggerFileUpload()">
         <div class="upload-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         </div>
@@ -1008,8 +1021,6 @@ function renderUploadSection() {
         <p>华为 / 苹果 / 小米运动健康App</p>
       </div>
       <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
-      
-      <!-- 分析进度提示 -->
       <div class="analysis-progress" id="analysisProgress" style="display:none">
         <div class="progress-content">
           <div class="progress-spinner"></div>
@@ -1032,6 +1043,7 @@ function clearAnalysis() {
 function saveCurrentAnalysis() {
   if (!currentAnalysisResult) return;
   const data = currentAnalysisResult.data;
+  const analysis = currentAnalysisResult.analysis;
   const record = {
     id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
     date: data.date,
@@ -1044,11 +1056,15 @@ function saveCurrentAnalysis() {
     cadence: data.cadence,
     steps: data.steps,
     pace: data.pace,
+    // 保存AI分析结果
+    aiAnalysis: analysis,
     createdAt: new Date().toISOString()
   };
   addRecord(record);
   updateStreak();
   currentAnalysisResult = null;
+  // 刷新所有区域
+  renderLatestAnalysis();
   renderUploadSection();
   renderUserCard();
   renderHealthTip();
@@ -1062,65 +1078,110 @@ function renderWeeklySection() {
   // 此函数保留但不在首页使用，数据移到统计页面
 }
 
+function renderLatestAnalysis() {
+  const container = document.getElementById('latestAnalysisSection');
+  const records = getRecords();
+  
+  if (records.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  
+  const latest = records[0];
+  const profile = getProfile();
+  const a = latest.aiAnalysis || analyzeRecord(latest, profile);
+  const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
+  const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀 🟢' : a.score >= 60 ? '良好 🟡' : '需改善 🔴');
+  const statusIcon = a.statusIcon || (a.score >= 80 ? '✓' : a.score >= 60 ? '⚠' : '✗');
+  const analysisText = a.analysisText || (a.goods ? a.goods.map(g => '✓ ' + g).join('<br>') + (a.issues ? '<br>' + a.issues.map(i => '! ' + i).join('<br>') : '') : '');
+  const guidanceArr = a.guidance || [];
+  
+  container.innerHTML = `
+    <div class="analysis-result-card ${colorClass}">
+      <div class="analysis-header">
+        <div class="analysis-date">${latest.date} · ${latest.type}</div>
+        <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+      </div>
+      <div class="analysis-metrics">
+        <div class="metric-item"><span class="metric-val">${latest.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
+        <div class="metric-item"><span class="metric-val">${latest.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
+        <div class="metric-item"><span class="metric-val">${latest.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
+        <div class="metric-item"><span class="metric-val">${latest.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
+      </div>
+      <div class="analysis-content">
+        <div class="analysis-title">${statusIcon} 运动分析</div>
+        <div class="analysis-text">${analysisText}</div>
+      </div>
+      ${guidanceArr.length > 0 ? `
+      <div class="guidance-content">
+        <div class="guidance-title">💡 专属健康指导</div>
+        <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+      </div>` : ''}
+    </div>
+  `;
+}
+
 function renderRecords() {
   const records = getRecords();
   const profile = getProfile();
   const container = document.getElementById('recordsList');
-
-  if (records.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        <p>还没有运动记录<br>点击下方按钮添加第一条</p>
-      </div>
-    `;
+  
+  if (records.length <= 1) {
+    container.innerHTML = '<div class="empty-state"><p>暂无更多记录</p></div>';
     return;
   }
-
-  // 只显示最近3条记录
-  const recentRecords = records.slice(0, 3);
   
-  container.innerHTML = recentRecords.map(r => {
-    const a = analyzeRecord(r, profile);
+  // 显示第2到第6条（最近5次，不含最新1次）
+  const recentRecords = records.slice(1, 6);
+  
+  container.innerHTML = recentRecords.map((r, idx) => {
+    const a = r.aiAnalysis || analyzeRecord(r, profile);
+    const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
+    const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀' : a.score >= 60 ? '良好' : '需改善');
     const d = new Date(r.date);
     const dateStr = `${d.getMonth() + 1}月${d.getDate()}日`;
-    const statusIcon = a.status === 'good'
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
-      : a.status === 'warn'
-        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
-
-    const guidanceHtml = a.guidance.length > 0
-      ? `<div class="record-guidance"><div class="guidance-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>改进建议</div><ul>${a.guidance.map(g => `<li>${g}</li>`).join('')}</ul></div>`
-      : '';
-
+    const guidanceArr = a.guidance || [];
+    const analysisText = a.analysisText || '';
+    
     return `
-      <div class="record-card" onclick="viewRecordDetail('${r.id}')">
-        <div style="height:4px;background:${a.colorLevel === 'green' ? 'linear-gradient(90deg,#22C55E,#16A34A)' : a.colorLevel === 'yellow' ? 'linear-gradient(90deg,#FBBF24,#F59E0B)' : 'linear-gradient(90deg,#F87171,#EF4444)'};position:absolute;top:0;left:0;right:0;z-index:2;border-radius:var(--radius) var(--radius) 0 0"></div>
-        <div class="delete-btn" onclick="event.stopPropagation();confirmDelete('${r.id}')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      <div class="record-summary-card" onclick="toggleRecordDetail('detail_${idx}')">
+        <div class="summary-header">
+          <div class="summary-date">${dateStr} · ${r.type}</div>
+          <div class="summary-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
         </div>
-        <div class="record-header">
-          <div class="record-date">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            ${dateStr} · ${r.type}
+        <div class="summary-metrics">
+          <span>${r.duration}分钟</span>
+          <span>${r.distance ? r.distance + 'km' : '-'}</span>
+          <span>${r.avgHR ? r.avgHR + 'bpm' : '-'}</span>
+          <span>${r.calories ? r.calories + '大卡' : '-'}</span>
+        </div>
+        <div class="summary-toggle">点击查看详情 ▼</div>
+        <div class="record-detail" id="detail_${idx}" style="display:none">
+          <div class="analysis-content">
+            <div class="analysis-title">运动分析</div>
+            <div class="analysis-text">${analysisText}</div>
           </div>
-          <span class="record-status ${a.status}">${statusIcon}${a.statusText}</span>
-        </div>
-        <div class="record-metrics">
-          <div class="record-metric"><div class="val">${r.duration}<span class="unit">分</span></div><div class="lbl">时长</div></div>
-          <div class="record-metric"><div class="val">${r.distance ? r.distance.toFixed(2) : '-'}<span class="unit">km</span></div><div class="lbl">距离</div></div>
-          <div class="record-metric"><div class="val">${r.avgHR || '-'}<span class="unit">bpm</span></div><div class="lbl">平均心率</div></div>
-          <div class="record-metric"><div class="val">${r.calories || '-'}<span class="unit">大卡</span></div><div class="lbl">消耗</div></div>
-        </div>
-        <div class="record-analysis ${a.status}">
-          <div class="analysis-title">${statusIcon}运动分析</div>
-          <p>${a.analysisText}</p>
-          ${guidanceHtml}
+          ${guidanceArr.length > 0 ? `
+          <div class="guidance-content">
+            <div class="guidance-title">💡 健康指导</div>
+            <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+          </div>` : ''}
         </div>
       </div>
     `;
   }).join('');
+}
+
+function toggleRecordDetail(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    const isHidden = el.style.display === 'none';
+    el.style.display = isHidden ? 'block' : 'none';
+    // 更新toggle文字
+    const card = el.closest('.record-summary-card');
+    const toggle = card.querySelector('.summary-toggle');
+    toggle.textContent = isHidden ? '点击收起 ▲' : '点击查看详情 ▼';
+  }
 }
 
 function renderStats() {
@@ -1252,7 +1313,50 @@ function renderStreak() {
   const totalCal = records.reduce((s, r) => s + (r.calories || 0), 0);
   const totalSteps = records.reduce((s, r) => s + (r.steps || 0), 0);
 
+  // 全部历史记录列表
+  const historyListHtml = records.map((r, idx) => {
+    const a = r.aiAnalysis || analyzeRecord(r, profile);
+    const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
+    const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀' : a.score >= 60 ? '良好' : '需改善');
+    const d = new Date(r.date);
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const guidanceArr = a.guidance || [];
+    const analysisText = a.analysisText || '';
+    
+    return `
+      <div class="record-summary-card" onclick="toggleRecordDetail('stat_${idx}')">
+        <div class="summary-header">
+          <div class="summary-date">${dateStr} · ${r.type}</div>
+          <div class="summary-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+        </div>
+        <div class="summary-metrics">
+          <span>${r.duration}分钟</span>
+          <span>${r.distance ? r.distance + 'km' : '-'}</span>
+          <span>${r.avgHR ? r.avgHR + 'bpm' : '-'}</span>
+          <span>${r.calories ? r.calories + '大卡' : '-'}</span>
+        </div>
+        <div class="summary-toggle">点击查看详情 ▼</div>
+        <div class="record-detail" id="stat_${idx}" style="display:none">
+          <div class="analysis-content">
+            <div class="analysis-title">运动分析</div>
+            <div class="analysis-text">${analysisText}</div>
+          </div>
+          ${guidanceArr.length > 0 ? `
+          <div class="guidance-content">
+            <div class="guidance-title">💡 健康指导</div>
+            <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+          </div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
   container.innerHTML = `
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      全部运动记录（${records.length}条）
+    </div>
+    ${historyListHtml}
     <div class="stats-grid" style="grid-template-columns:repeat(2,1fr)">
       <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">${records.length}</div><div class="lbl">总运动次数</div></div>
       <div class="stat-card"><div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="num">${totalDur}</div><div class="lbl">总时长(分)</div></div>
@@ -2033,7 +2137,7 @@ function switchPage(name) {
   document.querySelectorAll('.nav-item').forEach((n, i) => {
     n.classList.toggle('active', ['Home', 'Stats', 'Profile', 'HRV'][i] === name);
   });
-  if (name === 'Home') { renderUserCard(); renderUploadSection(); renderHealthTip(); checkStreakBroken(); renderStreak(); renderRecords(); }
+  if (name === 'Home') { renderUserCard(); renderHealthTip(); checkStreakBroken(); renderStreak(); renderLatestAnalysis(); renderUploadSection(); renderRecords(); }
   if (name === 'Stats') renderStats();
   if (name === 'Profile') renderProfile();
   if (name === 'HRV') renderHRV();
