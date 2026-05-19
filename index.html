@@ -1100,7 +1100,17 @@ function renderLatestAnalysis() {
   const savedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
   
   if (savedRecords.length === 0) {
-    container.innerHTML = '';
+    // 没有记录时，显示上传引导
+    container.innerHTML = `
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        最新轨迹
+      </div>
+      <div class="empty-state" style="background:var(--card);border-radius:var(--radius);padding:30px 20px;margin-bottom:16px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:48px;height:48px;margin-bottom:12px;opacity:.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <p style="font-size:14px">还没有运动轨迹<br>点击上方"上传运动截图"开始记录</p>
+      </div>
+    `;
     return;
   }
   
@@ -1150,11 +1160,16 @@ function renderRecords() {
   // 按日期降序排序
   const sortedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
   
-  // 取第2到第4条（除最新外的最近3次）
-  const recentRecords = sortedRecords.slice(1, 4);
+  // 取第2到第6条（除最新外的最近5次）
+  const recentRecords = sortedRecords.slice(1, 6);
   
   if (recentRecords.length === 0) {
-    container.innerHTML = '<div class="empty-state"><p>继续记录，探索身体的轨迹</p></div>';
+    // 只有1条记录时，显示提示
+    if (sortedRecords.length === 1) {
+      container.innerHTML = '<div class="empty-state"><p>已保存1条轨迹<br>继续记录，探索更多身体轨迹</p></div>';
+    } else {
+      container.innerHTML = '<div class="empty-state"><p>开始记录你的第一条轨迹</p></div>';
+    }
     return;
   }
   
