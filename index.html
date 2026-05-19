@@ -576,16 +576,16 @@ button{cursor:pointer}
 
 <script>
 // ===================== DATA LAYER =====================
-const STORAGE_KEY = 'fitness_records';
-const PROFILE_KEY = 'fitness_profile';
-
-// ===================== STREAK DATA LAYER =====================
-const STREAK_KEY = 'fitness_streak';
+// 注意：数据存储 key 已改为按用户隔离，通过 getRecordsKey() / getProfileKey() / getStreakKey() 动态获取
 function getStreak() {
-  try { return JSON.parse(localStorage.getItem(STREAK_KEY)) || {current:0,best:0,lastDate:''}; }
+  const key = getStreakKey();
+  try { return JSON.parse(localStorage.getItem(key)) || {current:0,best:0,lastDate:''}; }
   catch { return {current:0,best:0,lastDate:''}; }
 }
-function saveStreak(s) { localStorage.setItem(STREAK_KEY, JSON.stringify(s)); }
+function saveStreak(s) {
+  const key = getStreakKey();
+  localStorage.setItem(key, JSON.stringify(s));
+}
 function updateStreak() {
   const streak = getStreak();
   const today = new Date().toISOString().split('T')[0];
@@ -682,6 +682,16 @@ function getProfileKey() {
   return user ? 'fitness_profile_' + user : 'fitness_profile_guest';
 }
 
+function getRecordsKey() {
+  const user = getCurrentUser();
+  return user ? 'fitness_records_' + user : 'fitness_records_guest';
+}
+
+function getStreakKey() {
+  const user = getCurrentUser();
+  return user ? 'fitness_streak_' + user : 'fitness_streak_guest';
+}
+
 function getProfile() {
   const key = getProfileKey();
   try {
@@ -722,14 +732,16 @@ function saveSetupProfile() {
 }
 
 function getRecords() {
+  const key = getRecordsKey();
   try {
-    const d = localStorage.getItem(STORAGE_KEY);
+    const d = localStorage.getItem(key);
     return d ? JSON.parse(d) : [];
   } catch { return []; }
 }
 
 function saveRecords(records) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  const key = getRecordsKey();
+  localStorage.setItem(key, JSON.stringify(records));
 }
 
 function addRecord(record) {
