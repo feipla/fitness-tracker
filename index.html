@@ -25,9 +25,12 @@ button{cursor:pointer}
 .header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);padding:52px 24px 36px;position:relative;overflow:hidden}
 .header::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:rgba(255,255,255,.1);border-radius:50%}
 .header::after{content:'';position:absolute;bottom:-30%;left:-10%;width:200px;height:200px;background:rgba(255,255,255,.08);border-radius:50%}
-.header-content{position:relative;z-index:1}
+.header-content{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start}
 .header h1{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px}
 .header p{font-size:13px;color:rgba(255,255,255,.8)}
+.header-streak{text-align:right;color:#fff}
+.header-streak .streak-num{font-size:20px;font-weight:800}
+.header-streak .streak-label{font-size:11px;opacity:.9;margin-top:2px}
 
 /* User Card */
 .user-card{background:var(--card);border-radius:var(--radius);padding:18px;margin:-24px 16px 16px;box-shadow:var(--shadow);position:relative;z-index:2}
@@ -447,12 +450,14 @@ button{cursor:pointer}
 <div class="page active" id="pageHome">
   <div class="header">
     <div class="header-content">
-      <h1>循迹</h1>
-      <p>循身体之迹，见前行之路</p>
+      <div>
+        <h1>循迹</h1>
+        <p>循身体之迹，见前行之路</p>
+      </div>
+      <div class="header-streak" id="headerStreak"></div>
     </div>
   </div>
   <div class="user-card" id="userCard"></div>
-  <div class="section" id="streakSection"></div>
   <div class="section" id="healthTipSection"></div>
   
   <!-- 上传按钮 + 临时分析结果 -->
@@ -1309,19 +1314,16 @@ function renderHealthTip() {
 
 // ===================== STREAK RENDER =====================
 function renderStreak() {
-  const container = document.getElementById('streakSection');
+  const container = document.getElementById('headerStreak');
   const streak = getStreak();
-  const fireEmoji = streak.current >= 7 ? '🔥' : streak.current >= 3 ? '🔥' : streak.current > 0 ? '💪' : '😴';
-  container.innerHTML = `
-    <div class="streak-card">
-      <div class="streak-fire">${fireEmoji}</div>
-      <div class="streak-info">
-        <div class="streak-num">${streak.current} 天</div>
-        <div class="streak-label">${streak.current > 0 ? '连续打卡中' : '还没有开始打卡'}</div>
-        ${streak.best > 0 ? `<div class="streak-best">历史最佳：${streak.best} 天</div>` : ''}
-      </div>
-    </div>
-  `;
+  if (streak.current > 0) {
+    container.innerHTML = `
+      <div class="streak-num">${streak.current} 天</div>
+      <div class="streak-label">连续打卡中</div>
+    `;
+  } else {
+    container.innerHTML = '';
+  }
 }
 
 function renderStats() {
