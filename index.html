@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>运动健康助手</title>
+<title>循迹</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#16A34A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -351,8 +351,8 @@ button{cursor:pointer}
 <div id="loginPage" style="display:none">
   <div class="login-page">
     <div class="login-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-    <div class="login-title">运动健康助手</div>
-    <div class="login-subtitle">科学运动 · 智能分析 · 健康减脂</div>
+    <div class="login-title">循迹</div>
+    <div class="login-subtitle">循身体之迹，见前行之路</div>
     <div class="login-form">
       <div id="loginRegisterArea">
         <input type="text" class="login-input" id="loginUser" placeholder="手机号 / 用户名">
@@ -441,8 +441,8 @@ button{cursor:pointer}
 <div class="page active" id="pageHome">
   <div class="header">
     <div class="header-content">
-      <h1>运动健康助手</h1>
-      <p>科学运动 · 智能分析 · 健康减脂</p>
+      <h1>循迹</h1>
+      <p>循身体之迹，见前行之路</p>
     </div>
   </div>
   <div class="user-card" id="userCard"></div>
@@ -459,7 +459,7 @@ button{cursor:pointer}
   <div class="section">
     <div class="section-title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      最近运动
+      轨迹回顾
     </div>
     <div id="recordsList"></div>
   </div>
@@ -469,8 +469,8 @@ button{cursor:pointer}
 <div class="page" id="pageStats">
   <div class="header" style="padding-bottom:28px">
     <div class="header-content">
-      <h1>数据统计</h1>
-      <p>运动趋势一目了然</p>
+      <h1>身体地图</h1>
+      <p>读懂身体内在的轨迹</p>
     </div>
   </div>
   <div class="section" id="statsContent"></div>
@@ -480,8 +480,8 @@ button{cursor:pointer}
 <div class="page" id="pageProfile">
   <div class="header" style="padding-bottom:28px">
     <div class="header-content">
-      <h1>我的档案</h1>
-      <p>个性化健康数据</p>
+      <h1>身体档案</h1>
+      <p>绘制你的内在地图</p>
     </div>
   </div>
   <div class="section" id="profileContent"></div>
@@ -491,8 +491,8 @@ button{cursor:pointer}
 <div class="page" id="pageHRV">
   <div class="header" style="padding-bottom:28px">
     <div class="header-content">
-      <h1>心率变异性</h1>
-      <p>了解你的身体状态</p>
+      <h1>内在轨迹</h1>
+      <p>探索心率变异性中的身体语言</p>
     </div>
   </div>
   <div class="section" id="hrvContent"></div>
@@ -562,11 +562,11 @@ button{cursor:pointer}
   </div>
   <div class="nav-item" onclick="switchPage('Stats')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-    统计
+    地图
   </div>
   <div class="nav-item" onclick="switchPage('Profile')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    我的
+    档案
   </div>
   <div class="nav-item" onclick="switchPage('HRV')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -1030,7 +1030,7 @@ function renderUploadSection() {
           <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         </div>
         <h3>上传运动截图</h3>
-        <p>华为 / 苹果 / 小米运动健康App</p>
+        <p>让AI解读你身体的内在轨迹</p>
       </div>
       <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
       <div class="analysis-progress" id="analysisProgress" style="display:none">
@@ -1139,7 +1139,7 @@ function renderRecords() {
   const container = document.getElementById('recordsList');
   
   if (records.length <= 1) {
-    container.innerHTML = '<div class="empty-state"><p>暂无更多记录</p></div>';
+    container.innerHTML = '<div class="empty-state"><p>继续记录，探索身体的轨迹</p></div>';
     return;
   }
   
@@ -1221,7 +1221,7 @@ function renderHealthTip() {
 
   if (records.length === 0) {
     tipTitle = '开始你的健康之旅';
-    tipText = '开始你的第一次运动吧！记录运动数据，获取个性化分析和建议，让科学运动成为习惯。';
+    tipText = '开始你的循迹之旅！上传运动截图，让AI为你解读身体的内在信号。';
   } else {
     const lastRecord = records[0];
     const a = analyzeRecord(lastRecord, profile);

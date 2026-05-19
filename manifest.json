@@ -1,7 +1,7 @@
 {
-  "name": "运动健康助手",
-  "short_name": "健康助手",
-  "description": "运动数据智能分析，听懂你的身体",
+  "name": "循迹",
+  "short_name": "循迹",
+  "description": "循身体之迹，见前行之路 — 读懂身体内在的地图",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F0F2F5",
@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2316A34A'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white'>🏃</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2316A34A'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white'>🧭</text></svg>",
       "sizes": "any",
       "type": "image/svg+xml"
     }
