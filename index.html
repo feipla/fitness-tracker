@@ -449,13 +449,13 @@ button{cursor:pointer}
   <div class="section" id="streakSection"></div>
   <div class="section" id="healthTipSection"></div>
   
-  <!-- 最近一次分析结果（完整展示） -->
-  <div class="section" id="latestAnalysisSection"></div>
-  
-  <!-- 上传按钮 -->
+  <!-- 上传按钮 + 临时分析结果 -->
   <div class="section" id="uploadSection"></div>
   
-  <!-- 最近5次折叠记录 -->
+  <!-- 最新轨迹（已保存的最新记录） -->
+  <div class="section" id="latestAnalysisSection"></div>
+  
+  <!-- 轨迹回顾（除最新外的最近3次） -->
   <div class="section">
     <div class="section-title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -987,8 +987,26 @@ let currentAnalysisResult = null; // 存储当前分析结果
 function renderUploadSection() {
   const container = document.getElementById('uploadSection');
   
+  // 始终显示上传按钮
+  let html = `
+    <div class="upload-zone" onclick="triggerFileUpload()">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <h3>上传运动截图</h3>
+      <p>让AI解读你身体的内在轨迹</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+    <div class="analysis-progress" id="analysisProgress" style="display:none">
+      <div class="progress-content">
+        <div class="progress-spinner"></div>
+        <div class="progress-text" id="progressText">正在上传图片...</div>
+      </div>
+    </div>
+  `;
+  
+  // 如果有临时分析结果（刚上传未保存），显示在按钮下方
   if (currentAnalysisResult) {
-    // 刚上传完，显示AI分析结果（临时状态，保存后移到latestAnalysisSection）
     const a = currentAnalysisResult.analysis;
     const data = currentAnalysisResult.data;
     const colorClass = a.colorLevel || 'green';
@@ -996,51 +1014,38 @@ function renderUploadSection() {
     const statusIcon = a.statusIcon || '✓';
     const guidanceArr = a.guidance || [];
     
-    container.innerHTML = `
-      <div class="analysis-result-card ${colorClass}">
-        <div class="analysis-header">
-          <div class="analysis-date">${data.date} · ${data.type}</div>
-          <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
-        </div>
-        <div class="analysis-metrics">
-          <div class="metric-item"><span class="metric-val">${data.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
-          <div class="metric-item"><span class="metric-val">${data.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
-          <div class="metric-item"><span class="metric-val">${data.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
-          <div class="metric-item"><span class="metric-val">${data.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
-        </div>
-        <div class="analysis-content">
-          <div class="analysis-title">${statusIcon} 运动分析</div>
-          <div class="analysis-text">${a.analysisText || ''}</div>
-        </div>
-        ${guidanceArr.length > 0 ? `
-        <div class="guidance-content">
-          <div class="guidance-title">💡 专属健康指导</div>
-          <div class="guidance-text">${guidanceArr.join('<br>')}</div>
-        </div>` : ''}
-        <div class="analysis-actions">
-          <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
-          <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
-        </div>
-      </div>
-    `;
-  } else {
-    container.innerHTML = `
-      <div class="upload-zone" onclick="triggerFileUpload()">
-        <div class="upload-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </div>
-        <h3>上传运动截图</h3>
-        <p>让AI解读你身体的内在轨迹</p>
-      </div>
-      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
-      <div class="analysis-progress" id="analysisProgress" style="display:none">
-        <div class="progress-content">
-          <div class="progress-spinner"></div>
-          <div class="progress-text" id="progressText">正在上传图片...</div>
+    html += `
+      <div style="margin-top:16px">
+        <div class="analysis-result-card ${colorClass}">
+          <div class="analysis-header">
+            <div class="analysis-date">${data.date} · ${data.type}</div>
+            <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+          </div>
+          <div class="analysis-metrics">
+            <div class="metric-item"><span class="metric-val">${data.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
+            <div class="metric-item"><span class="metric-val">${data.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
+            <div class="metric-item"><span class="metric-val">${data.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
+            <div class="metric-item"><span class="metric-val">${data.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
+          </div>
+          <div class="analysis-content">
+            <div class="analysis-title">${statusIcon} 运动分析</div>
+            <div class="analysis-text">${a.analysisText || ''}</div>
+          </div>
+          ${guidanceArr.length > 0 ? `
+          <div class="guidance-content">
+            <div class="guidance-title">💡 专属健康指导</div>
+            <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+          </div>` : ''}
+          <div class="analysis-actions">
+            <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
+            <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
+          </div>
         </div>
       </div>
     `;
   }
+  
+  container.innerHTML = html;
 }
 
 function triggerFileUpload() {
@@ -1068,13 +1073,21 @@ function saveCurrentAnalysis() {
     cadence: data.cadence,
     steps: data.steps,
     pace: data.pace,
-    // 保存AI分析结果
     aiAnalysis: analysis,
     createdAt: new Date().toISOString()
   };
-  addRecord(record);
+  
+  // 获取现有记录并添加新记录
+  const records = getRecords();
+  records.push(record);
+  
+  // 按日期降序排序（最新的在前）
+  records.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  saveRecords(records);
   updateStreak();
   currentAnalysisResult = null;
+  
   // 刷新所有区域
   renderLatestAnalysis();
   renderUploadSection();
@@ -1094,21 +1107,29 @@ function renderLatestAnalysis() {
   const container = document.getElementById('latestAnalysisSection');
   const records = getRecords();
   
-  if (records.length === 0) {
+  // 过滤掉临时分析结果，只显示已保存的记录
+  // 并且按日期排序后取第一条（最新的）
+  const savedRecords = records.filter(r => !r.isTemp).sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  if (savedRecords.length === 0) {
     container.innerHTML = '';
     return;
   }
   
-  const latest = records[0];
+  const latest = savedRecords[0];
   const profile = getProfile();
   const a = latest.aiAnalysis || analyzeRecord(latest, profile);
   const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
   const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀 🟢' : a.score >= 60 ? '良好 🟡' : '需改善 🔴');
   const statusIcon = a.statusIcon || (a.score >= 80 ? '✓' : a.score >= 60 ? '⚠' : '✗');
-  const analysisText = a.analysisText || (a.goods ? a.goods.map(g => '✓ ' + g).join('<br>') + (a.issues ? '<br>' + a.issues.map(i => '! ' + i).join('<br>') : '') : '');
+  const analysisText = a.analysisText || '';
   const guidanceArr = a.guidance || [];
   
   container.innerHTML = `
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      最新轨迹
+    </div>
     <div class="analysis-result-card ${colorClass}">
       <div class="analysis-header">
         <div class="analysis-date">${latest.date} · ${latest.type}</div>
@@ -1138,13 +1159,16 @@ function renderRecords() {
   const profile = getProfile();
   const container = document.getElementById('recordsList');
   
-  if (records.length <= 1) {
+  // 按日期降序排序
+  const sortedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  // 取第2到第4条（除最新外的最近3次）
+  const recentRecords = sortedRecords.slice(1, 4);
+  
+  if (recentRecords.length === 0) {
     container.innerHTML = '<div class="empty-state"><p>继续记录，探索身体的轨迹</p></div>';
     return;
   }
-  
-  // 显示第2到第6条（最近5次，不含最新1次）
-  const recentRecords = records.slice(1, 6);
   
   container.innerHTML = recentRecords.map((r, idx) => {
     const a = r.aiAnalysis || analyzeRecord(r, profile);
