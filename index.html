@@ -2326,13 +2326,37 @@ async function recognizeImage(imageData) {
       }
       
       if (data.date || data.duration) {
-        // 存储分析结果
-        currentAnalysisResult = {
-          data: data,
-          analysis: data.analysis || generateDefaultAnalysis(data)
+        // 自动保存分析结果
+        const analysis = data.analysis || generateDefaultAnalysis(data);
+        const record = {
+          id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+          date: data.date,
+          type: data.type,
+          duration: data.duration,
+          distance: data.distance,
+          avgHR: data.avgHR,
+          maxHR: data.maxHR,
+          calories: data.calories,
+          cadence: data.cadence,
+          steps: data.steps,
+          pace: data.pace,
+          aiAnalysis: analysis,
+          createdAt: new Date().toISOString()
         };
-        renderLatestAnalysis();  // 在最新轨迹区域显示临时结果
-        showToast('AI分析完成！');
+        const records = getRecords();
+        records.push(record);
+        records.sort((a, b) => new Date(b.date) - new Date(a.date));
+        saveRecords(records);
+        updateStreak();
+        currentAnalysisResult = null;
+        // 刷新所有区域
+        renderLatestAnalysis();
+        renderRecords();
+        renderUserCard();
+        renderHealthTip();
+        checkStreakBroken();
+        renderStreak();
+        showToast('✅ AI分析完成，轨迹已保存');
       } else {
         showToast('未能识别运动数据，请重试');
       }
