@@ -976,9 +976,7 @@ let currentAnalysisResult = null; // 存储当前分析结果
 
 function renderUploadSection() {
   const container = document.getElementById('uploadSection');
-  
-  // 始终显示上传按钮
-  let html = `
+  container.innerHTML = `
     <div class="upload-zone" onclick="triggerFileUpload()">
       <div class="upload-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
@@ -994,48 +992,6 @@ function renderUploadSection() {
       </div>
     </div>
   `;
-  
-  // 如果有临时分析结果（刚上传未保存），显示在按钮下方
-  if (currentAnalysisResult) {
-    const a = currentAnalysisResult.analysis;
-    const data = currentAnalysisResult.data;
-    const colorClass = a.colorLevel || 'green';
-    const colorLabel = a.colorLabel || '';
-    const statusIcon = a.statusIcon || '✓';
-    const guidanceArr = a.guidance || [];
-    
-    html += `
-      <div style="margin-top:16px">
-        <div class="analysis-result-card ${colorClass}">
-          <div class="analysis-header">
-            <div class="analysis-date">${data.date} · ${data.type}</div>
-            <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
-          </div>
-          <div class="analysis-metrics">
-            <div class="metric-item"><span class="metric-val">${data.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
-            <div class="metric-item"><span class="metric-val">${data.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
-            <div class="metric-item"><span class="metric-val">${data.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
-            <div class="metric-item"><span class="metric-val">${data.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
-          </div>
-          <div class="analysis-content">
-            <div class="analysis-title">${statusIcon} 运动分析</div>
-            <div class="analysis-text">${a.analysisText || ''}</div>
-          </div>
-          ${guidanceArr.length > 0 ? `
-          <div class="guidance-content">
-            <div class="guidance-title">💡 专属健康指导</div>
-            <div class="guidance-text">${guidanceArr.join('<br>')}</div>
-          </div>` : ''}
-          <div class="analysis-actions">
-            <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
-            <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  
-  container.innerHTML = html;
 }
 
 function triggerFileUpload() {
@@ -1044,7 +1000,7 @@ function triggerFileUpload() {
 
 function clearAnalysis() {
   currentAnalysisResult = null;
-  renderUploadSection();
+  renderLatestAnalysis();  // 恢复显示已保存的最新记录
 }
 
 function saveCurrentAnalysis() {
@@ -1095,11 +1051,53 @@ function renderWeeklySection() {
 
 function renderLatestAnalysis() {
   const container = document.getElementById('latestAnalysisSection');
-  const records = getRecords();
   
-  // 过滤掉临时分析结果，只显示已保存的记录
-  // 并且按日期排序后取第一条（最新的）
-  const savedRecords = records.filter(r => !r.isTemp).sort((a, b) => new Date(b.date) - new Date(a.date));
+  // 优先显示临时分析结果（刚上传未保存）
+  if (currentAnalysisResult) {
+    const a = currentAnalysisResult.analysis;
+    const data = currentAnalysisResult.data;
+    const colorClass = a.colorLevel || 'green';
+    const colorLabel = a.colorLabel || '';
+    const statusIcon = a.statusIcon || '✓';
+    const guidanceArr = a.guidance || [];
+    
+    container.innerHTML = `
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        AI分析结果
+      </div>
+      <div class="analysis-result-card ${colorClass}">
+        <div class="analysis-header">
+          <div class="analysis-date">${data.date} · ${data.type}</div>
+          <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+        </div>
+        <div class="analysis-metrics">
+          <div class="metric-item"><span class="metric-val">${data.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
+          <div class="metric-item"><span class="metric-val">${data.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
+          <div class="metric-item"><span class="metric-val">${data.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
+          <div class="metric-item"><span class="metric-val">${data.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
+        </div>
+        <div class="analysis-content">
+          <div class="analysis-title">${statusIcon} 运动分析</div>
+          <div class="analysis-text">${a.analysisText || ''}</div>
+        </div>
+        ${guidanceArr.length > 0 ? `
+        <div class="guidance-content">
+          <div class="guidance-title">💡 专属健康指导</div>
+          <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+        </div>` : ''}
+        <div class="analysis-actions">
+          <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
+          <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  
+  // 没有临时结果，显示已保存的最新记录
+  const records = getRecords();
+  const savedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
   
   if (savedRecords.length === 0) {
     container.innerHTML = '';
@@ -2323,7 +2321,7 @@ async function recognizeImage(imageData) {
           data: data,
           analysis: data.analysis || generateDefaultAnalysis(data)
         };
-        renderUploadSection();
+        renderLatestAnalysis();  // 在最新轨迹区域显示临时结果
         showToast('AI分析完成！');
       } else {
         showToast('未能识别运动数据，请重试');
