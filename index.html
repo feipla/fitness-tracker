@@ -1166,11 +1166,15 @@ function renderRecords() {
   // 按日期降序排序
   const sortedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
   
-  // 取最近5条（包括最新的，在轨迹回顾中显示所有）
-  const recentRecords = sortedRecords.slice(0, 5);
+  // 取第2到第6条（除最新外的最近5次，避免与最新轨迹重复）
+  const recentRecords = sortedRecords.slice(1, 6);
   
   if (recentRecords.length === 0) {
-    container.innerHTML = '<div class="empty-state"><p>开始记录你的第一条轨迹</p></div>';
+    if (sortedRecords.length === 1) {
+      container.innerHTML = '<div class="empty-state"><p>已保存1条轨迹<br>继续记录更多轨迹</p></div>';
+    } else {
+      container.innerHTML = '<div class="empty-state"><p>开始记录你的第一条轨迹</p></div>';
+    }
     return;
   }
   
