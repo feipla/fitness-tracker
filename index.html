@@ -1160,16 +1160,11 @@ function renderRecords() {
   // 按日期降序排序
   const sortedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
   
-  // 取第2到第6条（除最新外的最近5次）
-  const recentRecords = sortedRecords.slice(1, 6);
+  // 取最近5条（包括最新的，在轨迹回顾中显示所有）
+  const recentRecords = sortedRecords.slice(0, 5);
   
   if (recentRecords.length === 0) {
-    // 只有1条记录时，显示提示
-    if (sortedRecords.length === 1) {
-      container.innerHTML = '<div class="empty-state"><p>已保存1条轨迹<br>继续记录，探索更多身体轨迹</p></div>';
-    } else {
-      container.innerHTML = '<div class="empty-state"><p>开始记录你的第一条轨迹</p></div>';
-    }
+    container.innerHTML = '<div class="empty-state"><p>开始记录你的第一条轨迹</p></div>';
     return;
   }
   
