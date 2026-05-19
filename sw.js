@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fitness-tracker-v25';
+const CACHE_NAME = 'fitness-tracker-v26';
 const ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', (event) => {
@@ -11,12 +11,18 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
       );
+    }).then(() => {
+      // 激活后立即刷新所有客户端页面
+      return self.clients.matchAll().then(clients => {
+        clients.forEach(client => client.navigate(client.url));
+      });
     })
   );
   self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
+  // 每次请求都先从网络获取最新版本，不使用缓存
   event.respondWith(
     fetch(event.request).then(fetchRes => {
       if (!fetchRes || fetchRes.status !== 200) return fetchRes;
