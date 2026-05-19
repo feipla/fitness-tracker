@@ -28,12 +28,13 @@ button{cursor:pointer}
 .header-content{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start}
 .header h1{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px}
 .header p{font-size:13px;color:rgba(255,255,255,.8)}
-.header-streak{text-align:right;color:#fff}
-.header-streak .streak-num{font-size:20px;font-weight:800}
-.header-streak .streak-label{font-size:11px;opacity:.9;margin-top:2px}
-
 /* User Card */
-.user-card{background:var(--card);border-radius:var(--radius);padding:18px;margin:-24px 16px 16px;box-shadow:var(--shadow);position:relative;z-index:2}
+.user-card{background:var(--card);border-radius:var(--radius);padding:18px;margin:-24px 16px 16px;box-shadow:var(--shadow);position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center}
+.user-card-left{flex:1}
+.user-card-streak{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.user-card-streak .streak-icon{font-size:24px}
+.user-card-streak .streak-num{font-size:18px;font-weight:800;color:var(--primary)}
+.user-card-streak .streak-label{font-size:11px;color:var(--text2)}
 .user-info{display:flex;align-items:center;gap:14px;margin-bottom:14px}
 .user-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .user-avatar svg{width:28px;height:28px}
@@ -450,11 +451,8 @@ button{cursor:pointer}
 <div class="page active" id="pageHome">
   <div class="header">
     <div class="header-content">
-      <div>
-        <h1>循迹</h1>
-        <p>循身体之迹，见前行之路</p>
-      </div>
-      <div class="header-streak" id="headerStreak"></div>
+      <h1>循迹</h1>
+      <p>循身体之迹，见前行之路</p>
     </div>
   </div>
   <div class="user-card" id="userCard"></div>
@@ -682,7 +680,6 @@ function showApp() {
   renderUploadSection();
   renderHealthTip();
   checkStreakBroken();
-  renderStreak();
   renderRecords();
 }
 
@@ -963,23 +960,33 @@ function renderUserCard() {
   const bmi = (p.weight / ((p.height / 100) ** 2)).toFixed(1);
   const zones = getHRZones(p.age);
   const records = getRecords();
+  const streak = getStreak();
+  const fireEmoji = streak.current >= 7 ? '🔥' : streak.current >= 3 ? '💪' : streak.current > 0 ? '💪' : '';
   let healthScoreHtml = '';
   document.getElementById('userCard').innerHTML = `
-    <div class="user-info">
-      <div class="user-avatar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <div class="user-card-left">
+      <div class="user-info">
+        <div class="user-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="user-meta">
+          <h3>${p.name}</h3>
+          <p>${p.age}岁 · ${p.height}cm · ${p.weight}kg · BMI ${bmi}</p>
+        </div>
       </div>
-      <div class="user-meta">
-        <h3>${p.name}</h3>
-        <p>${p.age}岁 · ${p.height}cm · ${p.weight}kg · BMI ${bmi}</p>
+      <div class="user-tags">
+        <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>减脂心率 ${zones.fatBurn.min}-${zones.fatBurn.max}</span>
+        <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>目标 ${p.targetWeight}kg</span>
+        <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>每周${p.exerciseFreq}次</span>
       </div>
+      ${healthScoreHtml}
     </div>
-    <div class="user-tags">
-      <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>减脂心率 ${zones.fatBurn.min}-${zones.fatBurn.max}</span>
-      <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>目标 ${p.targetWeight}kg</span>
-      <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>每周${p.exerciseFreq}次</span>
-    </div>
-    ${healthScoreHtml}
+    ${streak.current > 0 ? `
+    <div class="user-card-streak">
+      <div class="streak-icon">${fireEmoji}</div>
+      <div class="streak-num">${streak.current} 天</div>
+      <div class="streak-label">连续打卡</div>
+    </div>` : ''}
   `;
 }
 
@@ -1051,7 +1058,6 @@ function saveCurrentAnalysis() {
   renderUserCard();
   renderHealthTip();
   checkStreakBroken();
-  renderStreak();
   renderRecords();
   showToast('✅ 记录已保存');
 }
@@ -1310,20 +1316,6 @@ function renderHealthTip() {
       <div class="tip-text">${tipText}</div>
     </div>
   `;
-}
-
-// ===================== STREAK RENDER =====================
-function renderStreak() {
-  const container = document.getElementById('headerStreak');
-  const streak = getStreak();
-  if (streak.current > 0) {
-    container.innerHTML = `
-      <div class="streak-num">${streak.current} 天</div>
-      <div class="streak-label">连续打卡中</div>
-    `;
-  } else {
-    container.innerHTML = '';
-  }
 }
 
 function renderStats() {
@@ -2214,7 +2206,7 @@ function switchPage(name) {
   document.querySelectorAll('.nav-item').forEach((n, i) => {
     n.classList.toggle('active', ['Home', 'Stats', 'Profile', 'HRV'][i] === name);
   });
-  if (name === 'Home') { renderUserCard(); renderHealthTip(); checkStreakBroken(); renderStreak(); renderLatestAnalysis(); renderUploadSection(); renderRecords(); }
+  if (name === 'Home') { renderUserCard(); renderHealthTip(); checkStreakBroken(); renderLatestAnalysis(); renderUploadSection(); renderRecords(); }
   if (name === 'Stats') renderStats();
   if (name === 'Profile') renderProfile();
   if (name === 'HRV') renderHRV();
@@ -2398,7 +2390,6 @@ async function recognizeImage(imageData) {
         renderUserCard();
         renderHealthTip();
         checkStreakBroken();
-        renderStreak();
         showToast('✅ AI分析完成，轨迹已保存');
       } else {
         showToast('未能识别运动数据，请重试');
