@@ -953,16 +953,6 @@ function renderUserCard() {
   const zones = getHRZones(p.age);
   const records = getRecords();
   let healthScoreHtml = '';
-  if (records.length > 0) {
-    const lastRecord = records[0];
-    const a = analyzeRecord(lastRecord, p);
-    const scoreColor = a.colorLevel === 'green' ? '#16A34A' : a.colorLevel === 'yellow' ? '#F59E0B' : '#EF4444';
-    const scoreBg = a.colorLevel === 'green' ? '#ECFDF5' : a.colorLevel === 'yellow' ? '#FEF3C7' : '#FEE2E2';
-    healthScoreHtml = `<div style="display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px;background:${scoreBg};border-radius:12px">
-      <div style="width:48px;height:48px;border-radius:50%;background:${scoreColor};display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:800;flex-shrink:0">${a.score}</div>
-      <div><div style="font-size:14px;font-weight:700;color:${scoreColor}">${a.colorLabel}</div><div style="font-size:12px;color:var(--text2);margin-top:2px">最近运动评分</div></div>
-    </div>`;
-  }
   document.getElementById('userCard').innerHTML = `
     <div class="user-info">
       <div class="user-avatar">
