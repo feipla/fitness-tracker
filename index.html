@@ -749,6 +749,171 @@ button { cursor: pointer; }
   white-space: nowrap;
 }
 .bar-label { font-size: 10px; color: #8a8a8a; }
+
+/* 仪表盘样式 */
+.gauge-container {
+  background: linear-gradient(180deg, #0a3d1a 0%, #062a12 100%);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.gauge-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(46, 204, 113, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.gauge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.gauge-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gauge-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+.gauge-status-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+.gauge-date {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.gauge-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.gauge-svg {
+  width: 200px;
+  height: 110px;
+}
+.gauge-value {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 8px;
+}
+.gauge-max {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+}
+.gauge-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+.gauge-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+.gauge-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
+}
+.gauge-metric {
+  text-align: center;
+}
+.gauge-metric-value {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+.gauge-metric-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
+}
+.gauge-metric-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.gauge-metric-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* 趋势图样式 */
+.trend-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+.trend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.trend-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.trend-title svg {
+  width: 16px;
+  height: 16px;
+  color: #2ecc71;
+}
+.trend-value {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #2ecc71;
+}
+.trend-chart {
+  height: 80px;
+  position: relative;
+}
+.trend-chart svg {
+  width: 100%;
+  height: 100%;
+}
+
 .hr-zone-bar {
   display: flex;
   height: 28px;
@@ -2512,46 +2677,41 @@ function renderStats() {
   const sorted = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
   const last10 = sorted.slice(-10);
 
-  // Duration bar chart
-  const maxDur = Math.max(...last10.map(r => r.duration || 0), 1);
-  const durBars = last10.map(r => {
-    const d = new Date(r.date);
-    const label = `${d.getMonth() + 1}/${d.getDate()}`;
-    const h = Math.max(4, ((r.duration || 0) / maxDur) * 120);
-    return `<div class="bar-col"><div class="bar" style="height:${h}px;background:linear-gradient(180deg,var(--primary),var(--secondary))"><span class="bar-val">${r.duration}分</span></div><span class="bar-label">${label}</span></div>`;
-  }).join('');
-
-  // HR bar chart
-  const maxHRVal = Math.max(...last10.map(r => r.avgHR || 0), 1);
-  const hrBars = last10.map(r => {
-    const d = new Date(r.date);
-    const label = `${d.getMonth() + 1}/${d.getDate()}`;
-    const h = Math.max(4, ((r.avgHR || 0) / maxHRVal) * 120);
-    const inZone = r.avgHR >= zones.fatBurn.min && r.avgHR <= zones.fatBurn.max;
-    const color = inZone ? '#10B981' : (r.avgHR < zones.fatBurn.min ? '#94A3B8' : '#F59E0B');
-    return `<div class="bar-col"><div class="bar" style="height:${h}px;background:${color}"><span class="bar-val">${r.avgHR || '-'}</span></div><span class="bar-label">${label}</span></div>`;
-  }).join('');
-
-  // HR zone distribution
-  const zoneCounts = { warmUp: 0, fatBurn: 0, cardio: 0, anaerobic: 0, maxZone: 0 };
-  records.forEach(r => {
-    const hr = r.avgHR || 0;
-    if (hr >= zones.maxZone.min) zoneCounts.maxZone++;
-    else if (hr >= zones.anaerobic.min) zoneCounts.anaerobic++;
-    else if (hr >= zones.cardio.min) zoneCounts.cardio++;
-    else if (hr >= zones.fatBurn.min) zoneCounts.fatBurn++;
-    else if (hr >= zones.warmUp.min) zoneCounts.warmUp++;
-  });
-  const total = records.length || 1;
+  // 计算总体健康评分
+  const avgScore = Math.round(records.reduce((s, r) => {
+    const a = r.aiAnalysis || analyzeRecord(r, profile);
+    return s + (a.score || 70);
+  }, 0) / records.length);
+  
+  // 仪表盘角度计算 (0-100 -> -90 to 90度)
+  const gaugeAngle = (avgScore / 100) * 180 - 90;
+  const gaugeColor = avgScore >= 80 ? '#2ecc71' : avgScore >= 60 ? '#f39c12' : '#e74c3c';
+  const statusText = avgScore >= 80 ? '状态优秀' : avgScore >= 60 ? '状态良好' : '需要关注';
+  const statusColor = avgScore >= 80 ? '#2ecc71' : avgScore >= 60 ? '#f39c12' : '#e74c3c';
 
   // Cumulative stats
   const totalDur = records.reduce((s, r) => s + (r.duration || 0), 0);
   const totalDist = records.reduce((s, r) => s + (r.distance || 0), 0);
   const totalCal = records.reduce((s, r) => s + (r.calories || 0), 0);
   const totalSteps = records.reduce((s, r) => s + (r.steps || 0), 0);
+  const avgHR = Math.round(records.reduce((s, r) => s + (r.avgHR || 0), 0) / records.length);
+
+  // 趋势数据
+  const trendData = last10.map(r => r.avgHR || 0);
+  const maxTrend = Math.max(...trendData, 1);
+  const trendPoints = trendData.map((v, i) => {
+    const x = (i / (trendData.length - 1 || 1)) * 100;
+    const y = 80 - (v / maxTrend) * 70;
+    return `${x},${y}`;
+  }).join(' ');
+
+  // 最新日期
+  const lastRecord = sorted[sorted.length - 1];
+  const lastDate = new Date(lastRecord.date);
+  const dateStr = `${lastDate.getFullYear()}.${String(lastDate.getMonth()+1).padStart(2,'0')}.${String(lastDate.getDate()).padStart(2,'0')}`;
 
   // 全部历史记录列表
-  const historyListHtml = records.map((r, idx) => {
+  const historyListHtml = [...records].sort((a, b) => new Date(b.date) - new Date(a.date)).map((r, idx) => {
     const a = r.aiAnalysis || analyzeRecord(r, profile);
     const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
     const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀' : a.score >= 60 ? '良好' : '需改善');
@@ -2596,52 +2756,92 @@ function renderStats() {
   }).join('');
 
   container.innerHTML = `
+    <!-- 仪表盘主卡片 -->
+    <div class="gauge-container">
+      <div class="gauge-header">
+        <div class="gauge-status">
+          <div class="gauge-status-dot" style="background:${statusColor}"></div>
+          <span class="gauge-status-text">${statusText}</span>
+        </div>
+        <div class="gauge-date">更新于 ${dateStr}</div>
+      </div>
+      <div class="gauge-body">
+        <svg class="gauge-svg" viewBox="0 0 200 110">
+          <defs>
+            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#e74c3c"/>
+              <stop offset="35%" style="stop-color:#f39c12"/>
+              <stop offset="65%" style="stop-color:#f1c40f"/>
+              <stop offset="100%" style="stop-color:#2ecc71"/>
+            </linearGradient>
+          </defs>
+          <!-- 背景弧 -->
+          <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="12" stroke-linecap="round"/>
+          <!-- 彩虹弧 -->
+          <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round"/>
+          <!-- 指针 -->
+          <line x1="100" y1="100" x2="${100 + 70 * Math.cos((gaugeAngle - 90) * Math.PI / 180)}" y2="${100 + 70 * Math.sin((gaugeAngle - 90) * Math.PI / 180)}" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <!-- 中心点 -->
+          <circle cx="100" cy="100" r="8" fill="#fff"/>
+        </svg>
+        <div class="gauge-value">${avgScore}<span class="gauge-max">/100</span></div>
+        <div class="gauge-label">综合健康指数</div>
+      </div>
+      <div class="gauge-subtitle">基于${records.length}次运动数据智能分析</div>
+      <div class="gauge-metrics">
+        <div class="gauge-metric">
+          <div class="gauge-metric-value">${records.length}</div>
+          <div class="gauge-metric-label">运动次数</div>
+          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(records.length / 30 * 100, 100)}%;background:#2ecc71"></div></div>
+        </div>
+        <div class="gauge-metric">
+          <div class="gauge-metric-value">${totalDur}</div>
+          <div class="gauge-metric-label">总时长(分)</div>
+          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(totalDur / 600 * 100, 100)}%;background:#3498db"></div></div>
+        </div>
+        <div class="gauge-metric">
+          <div class="gauge-metric-value">${totalCal}</div>
+          <div class="gauge-metric-label">总消耗(大卡)</div>
+          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(totalCal / 5000 * 100, 100)}%;background:#e74c3c"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 趋势图 -->
+    <div class="trend-card">
+      <div class="trend-header">
+        <div class="trend-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          心率趋势
+        </div>
+        <div class="trend-value">${avgHR} bpm</div>
+      </div>
+      <div class="trend-chart">
+        <svg viewBox="0 0 100 80" preserveAspectRatio="none">
+          <polyline points="${trendPoints}" fill="none" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="${100}" cy="${80 - (trendData[trendData.length-1] / maxTrend) * 70}" r="3" fill="#2ecc71"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 总距离 -->
+    ${totalDist > 0 ? `
+    <div class="trend-card">
+      <div class="trend-header">
+        <div class="trend-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          累计里程
+        </div>
+        <div class="trend-value">${totalDist.toFixed(1)} km</div>
+      </div>
+    </div>` : ''}
+
+    <!-- 历史记录 -->
     <div class="section-title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       全部运动记录（${records.length}条）
     </div>
     ${historyListHtml}
-    <div class="stats-grid" style="grid-template-columns:repeat(2,1fr)">
-      <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">${records.length}</div><div class="lbl">总运动次数</div></div>
-      <div class="stat-card"><div class="icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="num">${totalDur}</div><div class="lbl">总时长(分)</div></div>
-      <div class="stat-card"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${totalDist.toFixed(1)}</div><div class="lbl">总距离(km)</div></div>
-      <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${totalCal}</div><div class="lbl">总消耗(大卡)</div></div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>运动时长趋势（最近${last10.length}次）</div>
-      <div class="bar-chart">${durBars}</div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>平均心率趋势（最近${last10.length}次）</div>
-      <div class="bar-chart">${hrBars}</div>
-      <div class="legend">
-        <span class="legend-item"><span class="legend-dot" style="background:#10B981"></span>减脂区</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#94A3B8"></span>偏低</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span>偏高</span>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>心率区间分布</div>
-      <div class="hr-zone-bar">
-        <div class="hr-zone-seg" style="width:${(zoneCounts.warmUp/total)*100}%;background:#94A3B8">${zoneCounts.warmUp || ''}</div>
-        <div class="hr-zone-seg" style="width:${(zoneCounts.fatBurn/total)*100}%;background:#10B981">${zoneCounts.fatBurn || ''}</div>
-        <div class="hr-zone-seg" style="width:${(zoneCounts.cardio/total)*100}%;background:#F59E0B">${zoneCounts.cardio || ''}</div>
-        <div class="hr-zone-seg" style="width:${(zoneCounts.anaerobic/total)*100}%;background:#EF4444">${zoneCounts.anaerobic || ''}</div>
-        <div class="hr-zone-seg" style="width:${(zoneCounts.maxZone/total)*100}%;background:#DC2626">${zoneCounts.maxZone || ''}</div>
-      </div>
-      <div class="legend">
-        <span class="legend-item"><span class="legend-dot" style="background:#94A3B8"></span>热身 ${zoneCounts.warmUp}次</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#10B981"></span>减脂 ${zoneCounts.fatBurn}次</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span>有氧 ${zoneCounts.cardio}次</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#EF4444"></span>无氧 ${zoneCounts.anaerobic}次</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#DC2626"></span>极限 ${zoneCounts.maxZone}次</span>
-      </div>
-    </div>
-
-    ${totalSteps > 0 ? `<div class="stats-grid" style="grid-template-columns:repeat(2,1fr)">
       <div class="stat-card"><div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="num">${totalSteps.toLocaleString()}</div><div class="lbl">总步数</div></div>
       <div class="stat-card"><div class="icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="num">${records.length > 0 ? Math.round(totalDist / records.length * 10) / 10 : 0}</div><div class="lbl">平均距离(km)</div></div>
     </div>` : ''}
