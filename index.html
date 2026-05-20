@@ -1082,76 +1082,76 @@ button { cursor: pointer; }
 .hrv-chart{width:100%;height:180px;position:relative;overflow:hidden}
 .hrv-chart svg{width:100%;height:100%}
 .hrv-chart-tabs{display:flex;gap:8px;margin-bottom:14px}
-.hrv-chart-tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:#F1F5F9;color:var(--text2);cursor:pointer;transition:all .2s}
-.hrv-chart-tab.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
+.hrv-chart-tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:#f0f2eb;color:#5a5a5a;cursor:pointer;transition:all .2s}
+.hrv-chart-tab.active{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff}
 
 /* AI Analysis Result Card */
-.analysis-result-card{background:var(--card-solid);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow);border-top:4px solid var(--primary);border:1px solid var(--border);border-top:4px solid var(--primary)}
-.analysis-result-card.green{border-top-color:#2EB872}
-.analysis-result-card.yellow{border-top-color:#F59E0B}
-.analysis-result-card.red{border-top-color:#EF4444}
+.analysis-result-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:4px solid #2ecc71}
+.analysis-result-card.green{border-top-color:#2ecc71}
+.analysis-result-card.yellow{border-top-color:#f39c12}
+.analysis-result-card.red{border-top-color:#e74c3c}
 
 .analysis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.analysis-date{font-size:16px;font-weight:700;color:var(--text)}
+.analysis-date{font-size:16px;font-weight:700;color:#1a1a1a}
 .analysis-score-badge{font-size:14px;font-weight:700;padding:6px 14px;border-radius:20px}
-.analysis-score-badge.green{background:rgba(46,184,114,.15);color:#2EB872}
-.analysis-score-badge.yellow{background:rgba(245,158,11,.15);color:#F59E0B}
-.analysis-score-badge.red{background:rgba(239,68,68,.15);color:#EF4444}
+.analysis-score-badge.green{background:rgba(46,204,113,0.12);color:#27ae60}
+.analysis-score-badge.yellow{background:rgba(243,156,18,0.12);color:#d68910}
+.analysis-score-badge.red{background:rgba(231,76,60,0.12);color:#c0392b}
 
-.analysis-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;padding:14px;background:rgba(255,255,255,.03);border-radius:12px;border:1px solid var(--border)}
+.analysis-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;padding:14px;background:#f8faf8;border-radius:12px}
 .metric-item{text-align:center}
-.metric-val{font-size:20px;font-weight:800;color:var(--text)}
-.metric-unit{font-size:10px;color:var(--text2)}
-.metric-lbl{font-size:11px;color:var(--text2);margin-top:2px}
+.metric-val{font-size:20px;font-weight:800;color:#1a1a1a}
+.metric-unit{font-size:10px;color:#8a8a8a}
+.metric-lbl{font-size:11px;color:#8a8a8a;margin-top:2px}
 
-.analysis-content{background:rgba(46,184,114,.08);border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid rgba(46,184,114,.15)}
-.analysis-content .analysis-title{font-size:16px;font-weight:700;color:#2EB872;margin-bottom:10px}
-.analysis-content .analysis-text{font-size:18px;color:var(--text);line-height:1.9}
+.analysis-content{background:rgba(46,204,113,0.08);border-radius:12px;padding:16px;margin-bottom:14px}
+.analysis-content .analysis-title{font-size:16px;font-weight:700;color:#27ae60;margin-bottom:10px}
+.analysis-content .analysis-text{font-size:18px;color:#1a1a1a;line-height:1.9}
 
-.guidance-content{background:rgba(59,130,246,.08);border-radius:12px;padding:16px;margin-bottom:16px;border-left:4px solid #3B82F6;border:1px solid rgba(59,130,246,.15);border-left:4px solid #3B82F6}
-.guidance-content .guidance-title{font-size:15px;font-weight:700;color:#3B82F6;margin-bottom:10px}
-.guidance-content .guidance-text{font-size:18px;color:var(--text);line-height:2}
+.guidance-content{background:rgba(52,152,219,0.08);border-radius:12px;padding:16px;margin-bottom:16px;border-left:4px solid #3498db}
+.guidance-content .guidance-title{font-size:15px;font-weight:700;color:#3498db;margin-bottom:10px}
+.guidance-content .guidance-text{font-size:18px;color:#1a1a1a;line-height:2}
 
 .analysis-actions{display:flex;gap:12px}
-.btn-save{flex:1;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;font-size:15px;font-weight:700;box-shadow:0 4px 16px rgba(46,184,114,.3)}
-.btn-retry{height:48px;padding:0 24px;border-radius:12px;border:1px solid var(--border);color:var(--text2);font-size:14px;font-weight:600;background:var(--card-solid)}
+.btn-save{flex:1;height:48px;border-radius:12px;background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;font-size:15px;font-weight:700;box-shadow:0 4px 12px rgba(46,204,113,0.25)}
+.btn-retry{height:48px;padding:0 24px;border-radius:12px;border:1px solid #e8e8e8;color:#5a5a5a;font-size:14px;font-weight:600;background:#fff}
 
 /* HRV Record Card */
-.hrv-record-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hrv-record-card{background:#fff;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.06);position:relative;overflow:hidden}
 .hrv-record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.hrv-record-date{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600}
-.hrv-record-date svg{width:16px;height:16px;color:var(--primary)}
-.hrv-record-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;padding:12px;background:#F8FAFC;border-radius:12px}
+.hrv-record-date{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#1a1a1a}
+.hrv-record-date svg{width:16px;height:16px;color:#2ecc71}
+.hrv-record-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;padding:12px;background:#f8faf8;border-radius:12px}
 .hrv-record-metric{text-align:center}
-.hrv-record-metric .val{font-size:18px;font-weight:700;color:var(--text)}
-.hrv-record-metric .unit{font-size:10px;color:var(--text2);margin-left:1px}
-.hrv-record-metric .lbl{font-size:10px;color:var(--text2);margin-top:3px}
-.hrv-analysis-item{padding:10px 0;border-bottom:1px dashed #F1F5F9}
+.hrv-record-metric .val{font-size:18px;font-weight:700;color:#1a1a1a}
+.hrv-record-metric .unit{font-size:10px;color:#8a8a8a;margin-left:1px}
+.hrv-record-metric .lbl{font-size:10px;color:#8a8a8a;margin-top:3px}
+.hrv-analysis-item{padding:10px 0;border-bottom:1px dashed #f0f0f0}
 .hrv-analysis-item:last-child{border-bottom:none}
-.hrv-analysis-item .metric-name{font-size:12px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.hrv-analysis-item .metric-name{font-size:12px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:4px;color:#1a1a1a}
 .hrv-analysis-item .metric-name .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.hrv-analysis-item .metric-desc{font-size:12px;color:var(--text2);line-height:1.7}
-.hrv-analysis-item .metric-advice{font-size:11px;color:var(--primary);line-height:1.7;margin-top:4px;padding-left:10px;border-left:2px solid var(--primary)}
+.hrv-analysis-item .metric-desc{font-size:12px;color:#5a5a5a;line-height:1.7}
+.hrv-analysis-item .metric-advice{font-size:11px;color:#2ecc71;line-height:1.7;margin-top:4px;padding-left:10px;border-left:2px solid #2ecc71}
 
 /* HRV Weekly Summary */
-.hrv-weekly-summary{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
-.hrv-weekly-summary h3{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.hrv-weekly-summary h3 svg{width:18px;height:18px;color:var(--secondary)}
-.hrv-weekly-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
-.hrv-weekly-item{background:#F8FAFC;border-radius:10px;padding:12px;text-align:center}
-.hrv-weekly-item .val{font-size:20px;font-weight:700;color:var(--text)}
-.hrv-weekly-item .lbl{font-size:11px;color:var(--text2);margin-top:2px}
+.hrv-weekly-summary{background:#fff;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.hrv-weekly-summary h3{font-size:16px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:#1a1a1a}
+.hrv-weekly-summary h3 svg{width:18px;height:18px;color:#2ecc71}
+.hrv-weekly-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px}
+.hrv-weekly-item{background:#f8faf8;border-radius:12px;padding:14px;text-align:center}
+.hrv-weekly-item .val{font-size:22px;font-weight:700;color:#1a1a1a}
+.hrv-weekly-item .lbl{font-size:12px;color:#8a8a8a;margin-top:2px}
 
 /* Health Tip Card */
-.health-tip-card{background:rgba(46,184,114,.08);border-radius:var(--radius);padding:18px;margin-bottom:16px;border-left:4px solid var(--primary);border:1px solid rgba(46,184,114,.15);border-left:4px solid var(--primary)}
+.health-tip-card{background:rgba(46,204,113,0.08);border-radius:20px;padding:18px;margin-bottom:16px;border-left:4px solid #2ecc71}
 .health-tip-card .tip-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.health-tip-card .tip-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(46,184,114,.3)}
+.health-tip-card .tip-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#2ecc71,#27ae60);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(46,204,113,0.25)}
 .health-tip-card .tip-icon svg{width:20px;height:20px;color:#fff}
-.health-tip-card .tip-title{font-size:15px;font-weight:700;color:var(--text)}
-.health-tip-card .tip-text{font-size:14px;color:var(--text2);line-height:1.8}
+.health-tip-card .tip-title{font-size:15px;font-weight:700;color:#1a1a1a}
+.health-tip-card .tip-text{font-size:14px;color:#5a5a5a;line-height:1.8}
 
 /* Streak Card */
-.streak-card{background:var(--card-solid);border-radius:var(--radius);padding:18px;margin-bottom:16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;border:1px solid var(--border)}
+.streak-card{background:#fff;border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;align-items:center;gap:16px}
 .streak-fire{font-size:40px;line-height:1}
 .streak-info{flex:1}
 .streak-num{font-size:28px;font-weight:800;color:var(--primary)}
