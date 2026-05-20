@@ -17,31 +17,31 @@
 <!-- AI Vision Recognition -->
 <style>
 :root{
-  /* 自然有机色彩系统 - OKLCH */
-  --color-bg: oklch(0.97 0.02 120);
-  --color-bg-alt: oklch(0.95 0.03 120);
-  --color-surface: oklch(1.00 0 0);
-  --color-surface-alt: oklch(0.92 0.02 120);
-  --color-text: oklch(0.25 0.05 120);
-  --color-text-muted: oklch(0.45 0.04 120);
-  --color-text-soft: oklch(0.55 0.03 120);
-  --color-primary: oklch(0.45 0.12 145);
-  --color-primary-light: oklch(0.65 0.10 145);
-  --color-primary-soft: oklch(0.90 0.05 145);
-  --color-accent: oklch(0.55 0.10 180);
-  --color-accent-soft: oklch(0.92 0.04 180);
-  --color-green: oklch(0.55 0.12 145);
-  --color-blue: oklch(0.50 0.10 230);
-  --color-orange: oklch(0.60 0.12 70);
-  --color-purple: oklch(0.50 0.12 300);
-  --color-danger: oklch(0.55 0.15 25);
+  /* 深绿沉浸色彩系统 */
+  --color-bg: #0a3d1a;
+  --color-bg-dark: #062a12;
+  --color-bg-light: #0d4a22;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8faf8;
+  --color-text: #1a1a1a;
+  --color-text-muted: #5a5a5a;
+  --color-text-soft: #8a8a8a;
+  --color-primary: #2ecc71;
+  --color-primary-light: #58d68d;
+  --color-primary-soft: rgba(46, 204, 113, 0.15);
+  --color-accent: #27ae60;
+  --color-green: #27ae60;
+  --color-blue: #3498db;
+  --color-orange: #f39c12;
+  --color-purple: #9b59b6;
+  --color-danger: #e74c3c;
   
   /* 边框与阴影 */
-  --border-subtle: 1px solid oklch(0.88 0.02 120);
-  --border-light: 1px solid oklch(0.82 0.02 120);
-  --shadow-soft: 0 2px 20px oklch(0.50 0.05 120 / 0.08);
-  --shadow-medium: 0 4px 40px oklch(0.50 0.05 120 / 0.12);
-  --shadow-strong: 0 8px 60px oklch(0.40 0.05 120 / 0.15);
+  --border-subtle: 1px solid rgba(255, 255, 255, 0.1);
+  --border-light: 1px solid rgba(255, 255, 255, 0.15);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-medium: 0 8px 40px rgba(0, 0, 0, 0.2);
+  --shadow-strong: 0 12px 60px rgba(0, 0, 0, 0.25);
   
   /* 圆角与过渡 */
   --radius-sm: 8px;
@@ -57,22 +57,22 @@
   --font-sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
   
   /* 兼容旧变量 */
-  --primary: #2a8f5c;
-  --primary-light: #4db87a;
-  --secondary: #1e7a4d;
-  --success: #2a8f5c;
-  --warning: #d4a03c;
-  --danger: #c94c4c;
-  --bg: #f8f9f5;
-  --bg-secondary: #f0f2eb;
+  --primary: #2ecc71;
+  --primary-light: #58d68d;
+  --secondary: #27ae60;
+  --success: #2ecc71;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --bg: #0a3d1a;
+  --bg-secondary: #062a12;
   --card: #ffffff;
   --card-solid: #ffffff;
-  --text: #1a2f1a;
-  --text2: #4a5d4a;
-  --text3: #7a8a7a;
-  --border: #d8ddd3;
+  --text: #1a1a1a;
+  --text2: #5a5a5a;
+  --text3: #8a8a8a;
+  --border: rgba(255, 255, 255, 0.1);
   --radius: 16px;
-  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 *, *::before, *::after {
@@ -123,9 +123,9 @@ button { cursor: pointer; }
 .page{display:none;padding-bottom:80px}
 .page.active{display:block}
 
-/* Header - 自然有机风格 */
+/* Header - 深绿沉浸风格 */
 .header {
-  background: linear-gradient(135deg, oklch(0.40 0.10 145) 0%, oklch(0.35 0.12 145) 100%);
+  background: linear-gradient(180deg, #0a3d1a 0%, #062a12 100%);
   padding: 60px 24px 40px;
   position: relative;
   overflow: hidden;
@@ -135,19 +135,7 @@ button { cursor: pointer; }
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 30px 30px;
-}
-.header::after {
-  content: '';
-  position: absolute;
-  top: -30%;
-  right: -10%;
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-  border-radius: 50%;
+    radial-gradient(circle at 80% 20%, rgba(46, 204, 113, 0.1) 0%, transparent 40%);
 }
 .header-content {
   position: relative;
@@ -158,7 +146,7 @@ button { cursor: pointer; }
 }
 .header h1 {
   font-family: var(--font-serif);
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   color: #fff;
   margin-bottom: 6px;
@@ -166,24 +154,22 @@ button { cursor: pointer; }
 }
 .header p {
   font-size: 13px;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.6);
   letter-spacing: 1px;
-  font-weight: 300;
 }
 
-/* User Card - 卡片式悬浮 */
+/* User Card - 白色悬浮卡片 */
 .user-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  background: #fff;
+  border-radius: 20px;
   padding: 20px;
   margin: -28px 20px 20px;
-  box-shadow: var(--shadow-medium);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   position: relative;
   z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: var(--border-subtle);
 }
 .user-card-left { flex: 1; }
 .user-card-streak {
@@ -198,11 +184,11 @@ button { cursor: pointer; }
   font-family: var(--font-serif);
   font-size: 20px;
   font-weight: 700;
-  color: var(--color-primary);
+  color: #2ecc71;
 }
 .user-card-streak .streak-label {
   font-size: 11px;
-  color: var(--color-text-soft);
+  color: #8a8a8a;
   font-weight: 500;
 }
 .user-info {
@@ -215,23 +201,23 @@ button { cursor: pointer; }
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-primary), oklch(0.35 0.12 145));
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px oklch(0.45 0.10 145 / 0.25);
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
 }
 .user-avatar svg { width: 28px; height: 28px; }
 .user-meta h3 {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 3px;
-  color: var(--color-text);
+  color: #1a1a1a;
 }
 .user-meta p {
   font-size: 13px;
-  color: var(--color-text-muted);
+  color: #5a5a5a;
 }
 .user-tags {
   display: flex;
@@ -239,11 +225,11 @@ button { cursor: pointer; }
   flex-wrap: wrap;
 }
 .user-tag {
-  background: var(--color-primary-soft);
+  background: rgba(46, 204, 113, 0.1);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
-  color: var(--color-primary);
+  color: #27ae60;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -255,17 +241,17 @@ button { cursor: pointer; }
 .section { padding: 0 20px 20px; }
 .section-title {
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--color-text);
+  color: #1a1a1a;
 }
-.section-title svg { width: 20px; height: 20px; color: var(--color-primary); }
+.section-title svg { width: 20px; height: 20px; color: #2ecc71; }
 
-/* Stats Grid - 有机卡片 */
+/* Stats Grid - 白色卡片 */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -273,17 +259,16 @@ button { cursor: pointer; }
   margin-bottom: 20px;
 }
 .stat-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-md);
+  background: #fff;
+  border-radius: 16px;
   padding: 16px 10px;
   text-align: center;
-  box-shadow: var(--shadow-soft);
-  border: var(--border-subtle);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 .stat-card:active {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 .stat-card .icon {
   width: 40px;
@@ -294,30 +279,29 @@ button { cursor: pointer; }
   align-items: center;
   justify-content: center;
 }
-.stat-card .icon.blue { background: var(--color-primary-soft); }
-.stat-card .icon.purple { background: oklch(0.92 0.04 280); }
-.stat-card .icon.green { background: oklch(0.92 0.04 160); }
-.stat-card .icon svg { width: 20px; height: 20px; color: var(--color-primary); }
+.stat-card .icon.blue { background: rgba(46, 204, 113, 0.12); }
+.stat-card .icon.purple { background: rgba(155, 89, 182, 0.12); }
+.stat-card .icon.green { background: rgba(39, 174, 96, 0.12); }
+.stat-card .icon svg { width: 20px; height: 20px; color: #2ecc71; }
 .stat-card .num {
   font-family: var(--font-serif);
   font-size: 24px;
   font-weight: 700;
-  color: var(--color-text);
+  color: #1a1a1a;
   margin-bottom: 2px;
 }
-.stat-card .lbl { font-size: 11px; color: var(--color-text-soft); font-weight: 500; }
+.stat-card .lbl { font-size: 11px; color: #8a8a8a; font-weight: 500; }
 
-/* Record Card - 有机质感 */
+/* Record Card - 白色卡片 */
 .record-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  background: #fff;
+  border-radius: 20px;
   padding: 20px;
   margin-bottom: 14px;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
-  border: var(--border-subtle);
-  transition: transform var(--transition-fast);
+  transition: transform 0.2s;
 }
 .record-card:active { transform: scale(0.995); }
 .record-card.has-img { cursor: pointer; }
@@ -328,16 +312,16 @@ button { cursor: pointer; }
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: oklch(0.90 0.05 25 / 0.15);
+  background: rgba(231, 76, 60, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3;
   opacity: 0;
-  transition: opacity var(--transition-fast);
+  transition: opacity 0.2s;
 }
 .record-card:hover .delete-btn, .record-card:active .delete-btn { opacity: 1; }
-.record-card .delete-btn svg { width: 14px; height: 14px; color: var(--color-danger); }
+.record-card .delete-btn svg { width: 14px; height: 14px; color: #e74c3c; }
 .record-header {
   display: flex;
   justify-content: space-between;
@@ -350,9 +334,9 @@ button { cursor: pointer; }
   gap: 6px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-text);
+  color: #1a1a1a;
 }
-.record-date svg { width: 16px; height: 16px; color: var(--color-primary); }
+.record-date svg { width: 16px; height: 16px; color: #2ecc71; }
 .record-status {
   font-size: 11px;
   font-weight: 600;
@@ -362,17 +346,17 @@ button { cursor: pointer; }
   align-items: center;
   gap: 3px;
 }
-.record-status.good { background: var(--color-primary-soft); color: var(--color-primary); }
-.record-status.warn { background: oklch(0.92 0.05 70); color: oklch(0.50 0.10 70); }
-.record-status.bad { background: oklch(0.90 0.05 25 / 0.2); color: var(--color-danger); }
+.record-status.good { background: rgba(46, 204, 113, 0.12); color: #27ae60; }
+.record-status.warn { background: rgba(243, 156, 18, 0.12); color: #d68910; }
+.record-status.bad { background: rgba(231, 76, 60, 0.12); color: #c0392b; }
 .record-status svg { width: 12px; height: 12px; }
 .record-thumb {
   width: 100%;
   height: 140px;
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   object-fit: cover;
   margin-bottom: 16px;
-  background: var(--color-bg-alt);
+  background: #f0f2eb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -415,52 +399,52 @@ button { cursor: pointer; }
 }
 .record-analysis .analysis-title svg { width: 20px; height: 20px; }
 .record-analysis.good .analysis-title {
-  color: var(--color-primary);
-  background: var(--color-primary-soft);
+  color: #27ae60;
+  background: rgba(46, 204, 113, 0.12);
   padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   display: inline-flex;
 }
 .record-analysis.warn .analysis-title {
-  color: oklch(0.50 0.10 70);
-  background: oklch(0.92 0.05 70);
+  color: #d68910;
+  background: rgba(243, 156, 18, 0.12);
   padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   display: inline-flex;
 }
 .record-analysis.bad .analysis-title {
-  color: var(--color-danger);
-  background: oklch(0.90 0.05 25 / 0.2);
+  color: #c0392b;
+  background: rgba(231, 76, 60, 0.12);
   padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   display: inline-flex;
 }
-.record-analysis p { font-size: 17px; color: var(--color-text); line-height: 2; font-weight: 600; }
-.record-analysis p strong { color: var(--color-primary); font-weight: 800; }
+.record-analysis p { font-size: 17px; color: #1a1a1a; line-height: 2; font-weight: 600; }
+.record-analysis p strong { color: #2ecc71; font-weight: 800; }
 .record-guidance {
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 2px dashed var(--color-primary);
+  border-top: 2px dashed #2ecc71;
 }
 .record-guidance .guidance-title {
   font-family: var(--font-serif);
   font-size: 16px;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, var(--color-primary), oklch(0.35 0.12 145));
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
   padding: 10px 14px;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 8px oklch(0.45 0.10 145 / 0.25);
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.25);
 }
 .record-guidance .guidance-title svg { width: 18px; height: 18px; }
 .record-guidance ul { list-style: none; padding: 0; }
 .record-guidance li {
   font-size: 16px;
-  color: var(--color-text);
+  color: #1a1a1a;
   line-height: 2.2;
   padding-left: 24px;
   position: relative;
@@ -474,53 +458,53 @@ button { cursor: pointer; }
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--color-primary);
+  background: #2ecc71;
 }
 
-/* Upload Zone - 有机风格 */
+/* Upload Zone - 白色卡片 */
 .upload-zone {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  background: #fff;
+  border-radius: 20px;
   padding: 32px 24px;
   text-align: center;
-  box-shadow: var(--shadow-soft);
-  border: 2px dashed oklch(0.70 0.08 145);
-  transition: all var(--transition-med);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 2px dashed #d0d0d0;
+  transition: all 0.26s;
   cursor: pointer;
 }
 .upload-zone:active, .upload-zone.dragover {
-  border-color: var(--color-primary);
-  background: var(--color-primary-soft);
+  border-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.05);
 }
 .upload-icon {
   width: 64px;
   height: 64px;
   margin: 0 auto 16px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--color-primary), oklch(0.35 0.12 145));
+  border-radius: 16px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 20px oklch(0.45 0.10 145 / 0.3);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
 }
 .upload-icon svg { width: 28px; height: 28px; color: #fff; }
 .upload-zone h3 {
   font-family: var(--font-serif);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   margin-bottom: 6px;
-  color: var(--color-text);
+  color: #1a1a1a;
 }
-.upload-zone p { font-size: 13px; color: var(--color-text-muted); }
+.upload-zone p { font-size: 13px; color: #8a8a8a; }
 
-/* Analysis Progress - 柔和遮罩 */
+/* Analysis Progress - 深绿遮罩 */
 .analysis-progress {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: oklch(0.20 0.05 120 / 0.7);
+  background: rgba(6, 42, 18, 0.85);
   z-index: 500;
   display: flex;
   align-items: center;
@@ -529,18 +513,17 @@ button { cursor: pointer; }
   -webkit-backdrop-filter: blur(8px);
 }
 .progress-content {
-  background: var(--color-surface);
-  border-radius: var(--radius-xl);
+  background: #fff;
+  border-radius: 24px;
   padding: 40px 56px;
   text-align: center;
-  box-shadow: var(--shadow-strong);
-  border: var(--border-subtle);
+  box-shadow: 0 12px 60px rgba(0, 0, 0, 0.25);
 }
 .progress-spinner {
   width: 52px;
   height: 52px;
-  border: 4px solid var(--color-bg-alt);
-  border-top-color: var(--color-primary);
+  border: 4px solid #f0f2eb;
+  border-top-color: #2ecc71;
   border-radius: 50%;
   margin: 0 auto 20px;
   animation: spin 1s linear infinite;
@@ -548,23 +531,22 @@ button { cursor: pointer; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .progress-text {
   font-size: 15px;
-  color: var(--color-text);
+  color: #1a1a1a;
   font-weight: 500;
 }
 
-/* Bottom Nav - 有机风格 */
+/* Bottom Nav - 深绿沉浸 */
 .bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--color-surface);
-  border-top: var(--border-subtle);
+  background: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   display: flex;
   padding: 8px 0 24px;
   z-index: 100;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
 }
 .nav-item {
   flex: 1;
@@ -572,13 +554,12 @@ button { cursor: pointer; }
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  color: var(--color-text-soft);
+  color: #8a8a8a;
   font-size: 11px;
-  transition: color var(--transition-fast);
+  transition: color 0.2s;
   font-weight: 500;
 }
-.nav-item.active { color: var(--color-primary); }
-.nav-item.active svg { filter: drop-shadow(0 0 4px oklch(0.45 0.10 145 / 0.4)); }
+.nav-item.active { color: #2ecc71; }
 .nav-item svg { width: 24px; height: 24px; }
 
 /* Modal / Overlay */
@@ -588,7 +569,7 @@ button { cursor: pointer; }
   left: 0;
   right: 0;
   bottom: 0;
-  background: oklch(0.20 0.05 120 / 0.6);
+  background: rgba(6, 42, 18, 0.7);
   z-index: 200;
   display: none;
   align-items: flex-end;
@@ -598,16 +579,14 @@ button { cursor: pointer; }
 }
 .modal-overlay.show { display: flex; }
 .modal {
-  background: var(--color-surface);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: #fff;
+  border-radius: 28px 28px 0 0;
   width: 100%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
   padding: 28px 24px 48px;
   animation: slideUp 0.3s ease;
-  border: var(--border-subtle);
-  border-bottom: none;
 }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .modal-header {
@@ -620,70 +599,71 @@ button { cursor: pointer; }
   font-family: var(--font-serif);
   font-size: 20px;
   font-weight: 600;
+  color: #1a1a1a;
 }
 .modal-close {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--color-bg-alt);
+  background: #f0f2eb;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.modal-close svg { width: 18px; height: 18px; color: var(--color-text-muted); }
+.modal-close svg { width: 18px; height: 18px; color: #5a5a5a; }
 
-/* Form - 有机风格 */
+/* Form - 白色表单 */
 .form-group { margin-bottom: 18px; }
 .form-label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-text);
+  color: #1a1a1a;
   margin-bottom: 8px;
   display: block;
 }
 .form-input {
   width: 100%;
   height: 48px;
-  border: var(--border-subtle);
-  border-radius: var(--radius-md);
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
   padding: 0 16px;
   font-size: 15px;
-  color: var(--color-text);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-  background: var(--color-surface);
+  color: #1a1a1a;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
 }
 .form-input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px oklch(0.45 0.10 145 / 0.1);
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
 }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-select {
   width: 100%;
   height: 48px;
-  border: var(--border-subtle);
-  border-radius: var(--radius-md);
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
   padding: 0 16px;
   font-size: 15px;
-  color: var(--color-text);
+  color: #1a1a1a;
   appearance: none;
-  background: var(--color-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a8a7a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 16px center;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a5a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 16px center;
 }
 .img-preview-area {
   width: 100%;
   min-height: 180px;
-  border: 2px dashed var(--color-bg-alt);
-  border-radius: var(--radius-md);
+  border: 2px dashed #e0e0e0;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   margin-bottom: 18px;
   position: relative;
-  background: var(--color-bg-alt);
+  background: #f8f9f5;
 }
 .img-preview-area img { max-width: 100%; max-height: 240px; object-fit: contain; }
 .img-preview-area .placeholder {
-  color: var(--color-text-muted);
+  color: #8a8a8a;
   font-size: 14px;
   display: flex;
   flex-direction: column;
@@ -695,7 +675,7 @@ button { cursor: pointer; }
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: oklch(0.20 0.05 120 / 0.7);
+  background: rgba(0, 0, 0, 0.7);
   color: #fff;
   font-size: 12px;
   padding: 6px 12px;
@@ -704,8 +684,8 @@ button { cursor: pointer; }
 .btn-primary {
   width: 100%;
   height: 52px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--color-primary), oklch(0.35 0.12 145));
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
   color: #fff;
   font-size: 16px;
   font-weight: 600;
@@ -713,34 +693,34 @@ button { cursor: pointer; }
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-  box-shadow: 0 4px 16px oklch(0.45 0.10 145 / 0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.3);
 }
 .btn-primary:active {
   transform: translateY(1px);
-  box-shadow: 0 2px 8px oklch(0.45 0.10 145 / 0.2);
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
 }
 .btn-primary svg { width: 20px; height: 20px; }
 
-/* Stats Page - 有机风格 */
+/* Stats Page - 白色卡片 */
 .chart-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  background: #fff;
+  border-radius: 20px;
   padding: 20px;
   margin-bottom: 14px;
-  box-shadow: var(--shadow-soft);
-  border: var(--border-subtle);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 .chart-title {
   font-family: var(--font-serif);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
+  color: #1a1a1a;
 }
-.chart-title svg { width: 18px; height: 18px; color: var(--color-primary); }
+.chart-title svg { width: 18px; height: 18px; color: #2ecc71; }
 .chart-container { width: 100%; height: 200px; position: relative; }
 .chart-container canvas { width: 100% !important; height: 100% !important; }
 .bar-chart {
@@ -765,10 +745,10 @@ button { cursor: pointer; }
   transform: translateX(-50%);
   font-size: 10px;
   font-weight: 600;
-  color: var(--color-text);
+  color: #1a1a1a;
   white-space: nowrap;
 }
-.bar-label { font-size: 10px; color: var(--color-text-soft); }
+.bar-label { font-size: 10px; color: #8a8a8a; }
 .hr-zone-bar {
   display: flex;
   height: 28px;
@@ -795,49 +775,48 @@ button { cursor: pointer; }
   align-items: center;
   gap: 4px;
   font-size: 11px;
-  color: var(--color-text-soft);
+  color: #8a8a8a;
 }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-/* Profile Page - 有机风格 */
+/* Profile Page - 白色卡片 */
 .profile-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  background: #fff;
+  border-radius: 20px;
   padding: 20px;
   margin-bottom: 14px;
-  box-shadow: var(--shadow-soft);
-  border: var(--border-subtle);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 .profile-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 14px 0;
-  border-bottom: var(--border-subtle);
+  border-bottom: 1px solid #f0f0f0;
 }
 .profile-row:last-child { border-bottom: none; }
-.profile-row .label { font-size: 14px; color: var(--color-text-muted); }
+.profile-row .label { font-size: 14px; color: #5a5a5a; }
 .profile-row .value {
   font-size: 15px;
   font-weight: 600;
-  color: var(--color-text);
+  color: #1a1a1a;
 }
-.profile-row .value.editable { color: var(--color-primary); cursor: pointer; }
+.profile-row .value.editable { color: #2ecc71; cursor: pointer; }
 .profile-row .value input {
   width: 80px;
   text-align: right;
   font-size: 15px;
   font-weight: 600;
-  color: var(--color-primary);
+  color: #2ecc71;
   border: none;
   background: none;
 }
 .btn-outline {
   width: 100%;
   height: 48px;
-  border-radius: var(--radius-md);
-  border: var(--border-subtle);
-  color: var(--color-text-muted);
+  border-radius: 12px;
+  border: 1px solid #e8e8e8;
+  color: #5a5a5a;
   font-size: 15px;
   font-weight: 600;
   display: flex;
@@ -845,18 +824,18 @@ button { cursor: pointer; }
   justify-content: center;
   gap: 8px;
   margin-top: 14px;
-  background: var(--color-surface);
-  transition: all var(--transition-fast);
+  background: #fff;
+  transition: all 0.2s;
 }
 .btn-outline:active {
-  background: var(--color-bg-alt);
+  background: #f8f9f5;
 }
 .btn-danger {
   width: 100%;
   height: 48px;
-  border-radius: var(--radius-md);
-  border: 1px solid oklch(0.90 0.05 25 / 0.3);
-  color: var(--color-danger);
+  border-radius: 12px;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  color: #e74c3c;
   font-size: 15px;
   font-weight: 600;
   display: flex;
@@ -864,34 +843,34 @@ button { cursor: pointer; }
   justify-content: center;
   gap: 8px;
   margin-top: 10px;
-  background: oklch(0.95 0.02 25 / 0.1);
+  background: rgba(231, 76, 60, 0.08);
 }
 
 /* Weekly Report */
-.weekly-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
-.weekly-card h3{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.weekly-card h3 svg{width:18px;height:18px;color:var(--secondary)}
-.weekly-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
-.weekly-item{background:#F8FAFC;border-radius:10px;padding:12px;text-align:center}
-.weekly-item .val{font-size:20px;font-weight:700;color:var(--text)}
-.weekly-item .lbl{font-size:11px;color:var(--text2);margin-top:2px}
-.weekly-text{font-size:13px;color:var(--text2);line-height:1.8}
-.weekly-text strong{color:var(--text);font-weight:600}
+.weekly-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.weekly-card h3{font-size:16px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:#1a1a1a}
+.weekly-card h3 svg{width:18px;height:18px;color:#2ecc71}
+.weekly-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.weekly-item{background:#f8faf8;border-radius:12px;padding:14px;text-align:center}
+.weekly-item .val{font-size:22px;font-weight:700;color:#1a1a1a}
+.weekly-item .lbl{font-size:12px;color:#8a8a8a;margin-top:2px}
+.weekly-text{font-size:14px;color:#5a5a5a;line-height:1.8}
+.weekly-text strong{color:#1a1a1a;font-weight:600}
 
 /* Image Viewer */
-.img-viewer{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.95);z-index:300;display:none;align-items:center;justify-content:center;flex-direction:column}
+.img-viewer{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,42,18,0.95);z-index:300;display:none;align-items:center;justify-content:center;flex-direction:column}
 .img-viewer.show{display:flex}
-.img-viewer img{max-width:95%;max-height:80vh;object-fit:contain;border-radius:8px}
-.img-viewer .close-viewer{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center}
+.img-viewer img{max-width:95%;max-height:80vh;object-fit:contain;border-radius:12px}
+.img-viewer .close-viewer{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center}
 .img-viewer .close-viewer svg{width:20px;height:20px;color:#fff}
 
 /* Empty State */
-.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-state{text-align:center;padding:40px 20px;color:#8a8a8a}
 .empty-state svg{width:48px;height:48px;margin-bottom:12px;opacity:.5}
 .empty-state p{font-size:13px}
 
 /* Toast */
-.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
 
 /* Confirm Dialog */
@@ -1014,7 +993,7 @@ button { cursor: pointer; }
 .streak-label{font-size:13px;color:var(--text2);margin-top:2px}
 .streak-best{font-size:12px;color:var(--text3);margin-top:4px}
 
-/* Login Page - 自然有机风格 */
+/* Login Page - 深绿沉浸风格 */
 .login-page {
   position: fixed;
   top: 0;
@@ -1024,17 +1003,14 @@ button { cursor: pointer; }
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: var(--color-bg);
+  background: linear-gradient(180deg, #0a3d1a 0%, #062a12 100%);
+  overflow: hidden;
 }
 .login-hero {
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 32px 40px;
+  padding: 60px 28px 0;
   position: relative;
   overflow: hidden;
 }
@@ -1048,170 +1024,157 @@ button { cursor: pointer; }
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(90deg, oklch(0.60 0.05 145 / 0.08) 1px, transparent 1px),
-    linear-gradient(oklch(0.60 0.05 145 / 0.08) 1px, transparent 1px);
-  background-size: 40px 40px;
+    radial-gradient(circle at 20% 30%, rgba(46, 204, 113, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(39, 174, 96, 0.06) 0%, transparent 40%);
 }
 .login-hero-bg .orbit {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid oklch(0.45 0.10 145 / 0.2);
-  animation: orbitPulse 8s ease-in-out infinite;
+  border: 1px solid rgba(46, 204, 113, 0.15);
 }
 .login-hero-bg .orbit:nth-child(1) {
-  width: 280px;
-  height: 280px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  top: 15%;
+  right: -50px;
 }
 .login-hero-bg .orbit:nth-child(2) {
-  width: 450px;
-  height: 450px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation-delay: -2s;
-  border-color: oklch(0.45 0.10 145 / 0.12);
-}
-.login-hero-bg .orbit:nth-child(3) {
-  width: 620px;
-  height: 620px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation-delay: -4s;
-  border-color: oklch(0.45 0.10 145 / 0.08);
-}
-@keyframes orbitPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.6; }
-}
-.login-hero-bg .glow {
-  position: absolute;
-  width: 350px;
-  height: 350px;
-  border-radius: 50%;
-  background: radial-gradient(circle, oklch(0.65 0.10 145 / 0.2) 0%, transparent 70%);
-  top: 35%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: glowFloat 6s ease-in-out infinite;
-}
-@keyframes glowFloat {
-  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-  50% { transform: translate(-50%, -50%) translateY(-15px); }
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  right: -100px;
+  border-color: rgba(46, 204, 113, 0.1);
 }
 .login-hero-content {
   position: relative;
   z-index: 2;
-  text-align: center;
-  max-width: 340px;
+  margin-top: 20px;
+}
+.login-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
 }
 .login-brand-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 32px;
-  position: relative;
+  width: 44px;
+  height: 44px;
+  background: rgba(46, 204, 113, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .login-brand-icon svg {
-  width: 80px;
-  height: 80px;
-  color: var(--color-primary);
-  filter: drop-shadow(0 4px 12px oklch(0.45 0.10 145 / 0.3));
+  width: 24px;
+  height: 24px;
+  color: #2ecc71;
 }
-.login-brand-icon .pulse-ring {
-  position: absolute;
-  inset: -10px;
-  border-radius: 50%;
-  border: 2px solid oklch(0.45 0.10 145 / 0.25);
-  animation: pulseRing 2.5s ease-out infinite;
+.login-brand-text {
+  display: flex;
+  flex-direction: column;
 }
-@keyframes pulseRing {
-  0% { transform: scale(0.95); opacity: 1; }
-  100% { transform: scale(1.25); opacity: 0; }
+.login-brand-name {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2px;
+}
+.login-brand-sub {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.login-tag {
+  display: inline-block;
+  font-size: 12px;
+  color: #2ecc71;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.login-tag::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: #2ecc71;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 .login-title {
   font-family: var(--font-serif);
-  font-size: 36px;
+  font-size: 42px;
   font-weight: 700;
-  color: var(--color-text);
-  letter-spacing: 6px;
-  margin-bottom: 12px;
-  opacity: 0;
-  animation: fadeSlideUp 0.8s 0.3s forwards;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.login-title .highlight {
+  color: #2ecc71;
 }
 .login-slogan {
-  font-size: 15px;
-  color: var(--color-text-muted);
-  letter-spacing: 2px;
-  margin-bottom: 0;
-  opacity: 0;
-  animation: fadeSlideUp 0.8s 0.6s forwards;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.8;
+  margin-bottom: 30px;
 }
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.login-stats-bar {
+  display: flex;
+  gap: 24px;
+  margin-top: auto;
+  padding-bottom: 30px;
 }
-.login-story {
-  position: relative;
-  z-index: 2;
-  padding: 0 32px 48px;
-  text-align: center;
+.login-stat {
+  display: flex;
+  flex-direction: column;
 }
-.login-story-inner {
-  max-width: 340px;
-  margin: 0 auto;
+.login-stat-value {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
 }
-.login-story .story-line {
-  font-size: 15px;
-  color: var(--color-text-muted);
-  line-height: 2;
-  letter-spacing: 0.5px;
-}
-.login-story .story-highlight {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-.login-story .story-divider {
-  width: 32px;
-  height: 2px;
-  background: oklch(0.45 0.10 145 / 0.3);
-  margin: 28px auto;
-  border-radius: 1px;
-}
-.login-story .story-cta {
-  font-size: 13px;
-  color: var(--color-text-soft);
-  letter-spacing: 1px;
+.login-stat-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
 }
 .login-form-section {
   position: relative;
   z-index: 2;
-  padding: 0 32px 60px;
-}
-.login-form-card {
-  max-width: 360px;
-  margin: 0 auto;
-  background: var(--color-surface);
-  border: var(--border-subtle);
-  border-radius: var(--radius-xl);
-  padding: 36px 28px;
-  box-shadow: var(--shadow-medium);
+  background: #fff;
+  border-radius: 28px 28px 0 0;
+  padding: 32px 28px 40px;
+  margin-top: auto;
 }
 .login-form-card .form-title {
   font-family: var(--font-serif);
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-text);
-  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+.login-form-subtitle {
+  font-size: 14px;
+  color: #8a8a8a;
   margin-bottom: 28px;
-  letter-spacing: 2px;
+}
+.login-form-group {
+  margin-bottom: 20px;
+}
+.login-form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  display: block;
 }
 .login-input {
   width: 100%;
   height: 52px;
-  border: var(--border-subtle);
+  border: 1px solid #e8e8e8;
   border-radius: var(--radius-md);
   padding: 0 18px;
   font-size: 15px;
@@ -1221,59 +1184,65 @@ button { cursor: pointer; }
   transition: all var(--transition-fast);
   box-sizing: border-box;
 }
-.login-input::placeholder { color: var(--color-text-soft); }
+.login-input::placeholder { color: #aaa; }
 .login-input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px oklch(0.45 0.10 145 / 0.1);
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+}
+.login-form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5a5a5a;
+  cursor: pointer;
+}
+.login-remember input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #2ecc71;
+}
+.login-forgot {
+  color: #2ecc71;
+  text-decoration: none;
+  font-weight: 500;
 }
 .login-btn {
   width: 100%;
   height: 52px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--color-primary), oklch(0.35 0.12 145));
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
   color: #fff;
   font-size: 16px;
   font-weight: 600;
   border: none;
-  transition: all var(--transition-fast);
-  margin-bottom: 14px;
+  transition: all 0.2s;
+  margin-bottom: 16px;
   letter-spacing: 2px;
   cursor: pointer;
-  box-shadow: 0 4px 16px oklch(0.45 0.10 145 / 0.25);
+  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.3);
 }
 .login-btn:active {
-  opacity: 0.9;
+  opacity: 0.95;
   transform: scale(0.98);
-  box-shadow: 0 2px 8px oklch(0.45 0.10 145 / 0.2);
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
 }
 .login-switch {
-  color: var(--color-text-muted);
+  color: #8a8a8a;
   font-size: 14px;
   text-align: center;
   cursor: pointer;
 }
 .login-switch span {
-  color: var(--color-primary);
+  color: #2ecc71;
   font-weight: 600;
-}
-.login-hrv-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100px;
-  opacity: 0.12;
-  overflow: hidden;
-}
-.login-hrv-line svg {
-  width: 200%;
-  height: 100%;
-  animation: hrvScroll 15s linear infinite;
-}
-@keyframes hrvScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 /* Record Summary Card (折叠) */
 .record-summary-card{background:var(--card-solid);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid var(--primary);cursor:pointer;transition:all .2s;border:1px solid var(--border);border-left:4px solid var(--primary)}
@@ -1301,71 +1270,84 @@ button { cursor: pointer; }
 <!-- Login Page -->
 <div id="loginPage" style="display:none">
   <div class="login-page">
-    <!-- Hero: 品牌视觉锚点 -->
+    <!-- Hero: 深绿沉浸头部 -->
     <div class="login-hero">
       <div class="login-hero-bg">
         <div class="orbit"></div>
         <div class="orbit"></div>
-        <div class="orbit"></div>
-        <div class="glow"></div>
       </div>
       <div class="login-hero-content">
-        <div class="login-brand-icon">
-          <div class="pulse-ring"></div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10"/>
-            <path d="M12 2c3.87 3.13 6 7.52 6 12s-2.13 8.87-6 12"/>
-            <path d="M2 12h20"/>
-            <path d="M12 2c-1.5 3-2.5 6.5-2.5 10s1 7 2.5 10"/>
-            <path d="M12 2c1.5 3 2.5 6.5 2.5 10s-1 7-2.5 10"/>
-          </svg>
+        <div class="login-brand-header">
+          <div class="login-brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2v20M2 12h20"/>
+            </svg>
+          </div>
+          <div class="login-brand-text">
+            <div class="login-brand-name">循迹</div>
+            <div class="login-brand-sub">Health Intelligence</div>
+          </div>
         </div>
-        <div class="login-title">循 迹</div>
-        <div class="login-slogan">循身体之迹，见前行之路</div>
-      </div>
-      <!-- 心率波形装饰 -->
-      <div class="login-hrv-line">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M0,60 L100,60 L120,60 L140,20 L160,100 L180,40 L200,80 L220,60 L400,60 L420,60 L440,15 L460,105 L480,35 L500,85 L520,60 L700,60 L720,60 L740,25 L760,95 L780,45 L800,75 L820,60 L1000,60 L1020,60 L1040,20 L1060,100 L1080,40 L1100,80 L1120,60 L1200,60" fill="none" stroke="#2EB872" stroke-width="2"/>
-        </svg>
-      </div>
-    </div>
-
-    <!-- 品牌故事 -->
-    <div class="login-story">
-      <div class="login-story-inner">
-        <div class="story-line">
-          在健康这条路上，我们常常手握<span class="story-highlight">两张地图</span>：一张是外在的路径，记录着跑过的每一公里；另一张是<span class="story-highlight">内在的风景</span>——心率、恢复、压力与能量。
+        <div class="login-tag">BRAND STORY</div>
+        <div class="login-title">你的身体，<br>即是<span class="highlight">地图</span></div>
+        <div class="login-slogan">循身体之迹，见前行之路<br>读懂内在，科学前行</div>
+        <div class="login-stats-bar">
+          <div class="login-stat">
+            <div class="login-stat-value">68</div>
+            <div class="login-stat-label">HRV</div>
+          </div>
+          <div class="login-stat">
+            <div class="login-stat-value">89</div>
+            <div class="login-stat-label">状态</div>
+          </div>
+          <div class="login-stat">
+            <div class="login-stat-value">12</div>
+            <div class="login-stat-label">天数</div>
+          </div>
         </div>
-        <div class="story-divider"></div>
-        <div class="story-line">
-          然而我们往往只看第一张地图，追逐配速与里程，却忽略了身体发出的、更为精微的<span class="story-highlight">导航信号</span>。
-        </div>
-        <div class="story-divider"></div>
-        <div class="story-line">
-          <span class="story-highlight">"循"</span>是探寻与遵循，<span class="story-highlight">"迹"</span>是内在的轨迹与印记。我们帮助你连接起外在的足迹与内在的印记，让你在探索世界的同时，更深刻地<span class="story-highlight">探索自己</span>。
-        </div>
-        <div class="story-divider"></div>
-        <div class="story-cta">↓ 开始你的循迹之旅</div>
       </div>
     </div>
 
-    <!-- 登录表单 -->
+    <!-- 登录表单 - 白色卡片浮层 -->
     <div class="login-form-section">
       <div class="login-form-card">
         <div id="loginRegisterArea">
-          <div class="form-title">登 录</div>
-          <input type="text" class="login-input" id="loginUser" placeholder="手机号 / 用户名">
-          <input type="password" class="login-input" id="loginPass" placeholder="密码">
-          <button class="login-btn" onclick="doLogin()">进 入</button>
+          <div class="form-title">登录循迹</div>
+          <div class="login-form-subtitle">继续你的内在探索之旅</div>
+          <div class="login-form-group">
+            <label class="login-form-label">邮箱 / 手机号</label>
+            <input type="text" class="login-input" id="loginUser" placeholder="请输入邮箱或手机号">
+          </div>
+          <div class="login-form-group">
+            <label class="login-form-label">密码</label>
+            <input type="password" class="login-input" id="loginPass" placeholder="请输入密码">
+          </div>
+          <div class="login-form-options">
+            <label class="login-remember">
+              <input type="checkbox" id="rememberMe">
+              <span>记住我</span>
+            </label>
+            <a href="#" class="login-forgot">忘记密码？</a>
+          </div>
+          <button class="login-btn" onclick="doLogin()">登 录</button>
           <div class="login-switch">还没有账号？<span onclick="toggleLoginRegister()">立即注册</span></div>
         </div>
         <div id="registerArea" style="display:none">
-          <div class="form-title">注 册</div>
-          <input type="text" class="login-input" id="regUser" placeholder="手机号 / 用户名">
-          <input type="password" class="login-input" id="regPass" placeholder="设置密码（至少6位）">
-          <input type="password" class="login-input" id="regPass2" placeholder="确认密码">
+          <div class="form-title">注册循迹</div>
+          <div class="login-form-subtitle">开启你的内在探索之旅</div>
+          <div class="login-form-group">
+            <label class="login-form-label">邮箱 / 手机号</label>
+            <input type="text" class="login-input" id="regUser" placeholder="请输入邮箱或手机号">
+          </div>
+          <div class="login-form-group">
+            <label class="login-form-label">设置密码</label>
+            <input type="password" class="login-input" id="regPass" placeholder="至少6位">
+          </div>
+          <div class="login-form-group">
+            <label class="login-form-label">确认密码</label>
+            <input type="password" class="login-input" id="regPass2" placeholder="再次输入密码">
+          </div>
           <button class="login-btn" onclick="doRegister()">注 册</button>
           <div class="login-switch">已有账号？<span onclick="toggleLoginRegister()">去登录</span></div>
         </div>
