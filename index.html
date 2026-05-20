@@ -1235,12 +1235,12 @@ button { cursor: pointer; }
   bottom: 0;
   background: #fff;
   border-radius: 24px 24px 0 0;
-  padding: 16px 24px 32px;
+  padding: 16px 24px 48px;
   transform: translateY(100%);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 20;
-  max-height: 38vh;
-  min-height: 280px;
+  max-height: 45vh;
+  min-height: 320px;
 }
 .login-form-panel.show {
   transform: translateY(0);
@@ -1313,8 +1313,10 @@ button { cursor: pointer; }
   align-items: center;
   gap: 12px;
   margin-top: 16px;
+  margin-bottom: 20px;
   font-size: 13px;
   color: #8a8a8a;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
 }
 .login-form-footer span {
   color: #2ecc71;
