@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fitness-tracker-v36';
+const CACHE_NAME = 'fitness-tracker-v37';
 const ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', (event) => {
