@@ -993,7 +993,7 @@ button { cursor: pointer; }
 .streak-label{font-size:13px;color:var(--text2);margin-top:2px}
 .streak-best{font-size:12px;color:var(--text3);margin-top:4px}
 
-/* Login Page - 深绿沉浸风格 */
+/* Login Page - 沉浸式品牌故事 */
 .login-page {
   position: fixed;
   top: 0;
@@ -1001,23 +1001,23 @@ button { cursor: pointer; }
   right: 0;
   bottom: 0;
   z-index: 1000;
-  display: flex;
-  flex-direction: column;
   background: linear-gradient(180deg, #0a3d1a 0%, #062a12 100%);
   overflow: hidden;
 }
 .login-hero {
-  flex: 1;
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  padding: 60px 28px 0;
-  position: relative;
-  overflow: hidden;
+  padding: 50px 28px 100px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .login-hero-bg {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  pointer-events: none;
 }
 .login-hero-bg::before {
   content: '';
@@ -1030,44 +1030,54 @@ button { cursor: pointer; }
 .login-hero-bg .orbit {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid rgba(46, 204, 113, 0.15);
+  border: 1px solid rgba(46, 204, 113, 0.12);
 }
 .login-hero-bg .orbit:nth-child(1) {
-  width: 200px;
-  height: 200px;
-  top: 15%;
-  right: -50px;
+  width: 250px;
+  height: 250px;
+  top: 10%;
+  right: -80px;
 }
 .login-hero-bg .orbit:nth-child(2) {
-  width: 300px;
-  height: 300px;
-  top: 10%;
-  right: -100px;
-  border-color: rgba(46, 204, 113, 0.1);
+  width: 350px;
+  height: 350px;
+  top: 5%;
+  right: -130px;
+  border-color: rgba(46, 204, 113, 0.08);
+}
+.login-hero-bg .map-line {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  opacity: 0.6;
 }
 .login-hero-content {
   position: relative;
   z-index: 2;
-  margin-top: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .login-brand-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 .login-brand-icon {
-  width: 44px;
-  height: 44px;
-  background: rgba(46, 204, 113, 0.2);
-  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  background: rgba(46, 204, 113, 0.15);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .login-brand-icon svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   color: #2ecc71;
 }
 .login-brand-text {
@@ -1076,112 +1086,202 @@ button { cursor: pointer; }
 }
 .login-brand-name {
   font-family: var(--font-serif);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: #fff;
   letter-spacing: 2px;
 }
 .login-brand-sub {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1.5px;
 }
 .login-tag {
-  display: inline-block;
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
   color: #2ecc71;
   letter-spacing: 2px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 .login-tag::before {
   content: '';
-  display: inline-block;
-  width: 20px;
+  width: 16px;
   height: 1px;
   background: #2ecc71;
   margin-right: 8px;
-  vertical-align: middle;
 }
 .login-title {
   font-family: var(--font-serif);
-  font-size: 42px;
+  font-size: 38px;
   font-weight: 700;
   color: #fff;
-  line-height: 1.2;
-  margin-bottom: 16px;
+  line-height: 1.25;
+  margin-bottom: 24px;
 }
 .login-title .highlight {
   color: #2ecc71;
 }
-.login-slogan {
+.login-story-text {
+  margin-bottom: 32px;
+}
+.login-story-text p {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.8;
-  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 2;
+  margin-bottom: 12px;
+}
+.login-story-text .story-lead {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.login-story-text .story-highlight {
+  color: #2ecc71;
+  font-weight: 600;
+}
+.story-divider {
+  width: 30px;
+  height: 2px;
+  background: rgba(46, 204, 113, 0.4);
+  margin: 16px 0 20px;
+  border-radius: 1px;
 }
 .login-stats-bar {
   display: flex;
-  gap: 24px;
+  align-items: center;
+  gap: 16px;
   margin-top: auto;
-  padding-bottom: 30px;
+  margin-bottom: 24px;
 }
 .login-stat {
   display: flex;
   flex-direction: column;
 }
+.login-stat-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
 .login-stat-value {
   font-family: var(--font-serif);
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 700;
   color: #fff;
 }
-.login-stat-label {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-  margin-top: 4px;
+.login-stat-unit {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
 }
-.login-form-section {
-  position: relative;
-  z-index: 2;
-  background: #fff;
-  border-radius: 28px 28px 0 0;
-  padding: 32px 28px 40px;
-  margin-top: auto;
+.login-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.15);
 }
-.login-form-card .form-title {
-  font-family: var(--font-serif);
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 8px;
-}
-.login-form-subtitle {
-  font-size: 14px;
-  color: #8a8a8a;
-  margin-bottom: 28px;
-}
-.login-form-group {
+.login-footer-slogan {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 2px;
   margin-bottom: 20px;
 }
-.login-form-label {
-  font-size: 13px;
-  font-weight: 600;
+
+/* 浮动箭头 - 点击进入 */
+.login-scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 10;
+  animation: floatHint 2s ease-in-out infinite;
+}
+@keyframes floatHint {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+.scroll-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 2px;
+}
+.scroll-arrow {
+  width: 44px;
+  height: 44px;
+  background: rgba(46, 204, 113, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+.scroll-arrow svg {
+  width: 20px;
+  height: 20px;
+  color: #2ecc71;
+}
+
+/* 登录表单面板 - 底部滑出 */
+.login-form-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 16px 24px 32px;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 20;
+  max-height: 38vh;
+  min-height: 280px;
+}
+.login-form-panel.show {
+  transform: translateY(0);
+}
+.login-form-handle {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 16px;
+  cursor: pointer;
+}
+.handle-bar {
+  width: 36px;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+}
+.login-form-content {
+  max-width: 320px;
+  margin: 0 auto;
+}
+.login-form-content .form-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
   color: #1a1a1a;
-  margin-bottom: 8px;
-  display: block;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.login-form-group {
+  margin-bottom: 12px;
 }
 .login-input {
   width: 100%;
-  height: 52px;
+  height: 48px;
   border: 1px solid #e8e8e8;
-  border-radius: var(--radius-md);
-  padding: 0 18px;
+  border-radius: 12px;
+  padding: 0 16px;
   font-size: 15px;
-  color: var(--color-text);
-  background: var(--color-surface);
-  margin-bottom: 14px;
-  transition: all var(--transition-fast);
+  color: #1a1a1a;
+  background: #fff;
+  transition: all 0.2s;
   box-sizing: border-box;
 }
 .login-input::placeholder { color: #aaa; }
@@ -1190,12 +1290,54 @@ button { cursor: pointer; }
   border-color: #2ecc71;
   box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
 }
-.login-form-options {
+.login-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  margin-top: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.25);
+}
+.login-btn:active {
+  opacity: 0.95;
+  transform: scale(0.98);
+}
+.login-form-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-top: 16px;
   font-size: 13px;
+  color: #8a8a8a;
+}
+.login-form-footer span {
+  color: #2ecc71;
+  cursor: pointer;
+  font-weight: 500;
+}
+.login-form-footer .divider {
+  color: #ddd;
+}
+
+/* 遮罩层 */
+.login-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 42, 18, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  z-index: 15;
+}
+.login-overlay.show {
+  opacity: 1;
+  visibility: visible;
 }
 .login-remember {
   display: flex;
@@ -1267,15 +1409,23 @@ button { cursor: pointer; }
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Login Page -->
+<!-- Login Page - 沉浸式品牌故事 -->
 <div id="loginPage" style="display:none">
   <div class="login-page">
-    <!-- Hero: 深绿沉浸头部 -->
-    <div class="login-hero">
+    <!-- 品牌故事全屏展示 -->
+    <div class="login-hero" id="loginHero">
       <div class="login-hero-bg">
         <div class="orbit"></div>
         <div class="orbit"></div>
+        <!-- 装饰性地图线条 -->
+        <svg class="map-line" viewBox="0 0 400 600" preserveAspectRatio="none">
+          <path d="M200,100 Q300,200 200,300 T200,500" fill="none" stroke="rgba(46,204,113,0.15)" stroke-width="2"/>
+          <circle cx="200" cy="100" r="4" fill="#2ecc71"/>
+          <circle cx="200" cy="300" r="4" fill="#2ecc71"/>
+          <circle cx="200" cy="500" r="4" fill="#2ecc71"/>
+        </svg>
       </div>
+      
       <div class="login-hero-content">
         <div class="login-brand-header">
           <div class="login-brand-icon">
@@ -1286,73 +1436,102 @@ button { cursor: pointer; }
           </div>
           <div class="login-brand-text">
             <div class="login-brand-name">循迹</div>
-            <div class="login-brand-sub">Health Intelligence</div>
+            <div class="login-brand-sub">XUNJI · HEALTH INTELLIGENCE</div>
           </div>
         </div>
+        
         <div class="login-tag">BRAND STORY</div>
-        <div class="login-title">你的身体，<br>即是<span class="highlight">地图</span></div>
-        <div class="login-slogan">循身体之迹，见前行之路<br>读懂内在，科学前行</div>
+        
+        <div class="login-title">
+          你的身体，<br>
+          即是<span class="highlight">地图</span>
+        </div>
+        
+        <div class="login-story-text">
+          <p class="story-lead">两张地图，读懂其一，方能真正前行</p>
+          <div class="story-divider"></div>
+          <p>我们不止步于记录你<span class="story-highlight">跑了多远</span>，<br>
+          更深耕于理解每一次奔跑如何<span class="story-highlight">塑造你</span>。</p>
+          <p>从心率变异性中解读压力与恢复，<br>
+          从长期趋势中预见过度训练的风险——<br>
+          我们是你身体语言的<span class="story-highlight">翻译与向导</span>。</p>
+        </div>
+        
         <div class="login-stats-bar">
           <div class="login-stat">
-            <div class="login-stat-value">68</div>
             <div class="login-stat-label">HRV</div>
+            <div class="login-stat-value">68</div>
+            <div class="login-stat-unit">信号</div>
           </div>
+          <div class="login-stat-divider"></div>
           <div class="login-stat">
-            <div class="login-stat-value">89</div>
+            <div class="login-stat-label">恢复指数</div>
+            <div class="login-stat-value">82</div>
+            <div class="login-stat-unit">%</div>
+          </div>
+          <div class="login-stat-divider"></div>
+          <div class="login-stat">
             <div class="login-stat-label">状态</div>
+            <div class="login-stat-value">蓄势待发</div>
           </div>
-          <div class="login-stat">
-            <div class="login-stat-value">12</div>
-            <div class="login-stat-label">天数</div>
-          </div>
+        </div>
+        
+        <div class="login-footer-slogan">循身体之迹，见前行之路</div>
+      </div>
+      
+      <!-- 浮动箭头 - 点击进入 -->
+      <div class="login-scroll-hint" id="loginScrollHint" onclick="showLoginForm()">
+        <div class="scroll-text">进入循迹</div>
+        <div class="scroll-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+          </svg>
         </div>
       </div>
     </div>
 
-    <!-- 登录表单 - 白色卡片浮层 -->
-    <div class="login-form-section">
-      <div class="login-form-card">
+    <!-- 登录表单 - 底部滑出（最多占1/3屏幕） -->
+    <div class="login-form-panel" id="loginFormPanel">
+      <div class="login-form-handle" onclick="hideLoginForm()">
+        <div class="handle-bar"></div>
+      </div>
+      <div class="login-form-content">
         <div id="loginRegisterArea">
-          <div class="form-title">登录循迹</div>
-          <div class="login-form-subtitle">继续你的内在探索之旅</div>
+          <div class="form-title">欢迎回来</div>
           <div class="login-form-group">
-            <label class="login-form-label">邮箱 / 手机号</label>
-            <input type="text" class="login-input" id="loginUser" placeholder="请输入邮箱或手机号">
+            <input type="text" class="login-input" id="loginUser" placeholder="邮箱 / 手机号">
           </div>
           <div class="login-form-group">
-            <label class="login-form-label">密码</label>
-            <input type="password" class="login-input" id="loginPass" placeholder="请输入密码">
-          </div>
-          <div class="login-form-options">
-            <label class="login-remember">
-              <input type="checkbox" id="rememberMe">
-              <span>记住我</span>
-            </label>
-            <a href="#" class="login-forgot">忘记密码？</a>
+            <input type="password" class="login-input" id="loginPass" placeholder="密码">
           </div>
           <button class="login-btn" onclick="doLogin()">登 录</button>
-          <div class="login-switch">还没有账号？<span onclick="toggleLoginRegister()">立即注册</span></div>
+          <div class="login-form-footer">
+            <span onclick="toggleLoginRegister()">注册账号</span>
+            <span class="divider">·</span>
+            <span>忘记密码</span>
+          </div>
         </div>
         <div id="registerArea" style="display:none">
-          <div class="form-title">注册循迹</div>
-          <div class="login-form-subtitle">开启你的内在探索之旅</div>
+          <div class="form-title">创建账号</div>
           <div class="login-form-group">
-            <label class="login-form-label">邮箱 / 手机号</label>
-            <input type="text" class="login-input" id="regUser" placeholder="请输入邮箱或手机号">
+            <input type="text" class="login-input" id="regUser" placeholder="邮箱 / 手机号">
           </div>
           <div class="login-form-group">
-            <label class="login-form-label">设置密码</label>
-            <input type="password" class="login-input" id="regPass" placeholder="至少6位">
+            <input type="password" class="login-input" id="regPass" placeholder="设置密码">
           </div>
           <div class="login-form-group">
-            <label class="login-form-label">确认密码</label>
-            <input type="password" class="login-input" id="regPass2" placeholder="再次输入密码">
+            <input type="password" class="login-input" id="regPass2" placeholder="确认密码">
           </div>
           <button class="login-btn" onclick="doRegister()">注 册</button>
-          <div class="login-switch">已有账号？<span onclick="toggleLoginRegister()">去登录</span></div>
+          <div class="login-form-footer">
+            <span onclick="toggleLoginRegister()">已有账号，去登录</span>
+          </div>
         </div>
       </div>
     </div>
+    
+    <!-- 遮罩层 -->
+    <div class="login-overlay" id="loginOverlay" onclick="hideLoginForm()"></div>
   </div>
 </div>
 
@@ -1635,6 +1814,25 @@ function toggleLoginRegister() {
   const ra = document.getElementById('registerArea');
   if (la.style.display === 'none') { la.style.display = 'block'; ra.style.display = 'none'; }
   else { la.style.display = 'none'; ra.style.display = 'block'; }
+}
+
+// 登录框显示/隐藏
+function showLoginForm() {
+  const panel = document.getElementById('loginFormPanel');
+  const overlay = document.getElementById('loginOverlay');
+  const hint = document.getElementById('loginScrollHint');
+  if (panel) panel.classList.add('show');
+  if (overlay) overlay.classList.add('show');
+  if (hint) hint.style.opacity = '0';
+}
+
+function hideLoginForm() {
+  const panel = document.getElementById('loginFormPanel');
+  const overlay = document.getElementById('loginOverlay');
+  const hint = document.getElementById('loginScrollHint');
+  if (panel) panel.classList.remove('show');
+  if (overlay) overlay.classList.remove('show');
+  if (hint) hint.style.opacity = '1';
 }
 function doLogout() {
   localStorage.removeItem(AUTH_KEY);
