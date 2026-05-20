@@ -3633,6 +3633,18 @@ async function recognizeImage(imageData) {
     // 更新进度
     if (progressText) progressText.textContent = 'AI正在识别运动数据...';
     
+    // 添加等待提示（每10秒更新）
+    let waitSeconds = 0;
+    const waitTimer = setInterval(() => {
+      waitSeconds += 10;
+      if (progressText && progress) {
+        if (waitSeconds <= 10) progressText.textContent = 'AI正在识别运动数据...';
+        else if (waitSeconds <= 20) progressText.textContent = '正在深度分析，请稍候...';
+        else if (waitSeconds <= 30) progressText.textContent = '分析较复杂，请耐心等待...';
+        else progressText.textContent = `已等待${waitSeconds}秒，即将完成...`;
+      }
+    }, 10000);
+    
     const prompt = `你是一位专业的运动健康分析师。请分析这张运动健康App截图，提取运动数据并给出千人千面的个性化分析。
 
 如果是运动记录截图，请提取数据并返回以下JSON格式：
@@ -3684,7 +3696,7 @@ async function recognizeImage(imageData) {
 
     // 设置超时
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60秒超时（图片分析较慢）
     
     const resp = await fetch(AI_API_URL, {
       method: 'POST',
@@ -3697,6 +3709,7 @@ async function recognizeImage(imageData) {
     });
     
     clearTimeout(timeoutId);
+    clearInterval(waitTimer);
 
     if (!resp.ok) {
       const errText = await resp.text();
@@ -3772,6 +3785,7 @@ async function recognizeImage(imageData) {
     }
   } catch (err) {
     console.error('[AI] Error:', err);
+    clearInterval(waitTimer);
     if (progress) progress.style.display = 'none';
     
     if (err.name === 'AbortError') {
