@@ -10,7 +10,13 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1a2f1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="shortcut icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -4109,21 +4115,30 @@ function showInstallPrompt() {
         </div>
         <div class="pwa-prompt-text">
           <div class="pwa-prompt-title">添加到主屏幕</div>
-          <div class="pwa-prompt-desc">安装循迹，享受独立应用体验</div>
+          <div class="pwa-prompt-desc" id="pwaPromptDesc">安装循迹，享受独立应用体验</div>
         </div>
         <div class="pwa-prompt-actions">
-          <button class="pwa-prompt-btn-install" onclick="installPWA()">安装</button>
+          <button class="pwa-prompt-btn-install" id="pwaInstallBtn" onclick="installPWA()">安装</button>
           <button class="pwa-prompt-btn-close" onclick="closeInstallPrompt()">✕</button>
         </div>
       </div>
     `;
     document.body.appendChild(prompt);
   }
+  // 检测是否支持自动安装
+  const canInstall = !!deferredPrompt;
+  const btn = document.getElementById('pwaInstallBtn');
+  const desc = document.getElementById('pwaPromptDesc');
+  if (!canInstall) {
+    btn.textContent = '查看教程';
+    desc.textContent = '点击查看如何添加到主屏幕';
+  }
   prompt.classList.add('show');
 }
 
 function installPWA() {
   if (deferredPrompt) {
+    // 支持自动安装
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
@@ -4131,7 +4146,115 @@ function installPWA() {
       }
       deferredPrompt = null;
     });
+  } else {
+    // 不支持自动安装，显示手动教程
+    showInstallGuide();
   }
+}
+
+function showInstallGuide() {
+  closeInstallPrompt();
+  const ua = navigator.userAgent.toLowerCase();
+  const isHuawei = ua.includes('huawei') || ua.includes('hmos');
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isAndroid = ua.includes('android');
+  
+  let guideHtml = '';
+  if (isHuawei) {
+    guideHtml = `
+      <div class="install-guide-title">华为浏览器添加方法</div>
+      <div class="install-guide-steps">
+        <div class="install-guide-step">
+          <div class="step-num">1</div>
+          <div class="step-text">点击浏览器底部 <b>菜单</b> 按钮（三条横线 ≡）</div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">2</div>
+          <div class="step-text">找到并点击 <b>「添加到主屏幕」</b></div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">3</div>
+          <div class="step-text">点击 <b>「添加」</b>，即可在桌面看到循迹图标</div>
+        </div>
+      </div>
+      <div class="install-guide-tip">💡 如果没有「添加到主屏幕」选项，请尝试使用系统自带的「浏览器」App 打开此页面</div>
+    `;
+  } else if (isIOS) {
+    guideHtml = `
+      <div class="install-guide-title">Safari 添加方法</div>
+      <div class="install-guide-steps">
+        <div class="install-guide-step">
+          <div class="step-num">1</div>
+          <div class="step-text">点击底部 <b>分享</b> 按钮（方框+向上箭头 ↑）</div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">2</div>
+          <div class="step-text">向下滑动，找到 <b>「添加到主屏幕」</b></div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">3</div>
+          <div class="step-text">点击 <b>「添加」</b></div>
+        </div>
+      </div>
+    `;
+  } else if (isAndroid) {
+    guideHtml = `
+      <div class="install-guide-title">Android 添加方法</div>
+      <div class="install-guide-steps">
+        <div class="install-guide-step">
+          <div class="step-num">1</div>
+          <div class="step-text">点击浏览器右上角 <b>菜单</b> 按钮（⋮）</div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">2</div>
+          <div class="step-text">找到并点击 <b>「添加到主屏幕」</b> 或 <b>「安装应用」</b></div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">3</div>
+          <div class="step-text">确认添加即可</div>
+        </div>
+      </div>
+      <div class="install-guide-tip">💡 推荐使用 Chrome 浏览器获得最佳体验</div>
+    `;
+  } else {
+    guideHtml = `
+      <div class="install-guide-title">添加到主屏幕</div>
+      <div class="install-guide-steps">
+        <div class="install-guide-step">
+          <div class="step-num">1</div>
+          <div class="step-text">在浏览器菜单中找到 <b>「添加到主屏幕」</b> 或 <b>「安装应用」</b></div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">2</div>
+          <div class="step-text">确认添加即可在桌面看到循迹图标</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  let guide = document.getElementById('installGuide');
+  if (!guide) {
+    guide = document.createElement('div');
+    guide.id = 'installGuide';
+    guide.innerHTML = `
+      <div class="install-guide-overlay" onclick="closeInstallGuide()"></div>
+      <div class="install-guide-panel">
+        <div class="install-guide-header">
+          <div class="install-guide-logo">循迹</div>
+          <div class="install-guide-close" onclick="closeInstallGuide()">✕</div>
+        </div>
+        <div class="install-guide-body" id="installGuideBody"></div>
+      </div>
+    `;
+    document.body.appendChild(guide);
+  }
+  document.getElementById('installGuideBody').innerHTML = guideHtml;
+  guide.classList.add('show');
+}
+
+function closeInstallGuide() {
+  const guide = document.getElementById('installGuide');
+  if (guide) guide.classList.remove('show');
 }
 
 function closeInstallPrompt() {
@@ -4226,6 +4349,114 @@ window.addEventListener('load', () => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Install Guide */
+.install-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s;
+}
+.install-guide.show {
+  visibility: visible;
+  opacity: 1;
+}
+.install-guide-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 42, 18, 0.7);
+  backdrop-filter: blur(4px);
+}
+.install-guide-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 24px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+.install-guide.show .install-guide-panel {
+  transform: translateY(0);
+}
+.install-guide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.install-guide-logo {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #0a3d1a;
+  letter-spacing: 2px;
+}
+.install-guide-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f0f2eb;
+  border: none;
+  font-size: 18px;
+  color: #5a5a5a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.install-guide-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+}
+.install-guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.install-guide-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-text {
+  font-size: 15px;
+  color: #1a1a1a;
+  line-height: 1.6;
+  padding-top: 4px;
+}
+.step-text b {
+  color: #2ecc71;
+}
+.install-guide-tip {
+  font-size: 13px;
+  color: #8a8a8a;
+  line-height: 1.6;
+  padding: 12px 16px;
+  background: #f8faf8;
+  border-radius: 12px;
 }
 </style>
 </body>
