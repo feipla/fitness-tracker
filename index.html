@@ -1506,6 +1506,61 @@ button { cursor: pointer; }
   color: #ddd;
 }
 
+/* 输入提示 */
+.input-hint {
+  font-size: 12px;
+  color: #8a8a8a;
+  margin-top: 6px;
+  padding-left: 4px;
+  transition: color 0.2s;
+}
+.input-hint.valid {
+  color: #2ecc71;
+}
+.input-hint.invalid {
+  color: #e74c3c;
+}
+.login-input.valid {
+  border-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.05);
+}
+.login-input.invalid {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.05);
+}
+
+/* 密码强度 */
+.password-strength {
+  height: 4px;
+  border-radius: 2px;
+  margin-top: 8px;
+  background: #e8e8e8;
+  overflow: hidden;
+}
+.password-strength-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.password-strength-bar.weak {
+  width: 33%;
+  background: #e74c3c;
+}
+.password-strength-bar.medium {
+  width: 66%;
+  background: #f39c12;
+}
+.password-strength-bar.strong {
+  width: 100%;
+  background: #2ecc71;
+}
+
+/* 按钮禁用状态 */
+.login-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* 遮罩层 */
 .login-overlay {
   position: absolute;
@@ -1680,12 +1735,14 @@ button { cursor: pointer; }
         <div id="loginRegisterArea">
           <div class="form-title">欢迎回来</div>
           <div class="login-form-group">
-            <input type="text" class="login-input" id="loginUser" placeholder="邮箱 / 手机号">
+            <input type="text" class="login-input" id="loginUser" placeholder="用户名 / 手机号" oninput="validateLogin()">
+            <div class="input-hint" id="loginUserHint">请输入注册时的用户名</div>
           </div>
           <div class="login-form-group">
-            <input type="password" class="login-input" id="loginPass" placeholder="密码">
+            <input type="password" class="login-input" id="loginPass" placeholder="密码" oninput="validateLogin()">
+            <div class="input-hint" id="loginPassHint">请输入密码</div>
           </div>
-          <button class="login-btn" onclick="doLogin()">登 录</button>
+          <button class="login-btn" id="loginBtn" onclick="doLogin()">登 录</button>
           <div class="login-form-footer">
             <span onclick="toggleLoginRegister()">注册账号</span>
             <span class="divider">·</span>
@@ -1695,15 +1752,19 @@ button { cursor: pointer; }
         <div id="registerArea" style="display:none">
           <div class="form-title">创建账号</div>
           <div class="login-form-group">
-            <input type="text" class="login-input" id="regUser" placeholder="邮箱 / 手机号">
+            <input type="text" class="login-input" id="regUser" placeholder="用户名 / 手机号" oninput="validateRegister()">
+            <div class="input-hint" id="regUserHint">2-20位字母、数字或中文</div>
           </div>
           <div class="login-form-group">
-            <input type="password" class="login-input" id="regPass" placeholder="设置密码">
+            <input type="password" class="login-input" id="regPass" placeholder="设置密码" oninput="validateRegister()">
+            <div class="input-hint" id="regPassHint">至少6位，建议包含字母和数字</div>
+            <div class="password-strength" id="passStrength"></div>
           </div>
           <div class="login-form-group">
-            <input type="password" class="login-input" id="regPass2" placeholder="确认密码">
+            <input type="password" class="login-input" id="regPass2" placeholder="确认密码" oninput="validateRegister()">
+            <div class="input-hint" id="regPass2Hint">再次输入密码</div>
           </div>
-          <button class="login-btn" onclick="doRegister()">注 册</button>
+          <button class="login-btn" id="regBtn" onclick="doRegister()">注 册</button>
           <div class="login-form-footer">
             <span onclick="toggleLoginRegister()">已有账号，去登录</span>
           </div>
@@ -1975,13 +2036,149 @@ function doLogin() {
   showApp(); // 这里会检查档案
   showToast('登录成功，欢迎回来！');
 }
+// 登录验证
+function validateLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const userHint = document.getElementById('loginUserHint');
+  const passHint = document.getElementById('loginPassHint');
+  const btn = document.getElementById('loginBtn');
+
+  let valid = true;
+
+  if (user) {
+    document.getElementById('loginUser').classList.add('valid');
+    document.getElementById('loginUser').classList.remove('invalid');
+    userHint.textContent = '✓ 用户名已填写';
+    userHint.className = 'input-hint valid';
+  } else {
+    document.getElementById('loginUser').classList.remove('valid', 'invalid');
+    userHint.textContent = '请输入注册时的用户名';
+    userHint.className = 'input-hint';
+    valid = false;
+  }
+
+  if (pass) {
+    document.getElementById('loginPass').classList.add('valid');
+    document.getElementById('loginPass').classList.remove('invalid');
+    passHint.textContent = '✓ 密码已填写';
+    passHint.className = 'input-hint valid';
+  } else {
+    document.getElementById('loginPass').classList.remove('valid', 'invalid');
+    passHint.textContent = '请输入密码';
+    passHint.className = 'input-hint';
+    valid = false;
+  }
+
+  btn.disabled = !valid;
+}
+
+// 注册验证
+function validateRegister() {
+  const user = document.getElementById('regUser').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const pass2 = document.getElementById('regPass2').value;
+  const userHint = document.getElementById('regUserHint');
+  const passHint = document.getElementById('regPassHint');
+  const pass2Hint = document.getElementById('regPass2Hint');
+  const btn = document.getElementById('regBtn');
+
+  let valid = true;
+
+  // 用户名验证
+  const userValid = /^[a-zA-Z0-9\u4e00-\u9fa5]{2,20}$/.test(user);
+  if (user && userValid) {
+    document.getElementById('regUser').classList.add('valid');
+    document.getElementById('regUser').classList.remove('invalid');
+    userHint.textContent = '✓ 用户名可用';
+    userHint.className = 'input-hint valid';
+  } else if (user) {
+    document.getElementById('regUser').classList.add('invalid');
+    document.getElementById('regUser').classList.remove('valid');
+    userHint.textContent = '✗ 2-20位字母、数字或中文';
+    userHint.className = 'input-hint invalid';
+    valid = false;
+  } else {
+    document.getElementById('regUser').classList.remove('valid', 'invalid');
+    userHint.textContent = '2-20位字母、数字或中文';
+    userHint.className = 'input-hint';
+    valid = false;
+  }
+
+  // 密码强度
+  const strengthBar = document.getElementById('passStrength');
+  if (pass) {
+    let strength = 'weak';
+    if (pass.length >= 8 && /[a-zA-Z]/.test(pass) && /[0-9]/.test(pass)) {
+      strength = 'strong';
+    } else if (pass.length >= 6) {
+      strength = 'medium';
+    }
+    strengthBar.innerHTML = `<div class="password-strength-bar ${strength}"></div>`;
+
+    if (pass.length >= 6) {
+      document.getElementById('regPass').classList.add('valid');
+      document.getElementById('regPass').classList.remove('invalid');
+      passHint.textContent = strength === 'strong' ? '✓ 密码强度：强' : '✓ 密码强度：中';
+      passHint.className = 'input-hint valid';
+    } else {
+      document.getElementById('regPass').classList.add('invalid');
+      document.getElementById('regPass').classList.remove('valid');
+      passHint.textContent = '✗ 至少6位';
+      passHint.className = 'input-hint invalid';
+      valid = false;
+    }
+  } else {
+    strengthBar.innerHTML = '';
+    document.getElementById('regPass').classList.remove('valid', 'invalid');
+    passHint.textContent = '至少6位，建议包含字母和数字';
+    passHint.className = 'input-hint';
+    valid = false;
+  }
+
+  // 确认密码
+  if (pass2) {
+    if (pass2 === pass && pass.length >= 6) {
+      document.getElementById('regPass2').classList.add('valid');
+      document.getElementById('regPass2').classList.remove('invalid');
+      pass2Hint.textContent = '✓ 密码一致';
+      pass2Hint.className = 'input-hint valid';
+    } else {
+      document.getElementById('regPass2').classList.add('invalid');
+      document.getElementById('regPass2').classList.remove('valid');
+      pass2Hint.textContent = '✗ 密码不一致';
+      pass2Hint.className = 'input-hint invalid';
+      valid = false;
+    }
+  } else {
+    document.getElementById('regPass2').classList.remove('valid', 'invalid');
+    pass2Hint.textContent = '再次输入密码';
+    pass2Hint.className = 'input-hint';
+    valid = false;
+  }
+
+  btn.disabled = !valid;
+}
+
 function doRegister() {
   const user = document.getElementById('regUser').value.trim();
   const pass = document.getElementById('regPass').value;
   const pass2 = document.getElementById('regPass2').value;
-  if (!user) { showToast('请填写用户名'); return; }
-  if (pass.length < 6) { showToast('密码至少6位'); return; }
-  if (pass !== pass2) { showToast('两次密码不一致'); return; }
+
+  // 最终验证
+  if (!user || !/^[a-zA-Z0-9\u4e00-\u9fa5]{2,20}$/.test(user)) {
+    showToast('用户名格式不正确');
+    return;
+  }
+  if (pass.length < 6) {
+    showToast('密码至少6位');
+    return;
+  }
+  if (pass !== pass2) {
+    showToast('两次密码不一致');
+    return;
+  }
+
   const users = getUsers();
   if (users[user]) { showToast('用户名已存在'); return; }
   users[user] = pass;
@@ -3992,6 +4189,10 @@ function editField(field, currentVal) {
 // ===================== DATA EXPORT/IMPORT =====================
 function exportData() {
   const data = {
+    account: {
+      username: getCurrentUser(),
+      users: getUsers()
+    },
     profile: getProfile(),
     records: getRecords(),
     hrvRecords: getHRVRecords(),
@@ -4001,10 +4202,10 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `运动健康数据_${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `循迹数据备份_${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  showToast('数据已导出');
+  showToast('数据已导出（含账户信息）');
 }
 
 function importDataTrigger() {
@@ -4018,6 +4219,15 @@ function importData(e) {
   reader.onload = function(ev) {
     try {
       const data = JSON.parse(ev.target.result);
+      
+      // 导入账户信息
+      if (data.account && data.account.users) {
+        saveUsers(data.account.users);
+        if (data.account.username) {
+          localStorage.setItem(AUTH_KEY, data.account.username);
+        }
+      }
+      
       if (data.profile) saveProfile(data.profile);
       if (data.records) {
         const existing = getRecords();
@@ -4032,7 +4242,14 @@ function importData(e) {
         saveHRVRecords([...newHRVRecords, ...existingHRV]);
       }
       renderAll();
-      showToast(`导入成功`);
+      
+      // 如果有账户信息，自动登录
+      if (data.account && data.account.username) {
+        showToast(`导入成功，已自动登录 ${data.account.username}`);
+        showApp();
+      } else {
+        showToast('导入成功');
+      }
     } catch {
       showToast('导入失败，文件格式不正确');
     }
