@@ -2,16 +2,27 @@
   "name": "循迹",
   "short_name": "循迹",
   "description": "循身体之迹，见前行之路 — 读懂身体内在的地图",
-  "start_url": "/",
+  "start_url": "/fitness-tracker/",
   "display": "standalone",
-  "background_color": "#F0F2F5",
-  "theme_color": "#16A34A",
+  "background_color": "#0a3d1a",
+  "theme_color": "#0a3d1a",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2316A34A'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white'>🧭</text></svg>",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "categories": ["health", "fitness", "lifestyle"],
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "scope": "/fitness-tracker/"
 }
