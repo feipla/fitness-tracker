@@ -4085,6 +4085,148 @@ if (!isLoggedIn()) {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
+
+// PWA Install Prompt
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallPrompt();
+});
+
+function showInstallPrompt() {
+  let prompt = document.getElementById('pwaInstallPrompt');
+  if (!prompt) {
+    prompt = document.createElement('div');
+    prompt.id = 'pwaInstallPrompt';
+    prompt.innerHTML = `
+      <div class="pwa-prompt-content">
+        <div class="pwa-prompt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+        </div>
+        <div class="pwa-prompt-text">
+          <div class="pwa-prompt-title">添加到主屏幕</div>
+          <div class="pwa-prompt-desc">安装循迹，享受独立应用体验</div>
+        </div>
+        <div class="pwa-prompt-actions">
+          <button class="pwa-prompt-btn-install" onclick="installPWA()">安装</button>
+          <button class="pwa-prompt-btn-close" onclick="closeInstallPrompt()">✕</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(prompt);
+  }
+  prompt.classList.add('show');
+}
+
+function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        closeInstallPrompt();
+      }
+      deferredPrompt = null;
+    });
+  }
+}
+
+function closeInstallPrompt() {
+  const prompt = document.getElementById('pwaInstallPrompt');
+  if (prompt) {
+    prompt.classList.remove('show');
+    localStorage.setItem('pwaPromptClosed', 'true');
+  }
+}
+
+// Auto-show install prompt after login (only once)
+window.addEventListener('load', () => {
+  const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
+  if (!isInstalled && !localStorage.getItem('pwaPromptClosed') && isLoggedIn()) {
+    setTimeout(showInstallPrompt, 2000);
+  }
+});
 </script>
+
+<!-- PWA Install Prompt Styles -->
+<style>
+.pwa-prompt {
+  position: fixed;
+  bottom: -100px;
+  left: 12px;
+  right: 12px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  z-index: 9999;
+  transition: bottom 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pwa-prompt.show {
+  bottom: 90px;
+}
+.pwa-prompt-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pwa-prompt-icon svg {
+  width: 24px;
+  height: 24px;
+  color: #fff;
+}
+.pwa-prompt-text {
+  flex: 1;
+}
+.pwa-prompt-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.pwa-prompt-desc {
+  font-size: 12px;
+  color: #8a8a8a;
+  margin-top: 2px;
+}
+.pwa-prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pwa-prompt-btn-install {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pwa-prompt-btn-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f0f2eb;
+  border: none;
+  font-size: 16px;
+  color: #8a8a8a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
 </body>
 </html>
