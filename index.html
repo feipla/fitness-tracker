@@ -1984,37 +1984,74 @@ button { cursor: pointer; }
 // ===================== DATA LAYER =====================
 // 注意：数据存储 key 已改为按用户隔离，通过 getRecordsKey() / getProfileKey() / getStreakKey() 动态获取
 function getStreak() {
-  const key = getStreakKey();
-  try { return JSON.parse(localStorage.getItem(key)) || {current:0,best:0,lastDate:''}; }
-  catch { return {current:0,best:0,lastDate:''}; }
+  // 基于实际运动记录计算连续打卡天数
+  const records = getRecords();
+  if (records.length === 0) return {current:0,best:0,lastDate:''};
+  
+  // 提取所有有记录的日期，去重，按日期降序排序
+  const dates = [...new Set(records.map(r => r.date))].sort((a, b) => new Date(b) - new Date(a));
+  
+  const today = new Date().toISOString().split('T')[0];
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  
+  let current = 0;
+  let best = 0;
+  let tempStreak = 0;
+  let prevDate = null;
+  
+  for (const date of dates) {
+    if (!prevDate) {
+      // 第一条记录
+      if (date === today || date === yesterday) {
+        tempStreak = 1;
+      } else {
+        // 最近记录不是今天或昨天，连续已断
+        break;
+      }
+    } else {
+      // 检查是否连续（相差1天）
+      const curr = new Date(date);
+      const prev = new Date(prevDate);
+      const diffDays = (prev - curr) / (1000 * 60 * 60 * 24);
+      if (diffDays === 1) {
+        tempStreak++;
+      } else {
+        break; // 不连续，停止计算
+      }
+    }
+    prevDate = date;
+  }
+  
+  current = tempStreak;
+  
+  // 计算历史最高连续天数
+  let maxStreak = 0;
+  tempStreak = 1;
+  const sortedDates = [...dates].sort((a, b) => new Date(a) - new Date(b)); // 升序
+  for (let i = 1; i < sortedDates.length; i++) {
+    const curr = new Date(sortedDates[i]);
+    const prev = new Date(sortedDates[i-1]);
+    const diffDays = (curr - prev) / (1000 * 60 * 60 * 24);
+    if (diffDays === 1) {
+      tempStreak++;
+    } else {
+      maxStreak = Math.max(maxStreak, tempStreak);
+      tempStreak = 1;
+    }
+  }
+  best = Math.max(maxStreak, tempStreak, current);
+  
+  return {current, best, lastDate: dates[0] || ''};
 }
 function saveStreak(s) {
-  const key = getStreakKey();
-  localStorage.setItem(key, JSON.stringify(s));
+  // 不再单独存储，基于记录实时计算
 }
 function updateStreak() {
-  const streak = getStreak();
-  const today = new Date().toISOString().split('T')[0];
-  if (streak.lastDate === today) return streak;
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-  if (streak.lastDate === yesterday) {
-    streak.current++;
-  } else {
-    streak.current = 1;
-  }
-  streak.lastDate = today;
-  if (streak.current > streak.best) streak.best = streak.current;
-  saveStreak(streak);
-  return streak;
+  // 保存记录时自动重新计算
+  return getStreak();
 }
 function checkStreakBroken() {
-  const streak = getStreak();
-  if (!streak.lastDate) return;
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-  if (streak.lastDate !== yesterday && streak.lastDate !== new Date().toISOString().split('T')[0]) {
-    streak.current = 0;
-    saveStreak(streak);
-  }
+  // 基于记录自动计算，无需检查
 }
 
 // ===================== AUTH DATA LAYER =====================
