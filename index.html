@@ -1744,6 +1744,7 @@ button { cursor: pointer; }
             <div class="input-hint" id="loginPassHint">请输入密码</div>
           </div>
           <button class="login-btn" id="loginBtn" onclick="doLogin()">登 录</button>
+          <button class="login-btn" style="background:transparent;border:1.5px solid #2ecc71;color:#2ecc71;margin-top:10px" onclick="quickLogin()">⚡ 快速体验</button>
           <div class="login-form-footer">
             <span onclick="toggleLoginRegister()">注册账号</span>
             <span class="divider">·</span>
@@ -2063,6 +2064,22 @@ function getUsers() {
 function saveUsers(u) { localStorage.setItem('fitness_users', JSON.stringify(u)); }
 function isLoggedIn() { return !!localStorage.getItem(AUTH_KEY); }
 function getCurrentUser() { return localStorage.getItem(AUTH_KEY) || ''; }
+
+// 快速体验：自动创建/登录测试账号
+function quickLogin() {
+  const testUser = 'test_user';
+  const testPass = 'test123';
+  const users = JSON.parse(localStorage.getItem('fitness_users') || '{}');
+  if (!users[testUser]) {
+    users[testUser] = testPass;
+    localStorage.setItem('fitness_users', JSON.stringify(users));
+  }
+  localStorage.setItem(AUTH_KEY, testUser);
+  hideLoginForm();
+  showApp();
+  showToast('已进入体验模式');
+}
+
 function doLogin() {
   const user = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
@@ -4356,7 +4373,10 @@ document.addEventListener('drop', e => {
 });
 
 // Init
-if (!isLoggedIn()) {
+// URL 参数 dev=1 自动快速登录
+if (new URLSearchParams(location.search).get('dev') === '1' && !isLoggedIn()) {
+  quickLogin();
+} else if (!isLoggedIn()) {
   document.getElementById('loginPage').style.display = 'block';
   document.querySelector('.bottom-nav').style.display = 'none';
 } else {
