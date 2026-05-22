@@ -174,11 +174,11 @@ button { cursor: pointer; }
 
 /* User Card - 白色悬浮卡片 */
 .user-card {
-  background: #fff;
+  background: #f5f0e8;
   border-radius: 20px;
   padding: 22px;
   margin: -28px 20px 20px;
-  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   position: relative;
   z-index: 2;
   display: flex;
@@ -273,7 +273,7 @@ button { cursor: pointer; }
   margin-bottom: 20px;
 }
 .stat-card {
-  background: #fff;
+  background: #f5f0e8;
   border-radius: 16px;
   padding: 18px 12px;
   text-align: center;
@@ -477,12 +477,12 @@ button { cursor: pointer; }
 
 /* Upload Zone - 白色卡片 */
 .upload-zone {
-  background: #fff;
+  background: #f5f0e8;
   border-radius: 20px;
   padding: 24px 24px;
   text-align: center;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-  border: 2px dashed #c8c8c8;
+  border: 2px dashed #b8b0a0;
   transition: all 0.26s;
   cursor: pointer;
 }
@@ -1157,7 +1157,7 @@ button { cursor: pointer; }
 .hrv-weekly-item .lbl{font-size:12px;color:#8a8a8a;margin-top:2px}
 
 /* Health Tip Card */
-.health-tip-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;border-left:4px solid #2ecc71;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.health-tip-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:16px;border-left:4px solid #2ecc71;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
 .health-tip-card .tip-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .health-tip-card .tip-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#2ecc71,#27ae60);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(46,204,113,0.3)}
 .health-tip-card .tip-icon svg{width:22px;height:22px;color:#fff}
@@ -1165,7 +1165,7 @@ button { cursor: pointer; }
 .health-tip-card .tip-text{font-size:15px;color:#333;line-height:1.9}
 
 /* Streak Card */
-.streak-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);display:flex;align-items:center;gap:18px}
+.streak-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);display:flex;align-items:center;gap:18px}
 .streak-fire{font-size:44px;line-height:1}
 .streak-info{flex:1}
 .streak-num{font-size:30px;font-weight:800;color:#2ecc71}
@@ -1624,7 +1624,7 @@ button { cursor: pointer; }
   font-weight: 600;
 }
 /* Record Summary Card (折叠) */
-.record-summary-card{background:var(--card-solid);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid var(--primary);cursor:pointer;transition:all .2s;border:1px solid var(--border);border-left:4px solid var(--primary)}
+.record-summary-card{background:#f5f0e8;border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid var(--primary);cursor:pointer;transition:all .2s;border:1px solid #e0d8c8;border-left:4px solid var(--primary)}
 .record-summary-card:active{transform:scale(.99)}
 .summary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .summary-date{font-size:14px;font-weight:600;color:#1a1a1a}
@@ -2666,7 +2666,13 @@ function renderLatestAnalysis() {
   
   // 没有临时结果，显示已保存的最新记录
   const records = getRecords();
-  const savedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const savedRecords = [...records].sort((a, b) => {
+    const dateDiff = new Date(b.date) - new Date(a.date);
+    if (dateDiff !== 0) return dateDiff;
+    if (b.created_at && a.created_at) return new Date(b.created_at) - new Date(a.created_at);
+    if (b.id && a.id) return (b.id > a.id ? 1 : -1);
+    return 0;
+  });
   
   if (savedRecords.length === 0) {
     // 没有记录时，显示上传引导
@@ -2726,8 +2732,15 @@ function renderRecords() {
   const profile = getProfile();
   const container = document.getElementById('recordsList');
   
-  // 按日期降序排序
-  const sortedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
+  // 按日期降序排序，同一天按创建时间降序
+  const sortedRecords = [...records].sort((a, b) => {
+    const dateDiff = new Date(b.date) - new Date(a.date);
+    if (dateDiff !== 0) return dateDiff;
+    // 同一天按 id 或 created_at 降序（新的在前）
+    if (b.created_at && a.created_at) return new Date(b.created_at) - new Date(a.created_at);
+    if (b.id && a.id) return (b.id > a.id ? 1 : -1);
+    return 0;
+  });
   
   // 取第2到第6条（除最新外的最近5次，避免与最新轨迹重复）
   const recentRecords = sortedRecords.slice(1, 6);
