@@ -176,9 +176,9 @@ button { cursor: pointer; }
 .user-card {
   background: #fff;
   border-radius: 20px;
-  padding: 20px;
+  padding: 22px;
   margin: -28px 20px 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.14);
   position: relative;
   z-index: 2;
   display: flex;
@@ -193,16 +193,16 @@ button { cursor: pointer; }
   align-items: flex-end;
   gap: 4px;
 }
-.user-card-streak .streak-icon { font-size: 28px; }
+.user-card-streak .streak-icon { font-size: 32px; }
 .user-card-streak .streak-num {
   font-family: var(--font-serif);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #2ecc71;
 }
 .user-card-streak .streak-label {
-  font-size: 11px;
-  color: #8a8a8a;
+  font-size: 12px;
+  color: #5a5a5a;
   font-weight: 500;
 }
 .user-info {
@@ -275,36 +275,36 @@ button { cursor: pointer; }
 .stat-card {
   background: #fff;
   border-radius: 16px;
-  padding: 16px 10px;
+  padding: 18px 12px;
   text-align: center;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .stat-card:active {
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
 .stat-card .icon {
-  width: 40px;
-  height: 40px;
-  margin: 0 auto 10px;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 12px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.stat-card .icon.blue { background: rgba(46, 204, 113, 0.12); }
-.stat-card .icon.purple { background: rgba(155, 89, 182, 0.12); }
-.stat-card .icon.green { background: rgba(39, 174, 96, 0.12); }
-.stat-card .icon svg { width: 20px; height: 20px; color: #2ecc71; }
+.stat-card .icon.blue { background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.1)); }
+.stat-card .icon.purple { background: linear-gradient(135deg, rgba(155, 89, 182, 0.15), rgba(142, 68, 173, 0.1)); }
+.stat-card .icon.green { background: linear-gradient(135deg, rgba(39, 174, 96, 0.15), rgba(34, 139, 34, 0.1)); }
+.stat-card .icon svg { width: 22px; height: 22px; color: #2ecc71; }
 .stat-card .num {
   font-family: var(--font-serif);
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
   color: #1a1a1a;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
-.stat-card .lbl { font-size: 11px; color: #8a8a8a; font-weight: 500; }
+.stat-card .lbl { font-size: 12px; color: #5a5a5a; font-weight: 600; }
 
 /* Record Card - 白色卡片 */
 .record-card {
@@ -479,10 +479,10 @@ button { cursor: pointer; }
 .upload-zone {
   background: #fff;
   border-radius: 20px;
-  padding: 32px 24px;
+  padding: 36px 24px;
   text-align: center;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: 2px dashed #d0d0d0;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  border: 2px dashed #c8c8c8;
   transition: all 0.26s;
   cursor: pointer;
 }
@@ -491,25 +491,25 @@ button { cursor: pointer; }
   background: rgba(46, 204, 113, 0.05);
 }
 .upload-icon {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 16px;
-  border-radius: 16px;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  border-radius: 18px;
   background: linear-gradient(135deg, #2ecc71, #27ae60);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+  box-shadow: 0 8px 24px rgba(46, 204, 113, 0.35);
 }
-.upload-icon svg { width: 28px; height: 28px; color: #fff; }
+.upload-icon svg { width: 30px; height: 30px; color: #fff; }
 .upload-zone h3 {
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   color: #1a1a1a;
 }
-.upload-zone p { font-size: 13px; color: #8a8a8a; }
+.upload-zone p { font-size: 14px; color: #5a5a5a; }
 
 /* Analysis Progress - 深绿遮罩 */
 .analysis-progress {
@@ -1157,20 +1157,20 @@ button { cursor: pointer; }
 .hrv-weekly-item .lbl{font-size:12px;color:#8a8a8a;margin-top:2px}
 
 /* Health Tip Card */
-.health-tip-card{background:rgba(46,204,113,0.08);border-radius:20px;padding:18px;margin-bottom:16px;border-left:4px solid #2ecc71}
-.health-tip-card .tip-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.health-tip-card .tip-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#2ecc71,#27ae60);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(46,204,113,0.25)}
-.health-tip-card .tip-icon svg{width:20px;height:20px;color:#fff}
-.health-tip-card .tip-title{font-size:15px;font-weight:700;color:#1a1a1a}
-.health-tip-card .tip-text{font-size:14px;color:#5a5a5a;line-height:1.8}
+.health-tip-card{background:linear-gradient(135deg,rgba(46,204,113,0.12),rgba(39,174,96,0.08));border-radius:20px;padding:20px;margin-bottom:16px;border-left:4px solid #2ecc71;box-shadow:0 2px 12px rgba(46,204,113,0.1)}
+.health-tip-card .tip-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.health-tip-card .tip-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#2ecc71,#27ae60);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(46,204,113,0.3)}
+.health-tip-card .tip-icon svg{width:22px;height:22px;color:#fff}
+.health-tip-card .tip-title{font-size:16px;font-weight:700;color:#1a5d3a}
+.health-tip-card .tip-text{font-size:15px;color:#2d5a45;line-height:1.9}
 
 /* Streak Card */
-.streak-card{background:#fff;border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;align-items:center;gap:16px}
-.streak-fire{font-size:40px;line-height:1}
+.streak-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);display:flex;align-items:center;gap:18px}
+.streak-fire{font-size:44px;line-height:1}
 .streak-info{flex:1}
-.streak-num{font-size:28px;font-weight:800;color:var(--primary)}
-.streak-label{font-size:13px;color:var(--text2);margin-top:2px}
-.streak-best{font-size:12px;color:var(--text3);margin-top:4px}
+.streak-num{font-size:30px;font-weight:800;color:#2ecc71}
+.streak-label{font-size:14px;color:#5a5a5a;margin-top:3px}
+.streak-best{font-size:13px;color:#8a8a8a;margin-top:5px}
 
 /* Login Page - 沉浸式品牌故事 */
 .login-page {
