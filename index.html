@@ -3798,14 +3798,12 @@ function renderStats() {
     return;
   }
 
-  // 计算本周和上周日期范围
-  const thisWeek = getWeekRange();
+  // 计算上周日期范围
   const lastWeekStart = new Date(thisWeek.start);
   lastWeekStart.setDate(lastWeekStart.getDate() - 7);
   const lastWeek = getWeekRange(lastWeekStart);
 
-  // 获取本周和上周记录
-  const weekRecords = getWeekRecords(thisWeek.startStr, thisWeek.endStr);
+  // 获取上周记录
   const lastWeekRecords = getWeekRecords(lastWeek.startStr, lastWeek.endStr);
 
   // 计算统计数据
