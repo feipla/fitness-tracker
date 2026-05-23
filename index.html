@@ -1198,6 +1198,41 @@ button { cursor: pointer; }
 .assess-ind-tag.blue{background:rgba(52,152,219,.15);color:#2980b9}
 .assess-src{font-size:10px;color:#aaa}
 
+/* ===== 可视化评估卡片样式 V2 ===== */
+.assess-score-card-v2{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:14px;display:flex;gap:20px;align-items:center;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.assess-score-ring{position:relative;width:100px;height:100px;flex-shrink:0}
+.score-ring-svg{width:100%;height:100%;transform:rotate(0deg)}
+.score-ring-progress{animation:ring-fill 1s ease-out forwards;transform-origin:center}
+@keyframes ring-fill{from{stroke-dasharray:0 327}to{stroke-dasharray:inherit}}
+.score-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-ring-emoji{font-size:20px;line-height:1}
+.score-ring-num{font-family:var(--font-serif);font-size:28px;font-weight:800;line-height:1}
+.score-ring-total{font-size:11px;color:#8a8a8a}
+.assess-score-bars{flex:1;min-width:0}
+.score-bars-title{font-size:13px;font-weight:600;color:#5a5a5a;margin-bottom:10px}
+.score-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.score-bar-label{font-size:12px;color:#5a5a5a;width:80px;flex-shrink:0}
+.score-bar-track{flex:1;height:8px;background:#e8e4dc;border-radius:4px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:4px;animation:bar-fill .6s ease-out forwards}
+@keyframes bar-fill{from{width:0!important}}
+.score-bar-pts{font-size:12px;font-weight:600;color:#8a8a8a;width:28px;text-align:right}
+.score-grade-label{font-size:13px;font-weight:600;margin-top:10px;padding-top:10px;border-top:1px dashed #d8d4cc}
+
+.assess-indicators-card-v2{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.indicators-title{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:16px}
+.indicators-gauges{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ind-gauge{text-align:center;padding:8px 4px;background:rgba(255,255,255,.5);border-radius:12px}
+.ind-gauge-svg{width:50px;height:50px;margin:0 auto 4px}
+.gauge-progress{animation:gauge-fill .8s ease-out forwards;transform-origin:center}
+@keyframes gauge-fill{from{stroke-dasharray:0 126}}
+.ind-gauge-center{margin-top:-30px;margin-bottom:6px}
+.ind-gauge-status{font-size:10px;font-weight:600;padding:2px 6px;border-radius:6px}
+.ind-gauge-status.good{background:rgba(46,204,113,.15);color:#1a7a45}
+.ind-gauge-status.mid{background:rgba(243,156,18,.15);color:#b87a08}
+.ind-gauge-status.bad{background:rgba(231,76,60,.15);color:#c53030}
+.ind-gauge-label{font-size:11px;color:#5a5a5a;margin-bottom:2px}
+.ind-gauge-extra{font-size:10px;color:#8a8a8a}
+
 .assess-ai-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
 .assess-ai-section{margin-bottom:14px}
 .assess-ai-section:last-child{margin-bottom:0}
@@ -3049,6 +3084,7 @@ function renderLatestAnalysis() {
 function renderAssessmentCard(a, data, comment) {
   const gradeColor = a.score >= 8 ? '#2ecc71' : a.score >= 5 ? '#f39c12' : '#e74c3c';
   const gradeEmoji = a.score >= 8 ? '🏆' : a.score >= 5 ? '👍' : '💪';
+  const scorePercent = a.score * 10; // 0-100
   
   return `
     <!-- 基础数据卡片 -->
@@ -3078,57 +3114,56 @@ function renderAssessmentCard(a, data, comment) {
       </div>
     </div>
     
-    <!-- 综合得分 -->
-    <div class="assess-score-card" style="border-left:4px solid ${gradeColor}">
-      <div class="assess-score-left">
-        <div class="assess-score-num" style="color:${gradeColor}">${gradeEmoji} ${a.score}<span class="assess-score-total">/10</span></div>
-        <div class="assess-score-grade">${a.gradeLabel}</div>
+    <!-- 综合得分 - 环形表盘 -->
+    <div class="assess-score-card-v2">
+      <div class="assess-score-ring">
+        <svg viewBox="0 0 120 120" class="score-ring-svg">
+          <circle cx="60" cy="60" r="52" fill="none" stroke="#e8e4dc" stroke-width="10"/>
+          <circle cx="60" cy="60" r="52" fill="none" stroke="${gradeColor}" stroke-width="10"
+            stroke-dasharray="${scorePercent * 3.27} 327" stroke-linecap="round"
+            transform="rotate(-90 60 60)" class="score-ring-progress"/>
+        </svg>
+        <div class="score-ring-center">
+          <div class="score-ring-emoji">${gradeEmoji}</div>
+          <div class="score-ring-num" style="color:${gradeColor}">${a.score}</div>
+          <div class="score-ring-total">/ 10</div>
+        </div>
       </div>
-      <div class="assess-score-right">
-        ${a.scoreDetails.map(d => `
-          <div class="assess-score-item ${d.got === d.points ? 'got' : 'miss'}">
-            <span class="assess-score-check">${d.got === d.points ? '✓' : '○'}</span>
-            <span>${d.item}</span>
-            <span class="assess-score-pts">+${d.got}/${d.points}</span>
-          </div>
-        `).join('')}
+      <div class="assess-score-bars">
+        <div class="score-bars-title">评分明细</div>
+        ${a.scoreDetails.map(d => {
+          const pct = (d.got / d.points) * 100;
+          const barColor = d.got === d.points ? '#2ecc71' : d.got > 0 ? '#f39c12' : '#e0d8c8';
+          return `
+            <div class="score-bar-row">
+              <div class="score-bar-label">${d.item}</div>
+              <div class="score-bar-track">
+                <div class="score-bar-fill" style="width:${pct}%;background:${barColor}"></div>
+              </div>
+              <div class="score-bar-pts">+${d.got}</div>
+            </div>
+          `;
+        }).join('')}
+        <div class="score-grade-label" style="color:${gradeColor}">${a.gradeLabel}</div>
       </div>
     </div>
     
-    <!-- 计算指标 -->
-    <div class="assess-indicators-card">
-      <div class="assess-indicators-title">📊 训练指标</div>
-      <div class="assess-indicators-grid">
-        <div class="assess-indicator">
-          <div class="assess-ind-label">负荷比值 <span class="assess-src">${a.acwrRatio !== null ? '' : '(需4次数据)'}</span></div>
-          <div class="assess-ind-val">${a.acwrRatio !== null ? a.acwrRatio : '-'}</div>
-          <div class="assess-ind-tag ${a.acwrLabel === '合理' ? 'green' : a.acwrLabel === '偏低' ? 'blue' : a.acwrLabel === '偏高' ? 'yellow' : 'red'}">${a.acwrLabel || '待计算'}</div>
-        </div>
-        <div class="assess-indicator">
-          <div class="assess-ind-label">心肺进步率</div>
-          <div class="assess-ind-val">${a.cardioProgress !== null ? a.cardioProgress + '%' : '-'}</div>
-          <div class="assess-ind-tag ${a.cardioLabel === '提升' ? 'green' : 'blue'}">${a.cardioLabel || '待计算'}</div>
-        </div>
-        <div class="assess-indicator">
-          <div class="assess-ind-label">跑步经济性</div>
-          <div class="assess-ind-val">${a.runningEconomy !== null ? a.runningEconomy : '-'}</div>
-          <div class="assess-ind-tag ${a.economyLabel === '优秀' ? 'green' : a.economyLabel === '良好' ? 'yellow' : 'blue'}">${a.economyLabel || '-'}</div>
-        </div>
-        <div class="assess-indicator">
-          <div class="assess-ind-label">有效有氧</div>
-          <div class="assess-ind-val">${a.effectiveAerobicMin}分钟</div>
-          <div class="assess-ind-tag ${a.aerobicLabel === '达标' ? 'green' : 'yellow'}">${a.aerobicLabel}</div>
-        </div>
-        <div class="assess-indicator">
-          <div class="assess-ind-label">疲劳风险 <span class="assess-src">系数${a.intensityCoeff}</span></div>
-          <div class="assess-ind-val">${a.fatigueLabel}</div>
-          <div class="assess-ind-tag ${a.fatigueLabel === '低' ? 'green' : a.fatigueLabel === '中等' ? 'yellow' : 'red'}">${a.fatigueDetail.substring(0, 8)}</div>
-        </div>
-        <div class="assess-indicator">
-          <div class="assess-ind-label">心率来源</div>
-          <div class="assess-ind-val" style="font-size:12px">${a.maxHRInfo.source}</div>
-          <div class="assess-ind-tag blue">${a.effectiveMaxHR}bpm</div>
-        </div>
+    <!-- 训练指标 - 仪表盘 -->
+    <div class="assess-indicators-card-v2">
+      <div class="indicators-title">📊 训练指标</div>
+      <div class="indicators-gauges">
+        ${renderIndicatorGauge('负荷比值', a.acwrRatio !== null ? a.acwrRatio : 0, a.acwrLabel, 
+          a.acwrRatio !== null ? (a.acwrLabel === '合理' ? 100 : a.acwrLabel === '偏低' ? 40 : a.acwrLabel === '偏高' ? 70 : 90) : 0,
+          a.acwrRatio !== null ? '' : '需4次数据')}
+        ${renderIndicatorGauge('心肺进步', a.cardioProgress !== null ? Math.max(0, 50 + a.cardioProgress) : 50, a.cardioLabel,
+          a.cardioProgress !== null ? (a.cardioLabel === '提升' ? 80 : 50) : 50)}
+        ${renderIndicatorGauge('跑步经济性', a.runningEconomy !== null ? (1 - a.runningEconomy) * 200 : 50, a.economyLabel,
+          a.runningEconomy !== null ? (a.economyLabel === '优秀' ? 90 : a.economyLabel === '良好' ? 70 : 50) : 50)}
+        ${renderIndicatorGauge('有效有氧', a.effectiveAerobicMin / 60 * 100, a.aerobicLabel,
+          a.aerobicLabel === '达标' ? 90 : 50, a.effectiveAerobicMin + '分钟')}
+        ${renderIndicatorGauge('疲劳风险', (1 - a.intensityCoeff) * 100, a.fatigueLabel,
+          a.fatigueLabel === '低' ? 90 : a.fatigueLabel === '中等' ? 60 : 30)}
+        ${renderIndicatorGauge('心率来源', 100, a.maxHRInfo.source, 100, a.effectiveMaxHR + 'bpm')}
       </div>
     </div>
     
@@ -3149,6 +3184,27 @@ function renderAssessmentCard(a, data, comment) {
         <div class="assess-ai-title">🎯 下次训练建议</div>
         <div class="assess-ai-text">${comment.advice}</div>
       </div>` : ''}
+    </div>
+  `;
+}
+
+// 指标仪表盘渲染
+function renderIndicatorGauge(label, value, statusLabel, percent, extra) {
+  const color = percent >= 80 ? '#2ecc71' : percent >= 50 ? '#f39c12' : '#e74c3c';
+  const dash = percent * 2.51; // 周长比例
+  return `
+    <div class="ind-gauge">
+      <svg viewBox="0 0 50 50" class="ind-gauge-svg">
+        <circle cx="25" cy="25" r="20" fill="none" stroke="#e8e4dc" stroke-width="5"/>
+        <circle cx="25" cy="25" r="20" fill="none" stroke="${color}" stroke-width="5"
+          stroke-dasharray="${dash} 126" stroke-linecap="round"
+          transform="rotate(-90 25 25)" class="gauge-progress"/>
+      </svg>
+      <div class="ind-gauge-center">
+        <span class="ind-gauge-status ${percent >= 80 ? 'good' : percent >= 50 ? 'mid' : 'bad'}">${statusLabel}</span>
+      </div>
+      <div class="ind-gauge-label">${label}</div>
+      ${extra ? `<div class="ind-gauge-extra">${extra}</div>` : ''}
     </div>
   `;
 }
