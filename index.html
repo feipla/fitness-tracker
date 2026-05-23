@@ -3781,6 +3781,16 @@ async function requestKIMIWeeklySummary(stats) {
 function renderStats() {
   const container = document.getElementById('statsContent');
   const records = getRecords();
+  const thisWeek = getWeekRange();
+  const weekRecords = getWeekRecords(thisWeek.startStr, thisWeek.endStr);
+
+  // 调试：显示数据状态
+  console.log('[Stats] 总记录数:', records.length, '当前用户:', getCurrentUser());
+  console.log('[Stats] 本周范围:', thisWeek.startStr, '~', thisWeek.endStr);
+  console.log('[Stats] 本周记录数:', weekRecords.length);
+  if (records.length > 0) {
+    console.log('[Stats] 记录日期范围:', records[records.length-1].date, '~', records[0].date);
+  }
 
   // 无数据提示
   if (records.length === 0) {
