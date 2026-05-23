@@ -1715,6 +1715,99 @@ button { cursor: pointer; }
 .summary-metrics span{background:rgba(0,0,0,.06);padding:4px 10px;border-radius:6px;color:#333}
 .summary-toggle{font-size:12px;color:var(--primary);text-align:center;font-weight:600}
 .record-detail{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+/* ===================== 周运动统计页面样式 ===================== */
+
+/* 柱状图容器 */
+.week-chart-card{background:#f5f0e8;border-radius:20px;padding:20px 16px 12px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.week-chart-svg{width:100%;height:auto;display:block}
+
+/* 柱子动画 */
+@keyframes bar-grow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
+.week-bar{cursor:pointer;transition:opacity .2s}
+.week-bar:hover{opacity:.8}
+
+/* 区域标题 */
+.week-section-title{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+
+/* 数据概览网格 */
+.week-overview-card{background:#f5f0e8;border-radius:20px;padding:20px 16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.week-overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.week-overview-item{text-align:center;padding:10px 4px;background:rgba(255,255,255,.6);border-radius:14px}
+.week-overview-value{font-size:24px;font-weight:800;color:#1a1a1a;line-height:1.2}
+.week-overview-unit{font-size:11px;font-weight:500;color:#8a8a8a;margin-left:2px}
+.week-overview-label{font-size:12px;color:#8a8a8a;margin-top:4px}
+
+/* 环形仪表盘 */
+.week-gauge-card{background:#f5f0e8;border-radius:20px;padding:24px 16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);cursor:pointer;text-align:center}
+.week-gauge-wrap{position:relative;width:140px;height:140px;margin:0 auto}
+.week-gauge-svg{width:140px;height:140px}
+.week-gauge-arc{transition:stroke-dashoffset 1s ease}
+.week-gauge-center{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.week-gauge-score{font-size:36px;font-weight:800;line-height:1}
+.week-gauge-max{font-size:14px;font-weight:500;color:#8a8a8a}
+.week-gauge-label{font-size:12px;color:#8a8a8a;margin-top:6px;max-width:110px;line-height:1.4}
+.week-gauge-hint{font-size:11px;color:#aaa;margin-top:10px}
+
+/* 评分明细 */
+.week-score-detail{margin-top:14px;text-align:left;padding-top:14px;border-top:1px dashed rgba(0,0,0,.08)}
+.week-score-detail-row{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px}
+.week-score-detail-item{flex:1;color:#444}
+.week-score-detail-pts{font-weight:700;min-width:40px;text-align:right}
+.week-score-detail-note{font-size:11px;color:#aaa;flex-shrink:0}
+
+/* 专业指标面板 */
+.week-indicators-card{background:#f5f0e8;border-radius:20px;padding:20px 16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.week-indicators-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.week-indicator-item{background:rgba(255,255,255,.6);border-radius:14px;padding:14px 12px}
+.week-indicator-label{font-size:12px;color:#8a8a8a;margin-bottom:4px}
+.week-indicator-value{font-size:22px;font-weight:800;margin-bottom:4px}
+.week-indicator-status{display:inline-block;font-size:11px;font-weight:600;padding:2px 10px;border-radius:10px}
+.week-indicator-detail{font-size:11px;color:#aaa;margin-top:4px;line-height:1.4}
+
+/* 本周vs上周对比 */
+.week-compare-card{background:#f5f0e8;border-radius:20px;padding:20px 16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.week-compare-legend{display:flex;gap:16px;margin-bottom:14px;font-size:12px;color:#8a8a8a}
+.week-compare-legend-item{display:flex;align-items:center;gap:4px}
+.week-compare-legend-dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.week-compare-row{margin-bottom:14px}
+.week-compare-label{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:6px}
+.week-compare-bars{display:flex;flex-direction:column;gap:4px}
+.week-compare-bar-group{display:flex;align-items:center;gap:8px}
+.week-compare-bar{height:16px;border-radius:4px;transition:width .6s ease;min-width:4px}
+.week-compare-last{background:#3498db}
+.week-compare-this{background:#27AE60}
+.week-compare-val{font-size:12px;font-weight:600;color:#444;min-width:60px}
+.week-compare-empty{text-align:center;padding:24px;color:#aaa;font-size:14px}
+
+/* 训练结论与建议 */
+.week-summary-card{background:#f5f0e8;border-radius:20px;padding:20px 16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.week-summary-loading{text-align:center;padding:20px;color:#8a8a8a;font-size:14px}
+.week-summary-section{margin-bottom:14px}
+.week-summary-section:last-child{margin-bottom:0}
+.week-summary-tag{display:inline-block;font-size:12px;font-weight:700;color:#27AE60;background:rgba(39,174,96,.12);padding:3px 10px;border-radius:8px;margin-bottom:6px}
+.week-summary-tag-risk{color:#F39C12;background:rgba(243,156,18,.12)}
+.week-summary-tag-advice{color:#3498db;background:rgba(52,152,219,.12)}
+.week-summary-text{font-size:14px;color:#444;line-height:1.6;padding-left:2px}
+
+/* 数据表格 */
+.week-table-card{background:#f5f0e8;border-radius:20px;padding:20px 16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.week-table-container{max-height:320px;overflow-y:auto;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+.week-table{width:100%;border-collapse:collapse;font-size:12px;min-width:500px}
+.week-table th{background:rgba(0,0,0,.04);color:#8a8a8a;font-weight:600;padding:8px 6px;text-align:center;position:sticky;top:0;z-index:1;white-space:nowrap}
+.week-table td{padding:8px 6px;text-align:center;color:#444;border-bottom:1px solid rgba(0,0,0,.04);white-space:nowrap}
+.week-table tbody tr:hover{background:rgba(0,0,0,.02)}
+
+/* 点击柱子弹窗 */
+.week-popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;animation:popup-fade .2s ease}
+@keyframes popup-fade{from{opacity:0}to{opacity:1}}
+.week-popup-header{font-size:16px;font-weight:700;color:#1a1a1a;text-align:center;margin-bottom:16px}
+.week-popup-record{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.week-popup-type{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:8px}
+.week-popup-metrics{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:#666}
+.week-popup-metrics span{background:#f5f0e8;padding:3px 8px;border-radius:6px}
+.week-popup-score{font-size:12px;font-weight:700;padding:2px 10px;border-radius:8px;margin-top:8px;display:inline-block}
+.week-popup-close{text-align:center;margin-top:12px;font-size:14px;font-weight:600;color:#27AE60;cursor:pointer;padding:10px}
+
 .record-delete-btn{width:28px;height:28px;border-radius:50%;background:rgba(239,68,68,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
 .record-delete-btn:active{background:rgba(239,68,68,.25)}
 .record-delete-btn svg{width:14px;height:14px;color:var(--danger)}
@@ -1965,8 +2058,8 @@ button { cursor: pointer; }
 <div class="page" id="pageStats">
   <div class="header" style="padding-bottom:28px">
     <div class="header-content">
-      <h1>身体地图</h1>
-      <p>读懂身体内在的轨迹</p>
+      <h1>身体地图 · 周运动轨迹</h1>
+      <p>读懂身体每周的运动轨迹</p>
     </div>
   </div>
   <div class="section" id="statsContent"></div>
@@ -3366,191 +3459,632 @@ function renderHealthTip() {
   `;
 }
 
-function renderStats() {
-  const records = getRecords();
-  const profile = getProfile();
-  const container = document.getElementById('statsContent');
+// ===================== 周运动统计计算模块 =====================
 
+/**
+ * 获取本周的起止日期（周一到周日）
+ * @returns {{start: Date, end: Date, startStr: string, endStr: string}}
+ */
+function getWeekRange(refDate) {
+  const d = refDate ? new Date(refDate) : new Date();
+  const day = d.getDay(); // 0=周日
+  const diff = day === 0 ? 6 : day - 1; // 周一偏移
+  const start = new Date(d);
+  start.setDate(d.getDate() - diff);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6);
+  end.setHours(23, 59, 59, 999);
+  return {
+    start, end,
+    startStr: start.toISOString().split('T')[0],
+    endStr: end.toISOString().split('T')[0]
+  };
+}
+
+/**
+ * 获取指定周的运动记录
+ * @param {string} startStr - YYYY-MM-DD
+ * @param {string} endStr - YYYY-MM-DD
+ * @returns {Array} 该周的运动记录
+ */
+function getWeekRecords(startStr, endStr) {
+  return getRecords().filter(r => r.date >= startStr && r.date <= endStr);
+}
+
+/**
+ * 计算周统计数据
+ * @param {Array} weekRecords - 本周记录
+ * @param {Array} lastWeekRecords - 上周记录（可为空）
+ * @returns {Object} 周统计结果
+ */
+function calculateWeeklyStats(weekRecords, lastWeekRecords) {
+  // 按星期分组
+  const dayNames = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+  const dayRecords = Array.from({length: 7}, () => []);
+
+  weekRecords.forEach(r => {
+    const d = new Date(r.date);
+    let dayIdx = d.getDay() - 1; // 0=周一
+    if (dayIdx < 0) dayIdx = 6; // 周日
+    dayRecords[dayIdx].push(r);
+  });
+
+  // 汇总数据
+  const totalDist = weekRecords.reduce((s, r) => s + (r.distance || 0), 0);
+  const totalDur = weekRecords.reduce((s, r) => s + (r.duration || 0), 0);
+  const avgPace = weekRecords.filter(r => r.pace > 0).length > 0
+    ? weekRecords.filter(r => r.pace > 0).reduce((s, r) => s + r.pace, 0) / weekRecords.filter(r => r.pace > 0).length
+    : 0;
+  const avgHR = weekRecords.length > 0
+    ? Math.round(weekRecords.reduce((s, r) => s + (r.avgHR || 0), 0) / weekRecords.length)
+    : 0;
+  const avgCadence = weekRecords.filter(r => r.cadence > 0).length > 0
+    ? Math.round(weekRecords.filter(r => r.cadence > 0).reduce((s, r) => s + r.cadence, 0) / weekRecords.filter(r => r.cadence > 0).length)
+    : 0;
+
+  // 每日里程（用于柱状图）
+  const dailyDistances = dayRecords.map(dayRecs =>
+    dayRecs.reduce((s, r) => s + (r.distance || 0), 0)
+  );
+
+  // 每日记录数（用于柱状图并列）
+  const dailyRecordCounts = dayRecords.map(d => d.length);
+
+  // ===== 专业指标计算 =====
+  const profile = getProfile();
+  const maxHRInfo = getEffectiveMaxHR();
+  const restingHRInfo = getEffectiveRestingHR();
+  const effectiveMaxHR = maxHRInfo.value;
+  const effectiveRestingHR = restingHRInfo.value;
+  const hrReserve = effectiveMaxHR - effectiveRestingHR;
+
+  // 1. ACWR负荷比值
+  let acwrRatio = null;
+  let acwrLabel = '';
+  let acwrDetail = '';
+
+  // 计算本周平均负荷
+  const weekLoads = weekRecords.map(r => {
+    const rRatio = hrReserve > 0 ? ((r.avgHR || 0) - effectiveRestingHR) / hrReserve : 0;
+    return (r.duration || 0) * rRatio;
+  });
+  const weekAvgLoad = weekLoads.length > 0 ? weekLoads.reduce((a, b) => a + b, 0) / weekLoads.length : 0;
+
+  // 计算上周平均负荷
+  const lastWeekLoads = lastWeekRecords.map(r => {
+    const rRatio = hrReserve > 0 ? ((r.avgHR || 0) - effectiveRestingHR) / hrReserve : 0;
+    return (r.duration || 0) * rRatio;
+  });
+  const lastWeekAvgLoad = lastWeekLoads.length > 0 ? lastWeekLoads.reduce((a, b) => a + b, 0) / lastWeekLoads.length : 0;
+
+  if (lastWeekAvgLoad > 0 && weekAvgLoad > 0) {
+    acwrRatio = Math.round(weekAvgLoad / lastWeekAvgLoad * 100) / 100;
+    if (acwrRatio >= 0.8 && acwrRatio <= 1.3) { acwrLabel = '合理'; acwrDetail = '训练强度合理'; }
+    else if (acwrRatio < 0.8) { acwrLabel = '偏低'; acwrDetail = '训练强度偏低'; }
+    else if (acwrRatio <= 1.5) { acwrLabel = '偏高'; acwrDetail = '训练强度偏高'; }
+    else { acwrLabel = '超负荷'; acwrDetail = '超负荷，受伤风险高'; }
+  } else {
+    acwrDetail = '上周数据不足，暂无法计算';
+  }
+
+  // 2. 心肺进步率（对比上周同配速心率）
+  let cardioProgress = null;
+  let cardioLabel = '';
+  let cardioDetail = '';
+
+  if (lastWeekRecords.length > 0 && weekRecords.length > 0) {
+    const weekAvgHRByPace = {};
+    const lastWeekAvgHRByPace = {};
+
+    weekRecords.forEach(r => {
+      if (r.pace > 0 && r.avgHR > 0) {
+        const key = Math.round(r.pace); // 按整分钟配速分组
+        if (!weekAvgHRByPace[key]) weekAvgHRByPace[key] = [];
+        weekAvgHRByPace[key].push(r.avgHR);
+      }
+    });
+
+    lastWeekRecords.forEach(r => {
+      if (r.pace > 0 && r.avgHR > 0) {
+        const key = Math.round(r.pace);
+        if (!lastWeekAvgHRByPace[key]) lastWeekAvgHRByPace[key] = [];
+        lastWeekAvgHRByPace[key].push(r.avgHR);
+      }
+    });
+
+    let totalProgress = 0;
+    let matchCount = 0;
+    for (const key in weekAvgHRByPace) {
+      if (lastWeekAvgHRByPace[key]) {
+        const weekHR = weekAvgHRByPace[key].reduce((a, b) => a + b, 0) / weekAvgHRByPace[key].length;
+        const lastHR = lastWeekAvgHRByPace[key].reduce((a, b) => a + b, 0) / lastWeekAvgHRByPace[key].length;
+        totalProgress += (lastHR - weekHR) / lastHR * 100;
+        matchCount++;
+      }
+    }
+
+    if (matchCount > 0) {
+      cardioProgress = Math.round(totalProgress / matchCount * 10) / 10;
+      if (cardioProgress > 0) { cardioLabel = '提升'; cardioDetail = '同配速心率降低' + cardioProgress + '%'; }
+      else { cardioLabel = '持平'; cardioDetail = '同配速心率变化不大'; }
+    } else {
+      cardioDetail = '无同配速对比数据';
+    }
+  } else {
+    cardioDetail = lastWeekRecords.length === 0 ? '上周无数据' : '本周无数据';
+  }
+
+  // 3. 跑步经济性
+  let runningEconomy = null;
+  let economyLabel = '';
+  if (avgPace > 0 && avgCadence > 0) {
+    runningEconomy = Math.round(avgPace / avgCadence * 1000) / 1000;
+    if (runningEconomy < 0.45) economyLabel = '优秀';
+    else if (runningEconomy < 0.55) economyLabel = '良好';
+    else economyLabel = '待提升';
+  }
+
+  // 4. 疲劳风险（基于本周最高强度系数）
+  let maxIntensity = 0;
+  weekRecords.forEach(r => {
+    const coeff = effectiveMaxHR > 0 ? (r.avgHR || 0) / effectiveMaxHR : 0;
+    if (coeff > maxIntensity) maxIntensity = coeff;
+  });
+  let fatigueLabel = '';
+  let fatigueDetail = '';
+  if (maxIntensity > 0.85) { fatigueLabel = '偏高'; fatigueDetail = '本周有高强度训练，注意恢复'; }
+  else if (maxIntensity > 0.75) { fatigueLabel = '中等'; fatigueDetail = '训练强度适中'; }
+  else { fatigueLabel = '低'; fatigueDetail = '训练强度较低'; }
+
+  // 5. 有效有氧总时长
+  let totalAerobicMin = 0;
+  weekRecords.forEach(r => {
+    const effectiveMin = effectiveMaxHR * 0.6;
+    const effectiveMax = effectiveMaxHR * 0.79;
+    if ((r.avgHR || 0) >= effectiveMin && (r.avgHR || 0) <= effectiveMax) {
+      totalAerobicMin += (r.duration || 0);
+    } else if ((r.avgHR || 0) > effectiveMax) {
+      totalAerobicMin += Math.round((r.duration || 0) * 0.6);
+    } else {
+      totalAerobicMin += Math.round((r.duration || 0) * 0.4);
+    }
+  });
+
+  // ===== 10分制周评分 =====
+  let score = 0;
+  const scoreDetails = [];
+
+  // 规则1：ACWR 0.8~1.3 +3分
+  if (acwrRatio !== null && acwrRatio >= 0.8 && acwrRatio <= 1.3) {
+    score += 3; scoreDetails.push({item: '负荷比值合理', points: 3, got: 3});
+  } else {
+    scoreDetails.push({item: '负荷比值合理', points: 3, got: 0, note: acwrDetail});
+  }
+
+  // 规则2：同配速心率优于上周 +2分
+  if (cardioProgress !== null && cardioProgress > 0) {
+    score += 2; scoreDetails.push({item: '心肺进步', points: 2, got: 2});
+  } else {
+    scoreDetails.push({item: '心肺进步', points: 2, got: 0, note: cardioDetail});
+  }
+
+  // 规则3：有氧总时长>=150分钟 +2分
+  if (totalAerobicMin >= 150) {
+    score += 2; scoreDetails.push({item: '有氧时长达标', points: 2, got: 2});
+  } else {
+    scoreDetails.push({item: '有氧时长达标', points: 2, got: 0, note: '本周' + totalAerobicMin + '分钟'});
+  }
+
+  // 规则4：步频配速波动小 +1分（简化：有数据即给分）
+  if (avgPace > 0 && avgCadence > 0 && weekRecords.length >= 2) {
+    score += 1; scoreDetails.push({item: '步频配速平稳', points: 1, got: 1});
+  } else {
+    scoreDetails.push({item: '步频配速平稳', points: 1, got: 0});
+  }
+
+  // 规则5：无伤痛异常 +2分（简化：全部给分）
+  score += 2; scoreDetails.push({item: '无伤痛异常', points: 2, got: 2});
+
+  // 等级
+  let grade = '';
+  let gradeLabel = '';
+  if (score >= 8) { grade = 'excellent'; gradeLabel = '优质有效训练，体能稳步提升'; }
+  else if (score >= 5) { grade = 'good'; gradeLabel = '维持基础状态，进步幅度缓慢'; }
+  else { grade = 'need_improve'; gradeLabel = '训练低效或运动过量，建议调整训练'; }
+
+  // ===== 上周数据（用于对比） =====
+  const lastTotalDist = lastWeekRecords.reduce((s, r) => s + (r.distance || 0), 0);
+  const lastTotalDur = lastWeekRecords.reduce((s, r) => s + (r.duration || 0), 0);
+  const lastAvgHR = lastWeekRecords.length > 0
+    ? Math.round(lastWeekRecords.reduce((s, r) => s + (r.avgHR || 0), 0) / lastWeekRecords.length)
+    : 0;
+  const lastAvgPace = lastWeekRecords.filter(r => r.pace > 0).length > 0
+    ? lastWeekRecords.filter(r => r.pace > 0).reduce((s, r) => s + r.pace, 0) / lastWeekRecords.filter(r => r.pace > 0).length
+    : 0;
+
+  // 上周每日里程
+  const lastDayRecords = Array.from({length: 7}, () => []);
+  lastWeekRecords.forEach(r => {
+    const d = new Date(r.date);
+    let dayIdx = d.getDay() - 1;
+    if (dayIdx < 0) dayIdx = 6;
+    lastDayRecords[dayIdx].push(r);
+  });
+  const lastDailyDistances = lastDayRecords.map(drs => drs.reduce((s, r) => s + (r.distance || 0), 0));
+
+  return {
+    dayNames, dayRecords, dailyDistances, dailyRecordCounts,
+    totalDist: Math.round(totalDist * 100) / 100,
+    totalDur, avgPace: Math.round(avgPace * 100) / 100,
+    avgHR, avgCadence,
+    acwrRatio, acwrLabel, acwrDetail,
+    cardioProgress, cardioLabel, cardioDetail,
+    runningEconomy, economyLabel,
+    totalAerobicMin,
+    maxIntensity: Math.round(maxIntensity * 10000) / 10000,
+    fatigueLabel, fatigueDetail,
+    score, grade, gradeLabel, scoreDetails,
+    // 上周对比
+    lastWeekRecords,
+    lastTotalDist: Math.round(lastTotalDist * 100) / 100,
+    lastTotalDur, lastAvgHR,
+    lastAvgPace: Math.round(lastAvgPace * 100) / 100,
+    lastDailyDistances,
+    hasLastWeekData: lastWeekRecords.length > 0,
+    maxHRInfo, restingHRInfo,
+  };
+}
+
+// ===================== KIMI API 周总结生成 =====================
+
+/**
+ * 调用KIMI API生成周总结文案
+ */
+async function requestKIMIWeeklySummary(stats) {
+  const AI_API_KEY = localStorage.getItem('kimi_api_key') || 'sk-lNdlIBGQji7HF7eyftL4VnilTeLWSgnxRRkQUAjnhDWkFMdR';
+  const AI_API_URL = 'https://api.moonshot.cn/v1/chat/completions';
+
+  const prompt = '你是一位幽默风趣的运动健康教练。以下是本周运动数据：\n\n【本周汇总】\n- 总里程：' + stats.totalDist + '公里\n- 总时长：' + stats.totalDur + '分钟\n- 平均配速：' + (stats.avgPace || '-') + '分钟/公里\n- 平均心率：' + stats.avgHR + 'bpm\n- 平均步频：' + (stats.avgCadence || '-') + '步/分\n- 有效有氧时长：' + stats.totalAerobicMin + '分钟\n\n【训练指标】\n- ACWR负荷比值：' + (stats.acwrRatio !== null ? stats.acwrRatio + '（' + stats.acwrLabel + '）' : stats.acwrDetail) + '\n- 心肺进步率：' + (stats.cardioProgress !== null ? stats.cardioProgress + '%（' + stats.cardioLabel + '）' : stats.cardioDetail) + '\n- 跑步经济性：' + (stats.runningEconomy !== null ? stats.runningEconomy + '（' + stats.economyLabel + '）' : '无数据') + '\n- 疲劳风险：' + stats.fatigueLabel + '（' + stats.fatigueDetail + '）\n\n【综合评分】' + stats.score + '/10 分（' + stats.gradeLabel + '）\n\n' + (stats.hasLastWeekData ? '【上周对比】总里程' + stats.lastTotalDist + 'km→' + stats.totalDist + 'km，总时长' + stats.lastTotalDur + '→' + stats.totalDur + '分钟，平均心率' + stats.lastAvgHR + '→' + stats.avgHR + 'bpm' : '上周无运动数据') + '\n\n请结合超量恢复理论、渐进超负荷原则、有氧阈值理论、跑步经济性理论，生成三段内容：\n① 整体训练总结（2-3句，幽默点评本周表现）\n② 运动风险温馨提示（1-2句，提醒注意事项）\n③ 下周简易训练调整建议（2-3句，具体可执行）\n\n要求：语言幽默大白话，像朋友聊天，贴合实际数据，每段不超过50字。\n严格按JSON返回：{"summary":"...","risk":"...","advice":"..."}';
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+    const resp = await fetch(AI_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + AI_API_KEY },
+      body: JSON.stringify({
+        model: 'moonshot-v1-8k',
+        messages: [{ role: 'user', content: prompt }]
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timeout);
+    if (!resp.ok) throw new Error('API请求失败');
+    const result = await resp.json();
+    const content = result.choices[0].message.content;
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (jsonMatch) return JSON.parse(jsonMatch[0]);
+    return { summary: content, risk: '', advice: '' };
+  } catch (e) {
+    console.error('[KIMI Weekly]', e);
+    return {
+      summary: '本周跑了' + stats.totalDist + '公里，运动' + stats.totalDur + '分钟，' + stats.gradeLabel + '。',
+      risk: stats.fatigueLabel === '偏高' ? '注意休息恢复，避免连续高强度训练。' : '身体状态良好，保持运动习惯。',
+      advice: stats.score >= 8 ? '继续保持！可以适当增加训练强度。' : stats.score >= 5 ? '建议增加有氧时长至每周150分钟以上。' : '建议调整训练节奏，注意循序渐进。'
+    };
+  }
+}
+
+function renderStats() {
+  const container = document.getElementById('statsContent');
+  const records = getRecords();
+
+  // 无数据提示
   if (records.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        <p>暂无数据<br>添加运动记录后即可查看统计</p>
-      </div>
-    `;
+    container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><p>暂无数据<br>添加运动记录后即可查看周统计</p></div>';
     return;
   }
 
-  const zones = getHRZones(profile.age);
-  const sorted = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
-  const last10 = sorted.slice(-10);
+  // 计算本周和上周日期范围
+  const thisWeek = getWeekRange();
+  const lastWeekStart = new Date(thisWeek.start);
+  lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+  const lastWeek = getWeekRange(lastWeekStart);
 
-  // 计算总体健康评分
-  const avgScore = Math.round(records.reduce((s, r) => {
-    const a = r.aiAnalysis || analyzeRecord(r, profile);
-    return s + (a.score || 70);
-  }, 0) / records.length);
-  
-  // 仪表盘角度计算 (0-100 -> -90 to 90度)
-  const gaugeAngle = (avgScore / 100) * 180 - 90;
-  const gaugeColor = avgScore >= 80 ? '#2ecc71' : avgScore >= 60 ? '#f39c12' : '#e74c3c';
-  const statusText = avgScore >= 80 ? '状态优秀' : avgScore >= 60 ? '状态良好' : '需要关注';
-  const statusColor = avgScore >= 80 ? '#2ecc71' : avgScore >= 60 ? '#f39c12' : '#e74c3c';
+  // 获取本周和上周记录
+  const weekRecords = getWeekRecords(thisWeek.startStr, thisWeek.endStr);
+  const lastWeekRecords = getWeekRecords(lastWeek.startStr, lastWeek.endStr);
 
-  // Cumulative stats
-  const totalDur = records.reduce((s, r) => s + (r.duration || 0), 0);
-  const totalDist = records.reduce((s, r) => s + (r.distance || 0), 0);
-  const totalCal = records.reduce((s, r) => s + (r.calories || 0), 0);
-  const totalSteps = records.reduce((s, r) => s + (r.steps || 0), 0);
-  const avgHR = Math.round(records.reduce((s, r) => s + (r.avgHR || 0), 0) / records.length);
+  // 计算统计数据
+  const stats = calculateWeeklyStats(weekRecords, lastWeekRecords);
 
-  // 趋势数据
-  const trendData = last10.map(r => r.avgHR || 0);
-  const maxTrend = Math.max(...trendData, 1);
-  const trendPoints = trendData.map((v, i) => {
-    const x = (i / (trendData.length - 1 || 1)) * 100;
-    const y = 80 - (v / maxTrend) * 70;
-    return `${x},${y}`;
-  }).join(' ');
+  // ===== 区域1：周柱状图 =====
+  const maxDist = Math.max(...stats.dailyDistances, 0.1);
+  const chartH = 160; // SVG图表高度
+  const barW = 28; // 单根柱子宽度
+  const groupW = 50; // 每天柱子组宽度
+  const gapX = (350 - groupW * 7) / 8; // 均匀分布
 
-  // 最新日期
-  const lastRecord = sorted[sorted.length - 1];
-  const lastDate = new Date(lastRecord.date);
-  const dateStr = `${lastDate.getFullYear()}.${String(lastDate.getMonth()+1).padStart(2,'0')}.${String(lastDate.getDate()).padStart(2,'0')}`;
+  // 柱子颜色判定（按该日最高评分）
+  const barColors = stats.dayRecords.map(dayRecs => {
+    if (dayRecs.length === 0) return '#e0dcd4';
+    let maxScore = 0;
+    dayRecs.forEach(r => {
+      const a = r.dailyAssessment || calculateDailyAssessment(r);
+      if (a.score > maxScore) maxScore = a.score;
+    });
+    if (maxScore >= 80) return '#27AE60';
+    if (maxScore >= 60) return '#F39C12';
+    return '#E74C3C';
+  });
 
-  // 全部历史记录列表
-  const historyListHtml = [...records].sort((a, b) => new Date(b.date) - new Date(a.date)).map((r, idx) => {
-    const a = r.aiAnalysis || analyzeRecord(r, profile);
-    const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
-    const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀' : a.score >= 60 ? '良好' : '需改善');
-    const d = new Date(r.date);
-    const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const guidanceArr = a.guidance || [];
-    const analysisText = a.analysisText || '';
-    
-    return `
-      <div class="record-summary-card">
-        <div onclick="toggleRecordDetail('stat_${idx}')" style="cursor:pointer">
-          <div class="summary-header">
-            <div class="summary-date">${dateStr} · ${r.type}</div>
-            <div style="display:flex;align-items:center;gap:8px">
-              <div class="summary-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
-              <div class="record-delete-btn" onclick="event.stopPropagation();confirmDeleteRecord('${r.id}','stats')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              </div>
-            </div>
-          </div>
-          <div class="summary-metrics">
-            <span>${r.duration}分钟</span>
-            <span>${r.distance ? r.distance + 'km' : '-'}</span>
-            <span>${r.avgHR ? r.avgHR + 'bpm' : '-'}</span>
-            <span>${r.calories ? r.calories + '大卡' : '-'}</span>
-          </div>
-          <div class="summary-toggle">点击查看详情 ▼</div>
-        </div>
-        <div class="record-detail" id="stat_${idx}" style="display:none">
-          <div class="analysis-content">
-            <div class="analysis-title">运动分析</div>
-            <div class="analysis-text">${analysisText}</div>
-          </div>
-          ${guidanceArr.length > 0 ? `
-          <div class="guidance-content">
-            <div class="guidance-title">💡 健康指导</div>
-            <div class="guidance-text">${guidanceArr.join('<br>')}</div>
-          </div>` : ''}
-        </div>
-      </div>
-    `;
-  }).join('');
+  // 构建柱状图SVG
+  let barsSvg = '';
+  let labelsSvg = '';
+  for (let i = 0; i < 7; i++) {
+    const x = gapX + i * (groupW + gapX);
+    const dist = stats.dailyDistances[i];
+    const barH = dist > 0 ? Math.max((dist / maxDist) * (chartH - 30), 4) : 0;
+    const y = chartH - barH - 20;
 
-  container.innerHTML = `
-    <!-- 仪表盘主卡片 -->
-    <div class="gauge-container">
-      <div class="gauge-header">
-        <div class="gauge-status">
-          <div class="gauge-status-dot" style="background:${statusColor}"></div>
-          <span class="gauge-status-text">${statusText}</span>
-        </div>
-        <div class="gauge-date">更新于 ${dateStr}</div>
-      </div>
-      <div class="gauge-body">
-        <svg class="gauge-svg" viewBox="0 0 200 110">
-          <defs>
-            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#e74c3c"/>
-              <stop offset="35%" style="stop-color:#f39c12"/>
-              <stop offset="65%" style="stop-color:#f1c40f"/>
-              <stop offset="100%" style="stop-color:#2ecc71"/>
-            </linearGradient>
-          </defs>
-          <!-- 背景弧 -->
-          <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="12" stroke-linecap="round"/>
-          <!-- 彩虹弧 -->
-          <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round"/>
-          <!-- 指针 -->
-          <line x1="100" y1="100" x2="${100 + 70 * Math.cos((gaugeAngle - 90) * Math.PI / 180)}" y2="${100 + 70 * Math.sin((gaugeAngle - 90) * Math.PI / 180)}" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-          <!-- 中心点 -->
-          <circle cx="100" cy="100" r="8" fill="#fff"/>
-        </svg>
-        <div class="gauge-value">${avgScore}<span class="gauge-max">/100</span></div>
-        <div class="gauge-label">综合健康指数</div>
-      </div>
-      <div class="gauge-subtitle">基于${records.length}次运动数据智能分析</div>
-      <div class="gauge-metrics">
-        <div class="gauge-metric">
-          <div class="gauge-metric-value">${records.length}</div>
-          <div class="gauge-metric-label">运动次数</div>
-          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(records.length / 30 * 100, 100)}%;background:#2ecc71"></div></div>
-        </div>
-        <div class="gauge-metric">
-          <div class="gauge-metric-value">${totalDur}</div>
-          <div class="gauge-metric-label">总时长(分)</div>
-          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(totalDur / 600 * 100, 100)}%;background:#3498db"></div></div>
-        </div>
-        <div class="gauge-metric">
-          <div class="gauge-metric-value">${totalCal}</div>
-          <div class="gauge-metric-label">总消耗(大卡)</div>
-          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(totalCal / 5000 * 100, 100)}%;background:#e74c3c"></div></div>
-        </div>
-      </div>
-    </div>
+    if (stats.dayRecords[i].length > 0) {
+      // 多条记录并列展示
+      const recCount = stats.dayRecords[i].length;
+      const singleW = Math.min(barW / recCount, 14);
+      const totalW = singleW * recCount;
+      const startX = x + (barW - totalW) / 2;
 
-    <!-- 趋势图 -->
-    <div class="trend-card">
-      <div class="trend-header">
-        <div class="trend-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          心率趋势
-        </div>
-        <div class="trend-value">${avgHR} bpm</div>
-      </div>
-      <div class="trend-chart">
-        <svg viewBox="0 0 100 80" preserveAspectRatio="none">
-          <polyline points="${trendPoints}" fill="none" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="${100}" cy="${80 - (trendData[trendData.length-1] / maxTrend) * 70}" r="3" fill="#2ecc71"/>
-        </svg>
-      </div>
-    </div>
+      for (let j = 0; j < recCount; j++) {
+        const bx = startX + j * singleW;
+        const r = stats.dayRecords[i][j];
+        const rDist = r.distance || 0;
+        const rH = rDist > 0 ? Math.max((rDist / maxDist) * (chartH - 30), 4) : 4;
+        const by = chartH - rH - 20;
+        const rColor = (() => {
+          const a = r.dailyAssessment || calculateDailyAssessment(r);
+          return a.score >= 80 ? '#27AE60' : a.score >= 60 ? '#F39C12' : '#E74C3C';
+        })();
+        barsSvg += '<rect class="week-bar" x="' + bx + '" y="' + by + '" width="' + (singleW - 2) + '" height="' + rH + '" rx="3" fill="' + rColor + '" style="animation:bar-grow 0.6s ease ' + (i * 0.08) + 's both" data-day="' + i + '" onclick="showWeekDayPopup(' + i + ')"/>';
+      }
+    } else {
+      // 无数据占位
+      barsSvg += '<rect x="' + x + '" y="' + (chartH - 24) + '" width="' + barW + '" height="4" rx="2" fill="#e0dcd4"/>';
+    }
 
-    <!-- 总距离 -->
-    ${totalDist > 0 ? `
-    <div class="trend-card">
-      <div class="trend-header">
-        <div class="trend-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          累计里程
-        </div>
-        <div class="trend-value">${totalDist.toFixed(1)} km</div>
-      </div>
-    </div>` : ''}
+    // 里程标签
+    if (dist > 0) {
+      barsSvg += '<text x="' + (x + barW / 2) + '" y="' + (chartH - dist / maxDist * (chartH - 30) - 26) + '" text-anchor="middle" font-size="10" fill="#444" font-weight="600">' + dist.toFixed(1) + '</text>';
+    }
 
-    <!-- 历史记录 -->
-    <div class="section-title">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      全部运动记录（${records.length}条）
-    </div>
-    ${historyListHtml}
-  `;
+    // 星期标签
+    labelsSvg += '<text x="' + (x + barW / 2) + '" y="' + (chartH - 4) + '" text-anchor="middle" font-size="11" fill="#8a8a8a">' + stats.dayNames[i] + '</text>';
+  }
+
+  // Y轴参考线
+  let yAxisLines = '';
+  for (let i = 0; i <= 4; i++) {
+    const yy = 10 + i * ((chartH - 30) / 4);
+    const val = (maxDist * (4 - i) / 4).toFixed(1);
+    yAxisLines += '<line x1="0" y1="' + yy + '" x2="350" y2="' + yy + '" stroke="rgba(0,0,0,0.06)" stroke-dasharray="4,4"/>';
+    yAxisLines += '<text x="0" y="' + (yy - 2) + '" font-size="9" fill="#aaa">' + val + 'km</text>';
+  }
+
+  const chartSvg = '<svg viewBox="0 0 350 ' + chartH + '" class="week-chart-svg">' + yAxisLines + barsSvg + labelsSvg + '</svg>';
+
+  // ===== 区域2：数据概览卡片 =====
+  const overviewItems = [
+    { value: stats.totalDist.toFixed(1), unit: 'km', label: '总里程' },
+    { value: stats.totalDur, unit: '分钟', label: '总时长' },
+    { value: stats.avgPace > 0 ? stats.avgPace.toFixed(2) : '-', unit: 'min/km', label: '平均配速' },
+    { value: stats.avgHR || '-', unit: 'bpm', label: '平均心率' },
+    { value: stats.avgCadence || '-', unit: 'spm', label: '平均步频' }
+  ];
+
+  let overviewHtml = '<div class="week-overview-grid">';
+  overviewItems.forEach(item => {
+    overviewHtml += '<div class="week-overview-item"><div class="week-overview-value">' + item.value + '<span class="week-overview-unit">' + item.unit + '</span></div><div class="week-overview-label">' + item.label + '</div></div>';
+  });
+  overviewHtml += '</div>';
+
+  // ===== 区域3：环形仪表盘评分 =====
+  const scoreColor = stats.score >= 8 ? '#27AE60' : stats.score >= 5 ? '#F39C12' : '#E74C3C';
+  const scoreRadius = 54;
+  const scoreCircum = 2 * Math.PI * scoreRadius;
+  const scoreOffset = scoreCircum - (stats.score / 10) * scoreCircum;
+
+  // 评分明细
+  let scoreDetailHtml = '';
+  stats.scoreDetails.forEach(d => {
+    const gotColor = d.got === d.points ? '#27AE60' : '#E74C3C';
+    scoreDetailHtml += '<div class="week-score-detail-row"><span class="week-score-detail-item">' + d.item + '</span><span class="week-score-detail-pts" style="color:' + gotColor + '">' + d.got + '/' + d.points + '</span>' + (d.note ? '<span class="week-score-detail-note">' + d.note + '</span>' : '') + '</div>';
+  });
+
+  const gaugeHtml = '<div class="week-gauge-card" onclick="toggleScoreDetail()">' +
+    '<div class="week-gauge-wrap">' +
+    '<svg viewBox="0 0 140 140" class="week-gauge-svg">' +
+    '<circle cx="70" cy="70" r="' + scoreRadius + '" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="10"/>' +
+    '<circle cx="70" cy="70" r="' + scoreRadius + '" fill="none" stroke="' + scoreColor + '" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + scoreCircum + '" stroke-dashoffset="' + scoreOffset + '" transform="rotate(-90 70 70)" class="week-gauge-arc"/>' +
+    '</svg>' +
+    '<div class="week-gauge-center"><div class="week-gauge-score" style="color:' + scoreColor + '">' + stats.score + '<span class="week-gauge-max">/10</span></div><div class="week-gauge-label">' + stats.gradeLabel + '</div></div>' +
+    '</div>' +
+    '<div class="week-gauge-hint">点击查看评分明细</div>' +
+    '<div class="week-score-detail" id="weekScoreDetail" style="display:none">' + scoreDetailHtml + '</div>' +
+    '</div>';
+
+  // ===== 区域4：专业指标面板 =====
+  const indicators = [
+    { label: 'ACWR负荷比值', value: stats.acwrRatio !== null ? stats.acwrRatio : '-', status: stats.acwrLabel, detail: stats.acwrDetail, color: stats.acwrRatio !== null && stats.acwrRatio >= 0.8 && stats.acwrRatio <= 1.3 ? '#27AE60' : stats.acwrRatio !== null && stats.acwrRatio < 0.8 ? '#F39C12' : '#E74C3C' },
+    { label: '心肺进步率', value: stats.cardioProgress !== null ? stats.cardioProgress + '%' : '-', status: stats.cardioLabel, detail: stats.cardioDetail, color: stats.cardioProgress !== null && stats.cardioProgress > 0 ? '#27AE60' : '#F39C12' },
+    { label: '跑步经济性', value: stats.runningEconomy !== null ? stats.runningEconomy : '-', status: stats.economyLabel, detail: stats.runningEconomy !== null ? stats.economyLabel : '无数据', color: stats.economyLabel === '优秀' ? '#27AE60' : stats.economyLabel === '良好' ? '#F39C12' : '#E74C3C' },
+    { label: '疲劳风险', value: stats.fatigueLabel, status: stats.fatigueLabel, detail: stats.fatigueDetail, color: stats.fatigueLabel === '低' ? '#27AE60' : stats.fatigueLabel === '中等' ? '#F39C12' : '#E74C3C' }
+  ];
+
+  let indicatorsHtml = '<div class="week-indicators-grid">';
+  indicators.forEach(ind => {
+    indicatorsHtml += '<div class="week-indicator-item"><div class="week-indicator-label">' + ind.label + '</div><div class="week-indicator-value" style="color:' + ind.color + '">' + ind.value + '</div><div class="week-indicator-status" style="background:' + ind.color + '18;color:' + ind.color + '">' + ind.status + '</div><div class="week-indicator-detail">' + ind.detail + '</div></div>';
+  });
+  indicatorsHtml += '</div>';
+
+  // ===== 区域5：本周vs上周对比 =====
+  let compareHtml = '';
+  if (stats.hasLastWeekData) {
+    const compareItems = [
+      { label: '总里程', lastVal: stats.lastTotalDist, thisVal: stats.totalDist, unit: 'km' },
+      { label: '运动时长', lastVal: stats.lastTotalDur, thisVal: stats.totalDur, unit: '分钟' },
+      { label: '平均心率', lastVal: stats.lastAvgHR, thisVal: stats.avgHR, unit: 'bpm' },
+      { label: '平均配速', lastVal: stats.lastAvgPace, thisVal: stats.avgPace, unit: 'min/km' }
+    ];
+
+    compareItems.forEach(item => {
+      const maxVal = Math.max(item.lastVal, item.thisVal, 0.1);
+      const lastW = Math.max((item.lastVal / maxVal) * 100, 2);
+      const thisW = Math.max((item.thisVal / maxVal) * 100, 2);
+      compareHtml += '<div class="week-compare-row">' +
+        '<div class="week-compare-label">' + item.label + '</div>' +
+        '<div class="week-compare-bars">' +
+        '<div class="week-compare-bar-group"><div class="week-compare-bar week-compare-last" style="width:' + lastW + '%"></div><span class="week-compare-val">' + (item.label === '平均配速' ? item.lastVal.toFixed(2) : item.lastVal) + '</span></div>' +
+        '<div class="week-compare-bar-group"><div class="week-compare-bar week-compare-this" style="width:' + thisW + '%"></div><span class="week-compare-val">' + (item.label === '平均配速' ? item.thisVal.toFixed(2) : item.thisVal) + '</span></div>' +
+        '</div></div>';
+    });
+  } else {
+    compareHtml = '<div class="week-compare-empty">暂无上周数据</div>';
+  }
+
+  // ===== 区域7：底部数据表格 =====
+  let tableRows = '';
+  for (let i = 0; i < 7; i++) {
+    if (stats.dayRecords[i].length === 0) continue;
+    stats.dayRecords[i].forEach(r => {
+      const a = r.dailyAssessment || calculateDailyAssessment(r);
+      const scoreBg = a.score >= 80 ? 'background:rgba(39,174,96,.15);color:#1a7a45' : a.score >= 60 ? 'background:rgba(243,156,18,.15);color:#b87a08' : 'background:rgba(231,76,60,.15);color:#c53030';
+      const d = new Date(r.date);
+      const dateStr = (d.getMonth() + 1) + '/' + d.getDate();
+      tableRows += '<tr>' +
+        '<td>' + stats.dayNames[i] + ' ' + dateStr + '</td>' +
+        '<td>' + (r.type || '-') + '</td>' +
+        '<td>' + (r.distance ? r.distance + 'km' : '-') + '</td>' +
+        '<td>' + (r.duration || '-') + '分钟</td>' +
+        '<td>' + (r.pace ? r.pace.toFixed(2) : '-') + '</td>' +
+        '<td>' + (r.avgHR || '-') + '</td>' +
+        '<td>' + (r.cadence || '-') + '</td>' +
+        '<td><span style="' + scoreBg + ';padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600">' + (a.score || '-') + '</span></td>' +
+        '</tr>';
+    });
+  }
+
+  const tableHtml = '<div class="week-table-container"><table class="week-table"><thead><tr><th>日期</th><th>类型</th><th>里程</th><th>时长</th><th>配速</th><th>心率</th><th>步频</th><th>评分</th></tr></thead><tbody>' + tableRows + '</tbody></table></div>';
+
+  // ===== 组装所有区域 =====
+  container.innerHTML =
+    '<div class="week-chart-card"><div class="week-section-title">本周运动轨迹</div>' + chartSvg + '</div>' +
+    '<div class="week-overview-card">' + overviewHtml + '</div>' +
+    gaugeHtml +
+    '<div class="week-indicators-card"><div class="week-section-title">专业训练指标</div>' + indicatorsHtml + '</div>' +
+    '<div class="week-compare-card"><div class="week-section-title">本周 vs 上周</div><div class="week-compare-legend"><span class="week-compare-legend-item"><span class="week-compare-legend-dot" style="background:#3498db"></span>上周</span><span class="week-compare-legend-item"><span class="week-compare-legend-dot" style="background:#27AE60"></span>本周</span></div>' + compareHtml + '</div>' +
+    '<div class="week-summary-card" id="weekSummaryCard"><div class="week-section-title">训练结论与建议</div><div class="week-summary-loading" id="weekSummaryLoading">AI教练正在分析本周数据...</div><div id="weekSummaryContent" style="display:none"></div></div>' +
+    '<div class="week-table-card"><div class="week-section-title">每日运动明细</div>' + tableHtml + '</div>';
+
+  // ===== 异步加载AI周总结 =====
+  loadWeeklySummary(stats, thisWeek.startStr);
+}
+
+// ===================== 周总结加载与缓存 =====================
+
+/**
+ * 加载周总结（优先缓存，否则请求API）
+ */
+async function loadWeeklySummary(stats, startStr) {
+  const cacheKey = 'weekly_summary_' + startStr;
+  const cached = localStorage.getItem(cacheKey);
+  const loadingEl = document.getElementById('weekSummaryLoading');
+  const contentEl = document.getElementById('weekSummaryContent');
+
+  if (cached) {
+    try {
+      const data = JSON.parse(cached);
+      renderWeeklySummary(data, loadingEl, contentEl);
+      return;
+    } catch (e) {}
+  }
+
+  // 请求API
+  const result = await requestKIMIWeeklySummary(stats);
+  // 缓存结果
+  try {
+    localStorage.setItem(cacheKey, JSON.stringify(result));
+  } catch (e) {}
+  renderWeeklySummary(result, loadingEl, contentEl);
+}
+
+/**
+ * 渲染周总结内容
+ */
+function renderWeeklySummary(data, loadingEl, contentEl) {
+  if (!loadingEl || !contentEl) return;
+  loadingEl.style.display = 'none';
+  contentEl.style.display = 'block';
+  contentEl.innerHTML =
+    '<div class="week-summary-section"><div class="week-summary-tag">训练总结</div><div class="week-summary-text">' + (data.summary || '') + '</div></div>' +
+    '<div class="week-summary-section"><div class="week-summary-tag week-summary-tag-risk">风险提示</div><div class="week-summary-text">' + (data.risk || '') + '</div></div>' +
+    '<div class="week-summary-section"><div class="week-summary-tag week-summary-tag-advice">下周建议</div><div class="week-summary-text">' + (data.advice || '') + '</div></div>';
+}
+
+// ===================== 评分明细展开/收起 =====================
+
+function toggleScoreDetail() {
+  const el = document.getElementById('weekScoreDetail');
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// ===================== 柱子点击弹窗 =====================
+
+/**
+ * 显示某天的运动明细弹窗
+ */
+function showWeekDayPopup(dayIdx) {
+  // 移除已有弹窗
+  const old = document.getElementById('weekDayPopup');
+  if (old) old.remove();
+
+  const thisWeek = getWeekRange();
+  const weekRecords = getWeekRecords(thisWeek.startStr, thisWeek.endStr);
+  const lastWeekStart = new Date(thisWeek.start);
+  lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+  const lastWeek = getWeekRange(lastWeekStart);
+  const lastWeekRecords = getWeekRecords(lastWeek.startStr, lastWeek.endStr);
+  const stats = calculateWeeklyStats(weekRecords, lastWeekRecords);
+
+  const dayRecs = stats.dayRecords[dayIdx];
+  if (!dayRecs || dayRecs.length === 0) return;
+
+  const dayName = stats.dayNames[dayIdx];
+  let popupContent = '<div class="week-popup-header">' + dayName + ' 运动明细</div>';
+
+  dayRecs.forEach(r => {
+    const a = r.dailyAssessment || calculateDailyAssessment(r);
+    const scoreBg = a.score >= 80 ? '#27AE60' : a.score >= 60 ? '#F39C12' : '#E74C3C';
+    popupContent += '<div class="week-popup-record">' +
+      '<div class="week-popup-type">' + (r.type || '运动') + '</div>' +
+      '<div class="week-popup-metrics">' +
+      '<span>' + (r.distance ? r.distance + 'km' : '-') + '</span>' +
+      '<span>' + (r.duration || '-') + '分钟</span>' +
+      '<span>' + (r.pace ? r.pace.toFixed(2) : '-') + '配速</span>' +
+      '<span>' + (r.avgHR || '-') + 'bpm</span>' +
+      '<span>' + (r.cadence || '-') + '步频</span>' +
+      '</div>' +
+      '<div class="week-popup-score" style="background:' + scoreBg + '18;color:' + scoreBg + '">' + (a.score || '-') + '分</div>' +
+      '</div>';
+  });
+
+  popupContent += '<div class="week-popup-close" onclick="document.getElementById(\'weekDayPopup\').remove()">关闭</div>';
+
+  const popup = document.createElement('div');
+  popup.id = 'weekDayPopup';
+  popup.className = 'week-popup';
+  popup.innerHTML = popupContent;
+  popup.onclick = function(e) { if (e.target === popup) popup.remove(); };
+  document.body.appendChild(popup);
 }
 
 function renderProfile() {
