@@ -3784,17 +3784,21 @@ function renderStats() {
   const thisWeek = getWeekRange();
   const weekRecords = getWeekRecords(thisWeek.startStr, thisWeek.endStr);
 
-  // 调试：显示数据状态
-  console.log('[Stats] 总记录数:', records.length, '当前用户:', getCurrentUser());
-  console.log('[Stats] 本周范围:', thisWeek.startStr, '~', thisWeek.endStr);
-  console.log('[Stats] 本周记录数:', weekRecords.length);
-  if (records.length > 0) {
-    console.log('[Stats] 记录日期范围:', records[records.length-1].date, '~', records[0].date);
-  }
+  // 调试信息（直接显示在页面上）
+  const debugInfo = `
+    <div style="background:#fff3cd;color:#856404;padding:12px;border-radius:12px;margin-bottom:16px;font-size:12px;line-height:1.6">
+      <b>调试信息：</b><br>
+      用户: ${getCurrentUser()}<br>
+      总记录: ${records.length}条<br>
+      本周范围: ${thisWeek.startStr} ~ ${thisWeek.endStr}<br>
+      本周记录: ${weekRecords.length}条<br>
+      ${records.length > 0 ? '记录日期: ' + records.map(r => r.date).join(', ') : '无记录'}
+    </div>
+  `;
 
   // 无数据提示
   if (records.length === 0) {
-    container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><p>暂无数据<br>添加运动记录后即可查看周统计</p></div>';
+    container.innerHTML = debugInfo + '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><p>暂无数据<br>添加运动记录后即可查看周统计</p></div>';
     return;
   }
 
@@ -3987,6 +3991,7 @@ function renderStats() {
 
   // ===== 组装所有区域 =====
   container.innerHTML =
+    debugInfo +
     '<div class="week-chart-card"><div class="week-section-title">本周运动轨迹</div>' + chartSvg + '</div>' +
     '<div class="week-overview-card">' + overviewHtml + '</div>' +
     gaugeHtml +
