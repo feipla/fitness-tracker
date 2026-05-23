@@ -1164,6 +1164,50 @@ button { cursor: pointer; }
 .health-tip-card .tip-title{font-size:16px;font-weight:700;color:#1a1a1a}
 .health-tip-card .tip-text{font-size:15px;color:#333;line-height:1.9}
 
+/* ===== 单日运动效果评估卡片样式 ===== */
+.assess-base-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.assess-base-title{font-size:14px;font-weight:600;color:#5a5a5a;margin-bottom:14px}
+.assess-metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.assess-metric{text-align:center}
+.assess-metric-val{font-family:var(--font-serif);font-size:20px;font-weight:700;color:#1a1a1a}
+.assess-metric-unit{font-size:11px;font-weight:400;color:#8a8a8a;margin-left:2px}
+.assess-metric-lbl{font-size:11px;color:#8a8a8a;margin-top:4px}
+
+.assess-score-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:14px;display:flex;gap:16px;align-items:flex-start;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.assess-score-left{flex-shrink:0;text-align:center;min-width:90px}
+.assess-score-num{font-family:var(--font-serif);font-size:36px;font-weight:800;line-height:1.1}
+.assess-score-total{font-size:16px;font-weight:400;color:#8a8a8a}
+.assess-score-grade{font-size:12px;color:#5a5a5a;margin-top:6px;line-height:1.4}
+.assess-score-right{flex:1;display:flex;flex-direction:column;gap:6px}
+.assess-score-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a5a5a}
+.assess-score-item.got{color:#1a7a45}
+.assess-score-item.miss{color:#aaa}
+.assess-score-check{width:16px;text-align:center;flex-shrink:0}
+.assess-score-pts{margin-left:auto;font-size:11px;color:#aaa}
+
+.assess-indicators-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.assess-indicators-title{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:14px}
+.assess-indicators-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.assess-indicator{background:rgba(255,255,255,.6);border-radius:12px;padding:12px;text-align:center}
+.assess-ind-label{font-size:11px;color:#8a8a8a;margin-bottom:4px}
+.assess-ind-val{font-family:var(--font-serif);font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:4px}
+.assess-ind-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px}
+.assess-ind-tag.green{background:rgba(46,204,113,.15);color:#1a7a45}
+.assess-ind-tag.yellow{background:rgba(243,156,18,.15);color:#b87a08}
+.assess-ind-tag.red{background:rgba(231,76,60,.15);color:#c53030}
+.assess-ind-tag.blue{background:rgba(52,152,219,.15);color:#2980b9}
+.assess-src{font-size:10px;color:#aaa}
+
+.assess-ai-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.assess-ai-section{margin-bottom:14px}
+.assess-ai-section:last-child{margin-bottom:0}
+.assess-ai-title{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:8px}
+.assess-ai-text{font-size:14px;color:#444;line-height:1.8;padding:12px 14px;background:rgba(255,255,255,.6);border-radius:12px}
+
+.analysis-actions{display:flex;gap:12px;margin-bottom:16px}
+.btn-save{flex:1;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.btn-retry{flex:1;padding:14px;border:none;border-radius:14px;background:rgba(0,0,0,.06);color:#5a5a5a;font-size:15px;font-weight:600;cursor:pointer}
+
 /* Streak Card */
 .streak-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);display:flex;align-items:center;gap:18px}
 .streak-fire{font-size:44px;line-height:1}
@@ -1841,6 +1885,16 @@ button { cursor: pointer; }
         <option value="5">5次</option>
       </select>
     </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">最大心率（bpm）</label>
+        <input type="number" class="form-input" id="setupMaxHR" placeholder="不填则用公式 220-年龄 估算">
+      </div>
+      <div class="form-group">
+        <label class="form-label">静息心率（bpm）</label>
+        <input type="number" class="form-input" id="setupRestingHR" placeholder="不填则默认 65">
+      </div>
+    </div>
     <button class="btn-primary" onclick="saveSetupProfile()">保存并开始使用</button>
   </div>
 </div>
@@ -2338,7 +2392,7 @@ function saveSetupProfile() {
     return;
   }
   
-  const profile = { name, age, height, weight, targetWeight, condition, exerciseFreq: freq };
+  const profile = { name, age, height, weight, targetWeight, condition, exerciseFreq: freq, maxHR: parseInt(document.getElementById('setupMaxHR').value) || 0, restingHR: parseInt(document.getElementById('setupRestingHR').value) || 0 };
   saveProfile(profile);
   document.getElementById('profileSetupModal').classList.remove('show');
   showApp();
@@ -2381,6 +2435,263 @@ function getHRZones(age) {
     cardio: { min: Math.round(max * 0.7), max: Math.round(max * 0.8), label: '有氧区', color: '#F59E0B' },
     anaerobic: { min: Math.round(max * 0.8), max: Math.round(max * 0.9), label: '无氧区', color: '#EF4444' },
     maxZone: { min: Math.round(max * 0.9), max: max, label: '极限区', color: '#DC2626' }
+  };
+}
+
+// ===================== 单日运动效果评估计算模块 =====================
+
+/**
+ * 获取用户的有效最大心率
+ * 优先使用手表实测值，否则用公式 220-年龄
+ * @returns {{value: number, source: string}} value为心率值，source为来源标注
+ */
+function getEffectiveMaxHR() {
+  const profile = getProfile();
+  if (profile && profile.maxHR && profile.maxHR > 0) {
+    return { value: profile.maxHR, source: '手表实测' };
+  }
+  const age = (profile && profile.age) || 25;
+  return { value: 220 - age, source: '年龄公式估算' };
+}
+
+/**
+ * 获取用户的有效静息心率
+ * 优先使用手表实测值，否则取近3次运动记录的最低心率均值，否则默认65
+ * @returns {{value: number, source: string}}
+ */
+function getEffectiveRestingHR() {
+  const profile = getProfile();
+  if (profile && profile.restingHR && profile.restingHR > 0) {
+    return { value: profile.restingHR, source: '手表实测' };
+  }
+  // 尝试从历史记录推算
+  const records = getRecords();
+  if (records.length >= 3) {
+    const minHRs = records.slice(0, 10).map(r => r.avgHR).filter(h => h && h > 40);
+    if (minHRs.length >= 3) {
+      const avg = Math.round(minHRs.reduce((a, b) => a + b, 0) / minHRs.length * 0.85);
+      if (avg >= 45 && avg <= 100) {
+        return { value: avg, source: '历史数据推算' };
+      }
+    }
+  }
+  return { value: 65, source: '默认值' };
+}
+
+/**
+ * 单日运动效果评估 - 完整计算
+ * @param {Object} record - 单次运动记录
+ * @returns {Object} 评估结果
+ */
+function calculateDailyAssessment(record) {
+  // 容错：确保必要字段存在
+  const duration = Number(record.duration) || 0;
+  const distance = Number(record.distance) || 0;
+  const avgHR = Number(record.avgHR) || 0;
+  const maxHR = Number(record.maxHR) || 0;
+  const cadence = Number(record.cadence) || 0;
+  const pace = Number(record.pace) || 0;
+  
+  const maxHRInfo = getEffectiveMaxHR();
+  const restingHRInfo = getEffectiveRestingHR();
+  const effectiveMaxHR = maxHRInfo.value;
+  const effectiveRestingHR = restingHRInfo.value;
+  
+  // ===== 指标1：单课运动负荷 =====
+  const hrReserve = effectiveMaxHR - effectiveRestingHR;
+  const hrReserveRatio = hrReserve > 0 ? (avgHR - effectiveRestingHR) / hrReserve : 0;
+  const trainingLoad = duration * hrReserveRatio;
+  
+  // ===== 指标2：ACWR负荷比值 =====
+  const records = getRecords();
+  const runRecords = records.filter(r => r.type && r.type.includes('跑') && r.id !== record.id);
+  let acwrRatio = null;
+  let acwrLabel = '';
+  let acwrDetail = '';
+  
+  if (runRecords.length >= 4) {
+    // 计算近4次运动的平均负荷
+    const recentLoads = runRecords.slice(0, 4).map(r => {
+      const rHrReserve = effectiveMaxHR - effectiveRestingHR;
+      const rRatio = rHrReserve > 0 ? ((Number(r.avgHR) || 0) - effectiveRestingHR) / rHrReserve : 0;
+      return (Number(r.duration) || 0) * rRatio;
+    });
+    const avgLoad = recentLoads.reduce((a, b) => a + b, 0) / recentLoads.length;
+    acwrRatio = avgLoad > 0 ? trainingLoad / avgLoad : 0;
+    
+    if (acwrRatio >= 0.8 && acwrRatio <= 1.3) {
+      acwrLabel = '合理';
+      acwrDetail = '训练强度合理，身体恢复跟得上';
+    } else if (acwrRatio < 0.8) {
+      acwrLabel = '偏低';
+      acwrDetail = '当日训练强度偏低，可适当加量';
+    } else if (acwrRatio <= 1.5) {
+      acwrLabel = '偏高';
+      acwrDetail = '训练强度偏高，注意休息恢复';
+    } else {
+      acwrLabel = '超负荷';
+      acwrDetail = '超负荷训练，受伤风险较高，建议休息';
+    }
+  } else {
+    acwrDetail = '历史数据不足（需至少4次跑步记录），暂无法计算';
+  }
+  
+  // ===== 指标3：心肺进步率 =====
+  let cardioProgress = null;
+  let cardioLabel = '';
+  let cardioDetail = '';
+  
+  // 找同配速（±0.5min/km）的历史记录
+  if (pace > 0 && runRecords.length > 0) {
+    const similarPaceRecords = runRecords.filter(r => {
+      const rPace = Number(r.pace) || 0;
+      return rPace > 0 && Math.abs(rPace - pace) <= 0.5;
+    });
+    
+    if (similarPaceRecords.length > 0) {
+      const avgPastHR = similarPaceRecords.reduce((a, r) => a + (Number(r.avgHR) || 0), 0) / similarPaceRecords.length;
+      cardioProgress = ((avgPastHR - avgHR) / avgPastHR * 100);
+      
+      if (cardioProgress > 0) {
+        cardioLabel = '提升';
+        cardioDetail = `同配速下心率降低${cardioProgress.toFixed(1)}%，心肺能力提升`;
+      } else {
+        cardioLabel = '持平';
+        cardioDetail = `同配速下心率变化不大，继续保持`;
+      }
+    } else {
+      cardioDetail = '暂无同配速历史数据';
+    }
+  } else {
+    cardioDetail = pace > 0 ? '历史跑步数据不足' : '缺少配速数据';
+  }
+  
+  // ===== 指标4：跑步经济性 =====
+  let runningEconomy = null;
+  let economyLabel = '';
+  if (pace > 0 && cadence > 0) {
+    runningEconomy = pace / cadence;
+    if (runningEconomy < 0.45) economyLabel = '优秀';
+    else if (runningEconomy < 0.55) economyLabel = '良好';
+    else economyLabel = '待提升';
+  }
+  
+  // ===== 指标5：有氧有效时长 =====
+  // 有效区间：最大心率60%~79%
+  const effectiveMinHR = effectiveMaxHR * 0.6;
+  const effectiveMaxHR_zone = effectiveMaxHR * 0.79;
+  // 由于没有逐秒心率数据，用平均心率估算
+  let effectiveAerobicMin = 0;
+  let aerobicLabel = '';
+  if (avgHR >= effectiveMinHR && avgHR <= effectiveMaxHR_zone) {
+    effectiveAerobicMin = duration;
+    aerobicLabel = duration >= 30 ? '达标' : '不足';
+  } else if (avgHR > effectiveMaxHR_zone) {
+    // 高于有氧区间，估算约60%时间在有氧区间
+    effectiveAerobicMin = Math.round(duration * 0.6);
+    aerobicLabel = effectiveAerobicMin >= 30 ? '达标' : '不足';
+  } else {
+    // 低于有氧区间，估算约40%时间在有氧区间
+    effectiveAerobicMin = Math.round(duration * 0.4);
+    aerobicLabel = effectiveAerobicMin >= 30 ? '达标' : '不足';
+  }
+  
+  // ===== 指标6：疲劳风险 =====
+  const intensityCoeff = effectiveMaxHR > 0 ? avgHR / effectiveMaxHR : 0;
+  let fatigueLabel = '';
+  let fatigueDetail = '';
+  if (intensityCoeff > 0.85) {
+    fatigueLabel = '偏高';
+    fatigueDetail = '当日运动疲劳度偏高，建议充分休息';
+  } else if (intensityCoeff > 0.75) {
+    fatigueLabel = '中等';
+    fatigueDetail = '中等强度运动，注意恢复';
+  } else {
+    fatigueLabel = '低';
+    fatigueDetail = '运动强度较低，身体负担小';
+  }
+  
+  // ===== 10分制打分 =====
+  let score = 0;
+  const scoreDetails = [];
+  
+  // 1. 负荷比值合理 +3分
+  if (acwrRatio !== null) {
+    if (acwrRatio >= 0.8 && acwrRatio <= 1.3) {
+      score += 3;
+      scoreDetails.push({ item: '负荷比值合理', points: 3, got: 3 });
+    } else {
+      scoreDetails.push({ item: '负荷比值合理', points: 3, got: 0 });
+    }
+  } else {
+    scoreDetails.push({ item: '负荷比值合理', points: 3, got: 0, note: '数据不足' });
+  }
+  
+  // 2. 同配速心率优于往期 +2分
+  if (cardioProgress !== null && cardioProgress > 0) {
+    score += 2;
+    scoreDetails.push({ item: '心肺进步', points: 2, got: 2 });
+  } else {
+    scoreDetails.push({ item: '心肺进步', points: 2, got: 0, note: cardioDetail });
+  }
+  
+  // 3. 有效有氧时长≥30分钟 +2分
+  if (effectiveAerobicMin >= 30) {
+    score += 2;
+    scoreDetails.push({ item: '有氧时长达标', points: 2, got: 2 });
+  } else {
+    scoreDetails.push({ item: '有氧时长达标', points: 2, got: 0 });
+  }
+  
+  // 4. 配速步频平稳 +1分（简化：配速和步频都有数据即给分）
+  if (pace > 0 && cadence > 0) {
+    score += 1;
+    scoreDetails.push({ item: '配速步频平稳', points: 1, got: 1 });
+  } else {
+    scoreDetails.push({ item: '配速步频平稳', points: 1, got: 0 });
+  }
+  
+  // 5. 无过度疲劳 +2分
+  if (intensityCoeff <= 0.85) {
+    score += 2;
+    scoreDetails.push({ item: '疲劳控制良好', points: 2, got: 2 });
+  } else {
+    scoreDetails.push({ item: '疲劳控制良好', points: 2, got: 0 });
+  }
+  
+  // 等级划分
+  let grade = '';
+  let gradeLabel = '';
+  if (score >= 8) {
+    grade = 'excellent';
+    gradeLabel = '锻炼质量优秀，训练收益佳';
+  } else if (score >= 5) {
+    grade = 'good';
+    gradeLabel = '达标完成训练，维持体能状态';
+  } else {
+    grade = 'need_improve';
+    gradeLabel = '强度不足或负荷超标，需调整运动节奏';
+  }
+  
+  return {
+    // 基础数据
+    duration, distance, avgHR, maxHR, cadence, pace,
+    // 心率来源
+    maxHRInfo, restingHRInfo, effectiveMaxHR, effectiveRestingHR,
+    // 6项指标
+    trainingLoad: Math.round(trainingLoad * 100) / 100,
+    hrReserveRatio: Math.round(hrReserveRatio * 10000) / 10000,
+    acwrRatio: acwrRatio !== null ? Math.round(acwrRatio * 100) / 100 : null,
+    acwrLabel, acwrDetail,
+    cardioProgress: cardioProgress !== null ? Math.round(cardioProgress * 10) / 10 : null,
+    cardioLabel, cardioDetail,
+    runningEconomy: runningEconomy !== null ? Math.round(runningEconomy * 1000) / 1000 : null,
+    economyLabel,
+    effectiveAerobicMin, aerobicLabel,
+    intensityCoeff: Math.round(intensityCoeff * 10000) / 10000,
+    fatigueLabel, fatigueDetail,
+    // 打分
+    score, grade, gradeLabel, scoreDetails,
   };
 }
 
@@ -2630,7 +2941,9 @@ function clearAnalysis() {
 function saveCurrentAnalysis() {
   if (!currentAnalysisResult) return;
   const data = currentAnalysisResult.data;
-  const analysis = currentAnalysisResult.analysis;
+  const assessment = currentAnalysisResult.assessment;
+  const aiComment = currentAnalysisResult.aiComment;
+  
   const record = {
     id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
     date: data.date,
@@ -2643,22 +2956,19 @@ function saveCurrentAnalysis() {
     cadence: data.cadence,
     steps: data.steps,
     pace: data.pace,
-    aiAnalysis: analysis,
+    // 新的评估数据
+    dailyAssessment: assessment,
+    aiComment: aiComment,  // {summary, risk, advice}
     createdAt: new Date().toISOString()
   };
   
-  // 获取现有记录并添加新记录
   const records = getRecords();
   records.push(record);
-  
-  // 按日期降序排序（最新的在前）
-  records.sort((a, b) => new Date(b.date) - new Date(a.date));
-  
+  records.sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
   saveRecords(records);
   updateStreak();
   currentAnalysisResult = null;
   
-  // 刷新所有区域
   renderLatestAnalysis();
   renderUploadSection();
   renderUserCard();
@@ -2674,68 +2984,45 @@ function renderWeeklySection() {
 
 function renderLatestAnalysis() {
   const container = document.getElementById('latestAnalysisSection');
+  if (!container) return;
   
-  // 优先显示临时分析结果（刚上传未保存）
+  // 优先显示临时结果
   if (currentAnalysisResult) {
-    const a = currentAnalysisResult.analysis;
     const data = currentAnalysisResult.data;
-    const colorClass = a.colorLevel || 'green';
-    const colorLabel = a.colorLabel || '';
-    const statusIcon = a.statusIcon || '✓';
-    const guidanceArr = a.guidance || [];
+    const a = currentAnalysisResult.assessment;
+    const comment = currentAnalysisResult.aiComment || {};
     
     container.innerHTML = `
       <div class="section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        AI分析结果
+        运动效果评估
       </div>
-      <div class="analysis-result-card ${colorClass}">
-        <div class="analysis-header">
-          <div class="analysis-date">${data.date} · ${data.type}</div>
-          <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
-        </div>
-        <div class="analysis-metrics">
-          <div class="metric-item"><span class="metric-val">${data.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
-          <div class="metric-item"><span class="metric-val">${data.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
-          <div class="metric-item"><span class="metric-val">${data.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
-          <div class="metric-item"><span class="metric-val">${data.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
-        </div>
-        <div class="analysis-content">
-          <div class="analysis-title">${statusIcon} 运动分析</div>
-          <div class="analysis-text">${a.analysisText || ''}</div>
-        </div>
-        ${guidanceArr.length > 0 ? `
-        <div class="guidance-content">
-          <div class="guidance-title">💡 专属健康指导</div>
-          <div class="guidance-text">${guidanceArr.join('<br>')}</div>
-        </div>` : ''}
-        <div class="analysis-actions">
-          <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
-          <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
-        </div>
+      ${renderAssessmentCard(a, data, comment)}
+      <div class="analysis-actions">
+        <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
+        <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
       </div>
     `;
     return;
   }
   
-  // 没有临时结果，显示已保存的最新记录
+  // 显示最新已保存记录
   const records = getRecords();
   const savedRecords = [...records].sort((a, b) => {
     const dateDiff = new Date(b.date) - new Date(a.date);
     if (dateDiff !== 0) return dateDiff;
-    if (b.created_at && a.created_at) return new Date(b.created_at) - new Date(a.created_at);
+    if (b.createdAt && a.createdAt) return new Date(b.createdAt) - new Date(a.createdAt);
     if (b.id && a.id) return (b.id > a.id ? 1 : -1);
     return 0;
   });
   
   if (savedRecords.length === 0) {
-    // 没有记录时，显示上传引导
     container.innerHTML = `
       <div class="section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        最新轨迹
+        运动效果评估
       </div>
-      <div class="empty-state" style="background:var(--card);border-radius:var(--radius);padding:30px 20px;margin-bottom:16px">
+      <div class="empty-state" style="background:#f5f0e8;border-radius:20px;padding:30px 20px;margin-bottom:16px">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:48px;height:48px;margin-bottom:12px;opacity:.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         <p style="font-size:14px">还没有运动轨迹<br>点击上方"上传运动截图"开始记录</p>
       </div>
@@ -2744,38 +3031,123 @@ function renderLatestAnalysis() {
   }
   
   const latest = savedRecords[0];
-  const profile = getProfile();
-  const a = latest.aiAnalysis || analyzeRecord(latest, profile);
-  const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
-  const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀 🟢' : a.score >= 60 ? '良好 🟡' : '需改善 🔴');
-  const statusIcon = a.statusIcon || (a.score >= 80 ? '✓' : a.score >= 60 ? '⚠' : '✗');
-  const analysisText = a.analysisText || '';
-  const guidanceArr = a.guidance || [];
+  const a = latest.dailyAssessment || calculateDailyAssessment(latest);
+  const comment = latest.aiComment || {};
   
   container.innerHTML = `
     <div class="section-title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      最新轨迹
+      最新运动评估
     </div>
-    <div class="analysis-result-card ${colorClass}">
-      <div class="analysis-header">
-        <div class="analysis-date">${latest.date} · ${latest.type}</div>
-        <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+    ${renderAssessmentCard(a, latest, comment)}
+  `;
+}
+
+/**
+ * 渲染评估卡片HTML
+ */
+function renderAssessmentCard(a, data, comment) {
+  const gradeColor = a.score >= 8 ? '#2ecc71' : a.score >= 5 ? '#f39c12' : '#e74c3c';
+  const gradeEmoji = a.score >= 8 ? '🏆' : a.score >= 5 ? '👍' : '💪';
+  
+  return `
+    <!-- 基础数据卡片 -->
+    <div class="assess-base-card">
+      <div class="assess-base-title">${data.date || ''} · ${data.type || '跑步'}</div>
+      <div class="assess-metrics-grid">
+        <div class="assess-metric">
+          <div class="assess-metric-val">${data.distance || '-'}<span class="assess-metric-unit">km</span></div>
+          <div class="assess-metric-lbl">里程</div>
+        </div>
+        <div class="assess-metric">
+          <div class="assess-metric-val">${data.duration || '-'}<span class="assess-metric-unit">分钟</span></div>
+          <div class="assess-metric-lbl">时长</div>
+        </div>
+        <div class="assess-metric">
+          <div class="assess-metric-val">${data.pace || '-'}<span class="assess-metric-unit">min/km</span></div>
+          <div class="assess-metric-lbl">配速</div>
+        </div>
+        <div class="assess-metric">
+          <div class="assess-metric-val">${data.avgHR || '-'}<span class="assess-metric-unit">bpm</span></div>
+          <div class="assess-metric-lbl">心率</div>
+        </div>
+        <div class="assess-metric">
+          <div class="assess-metric-val">${data.cadence || '-'}<span class="assess-metric-unit">步/分</span></div>
+          <div class="assess-metric-lbl">步频</div>
+        </div>
       </div>
-      <div class="analysis-metrics">
-        <div class="metric-item"><span class="metric-val">${latest.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
-        <div class="metric-item"><span class="metric-val">${latest.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
-        <div class="metric-item"><span class="metric-val">${latest.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
-        <div class="metric-item"><span class="metric-val">${latest.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
+    </div>
+    
+    <!-- 综合得分 -->
+    <div class="assess-score-card" style="border-left:4px solid ${gradeColor}">
+      <div class="assess-score-left">
+        <div class="assess-score-num" style="color:${gradeColor}">${gradeEmoji} ${a.score}<span class="assess-score-total">/10</span></div>
+        <div class="assess-score-grade">${a.gradeLabel}</div>
       </div>
-      <div class="analysis-content">
-        <div class="analysis-title">${statusIcon} 运动分析</div>
-        <div class="analysis-text">${analysisText}</div>
+      <div class="assess-score-right">
+        ${a.scoreDetails.map(d => `
+          <div class="assess-score-item ${d.got === d.points ? 'got' : 'miss'}">
+            <span class="assess-score-check">${d.got === d.points ? '✓' : '○'}</span>
+            <span>${d.item}</span>
+            <span class="assess-score-pts">+${d.got}/${d.points}</span>
+          </div>
+        `).join('')}
       </div>
-      ${guidanceArr.length > 0 ? `
-      <div class="guidance-content">
-        <div class="guidance-title">💡 专属健康指导</div>
-        <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+    </div>
+    
+    <!-- 计算指标 -->
+    <div class="assess-indicators-card">
+      <div class="assess-indicators-title">📊 训练指标</div>
+      <div class="assess-indicators-grid">
+        <div class="assess-indicator">
+          <div class="assess-ind-label">负荷比值 <span class="assess-src">${a.acwrRatio !== null ? '' : '(需4次数据)'}</span></div>
+          <div class="assess-ind-val">${a.acwrRatio !== null ? a.acwrRatio : '-'}</div>
+          <div class="assess-ind-tag ${a.acwrLabel === '合理' ? 'green' : a.acwrLabel === '偏低' ? 'blue' : a.acwrLabel === '偏高' ? 'yellow' : 'red'}">${a.acwrLabel || '待计算'}</div>
+        </div>
+        <div class="assess-indicator">
+          <div class="assess-ind-label">心肺进步率</div>
+          <div class="assess-ind-val">${a.cardioProgress !== null ? a.cardioProgress + '%' : '-'}</div>
+          <div class="assess-ind-tag ${a.cardioLabel === '提升' ? 'green' : 'blue'}">${a.cardioLabel || '待计算'}</div>
+        </div>
+        <div class="assess-indicator">
+          <div class="assess-ind-label">跑步经济性</div>
+          <div class="assess-ind-val">${a.runningEconomy !== null ? a.runningEconomy : '-'}</div>
+          <div class="assess-ind-tag ${a.economyLabel === '优秀' ? 'green' : a.economyLabel === '良好' ? 'yellow' : 'blue'}">${a.economyLabel || '-'}</div>
+        </div>
+        <div class="assess-indicator">
+          <div class="assess-ind-label">有效有氧</div>
+          <div class="assess-ind-val">${a.effectiveAerobicMin}分钟</div>
+          <div class="assess-ind-tag ${a.aerobicLabel === '达标' ? 'green' : 'yellow'}">${a.aerobicLabel}</div>
+        </div>
+        <div class="assess-indicator">
+          <div class="assess-ind-label">疲劳风险 <span class="assess-src">系数${a.intensityCoeff}</span></div>
+          <div class="assess-ind-val">${a.fatigueLabel}</div>
+          <div class="assess-ind-tag ${a.fatigueLabel === '低' ? 'green' : a.fatigueLabel === '中等' ? 'yellow' : 'red'}">${a.fatigueDetail.substring(0, 8)}</div>
+        </div>
+        <div class="assess-indicator">
+          <div class="assess-ind-label">心率来源</div>
+          <div class="assess-ind-val" style="font-size:12px">${a.maxHRInfo.source}</div>
+          <div class="assess-ind-tag blue">${a.effectiveMaxHR}bpm</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- AI评语 -->
+    <div class="assess-ai-card">
+      ${comment.summary ? `
+      <div class="assess-ai-section">
+        <div class="assess-ai-title">📝 运动效果总结</div>
+        <div class="assess-ai-text">${comment.summary}</div>
+      </div>` : ''}
+      ${comment.risk ? `
+      <div class="assess-ai-section">
+        <div class="assess-ai-title">⚠️ 身体状态提醒</div>
+        <div class="assess-ai-text">${comment.risk}</div>
+      </div>` : ''}
+      ${comment.advice ? `
+      <div class="assess-ai-section">
+        <div class="assess-ai-title">🎯 下次训练建议</div>
+        <div class="assess-ai-text">${comment.advice}</div>
       </div>` : ''}
     </div>
   `;
@@ -2809,13 +3181,14 @@ function renderRecords() {
   }
   
   container.innerHTML = recentRecords.map((r, idx) => {
-    const a = r.aiAnalysis || analyzeRecord(r, profile);
-    const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
-    const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀' : a.score >= 60 ? '良好' : '需改善');
+    const a = r.dailyAssessment || null;
+    const scoreDisplay = a ? `${a.score}/10` : (r.aiAnalysis ? `${r.aiAnalysis.score}分` : '-');
+    const colorClass = a ? (a.score >= 8 ? 'green' : a.score >= 5 ? 'yellow' : 'red') : (r.aiAnalysis ? r.aiAnalysis.colorLevel : 'yellow');
+    const colorLabel = a ? (a.score >= 8 ? '优秀' : a.score >= 5 ? '达标' : '待提升') : (r.aiAnalysis ? r.aiAnalysis.colorLabel : '');
     const d = new Date(r.date);
     const dateStr = `${d.getMonth() + 1}月${d.getDate()}日`;
-    const guidanceArr = a.guidance || [];
-    const analysisText = a.analysisText || '';
+    const guidanceArr = a ? [] : ((r.aiAnalysis && r.aiAnalysis.guidance) || []);
+    const analysisText = a ? '' : ((r.aiAnalysis && r.aiAnalysis.analysisText) || '');
     
     return `
       <div class="record-summary-card">
@@ -2823,7 +3196,7 @@ function renderRecords() {
           <div class="summary-header">
             <div class="summary-date">${dateStr} · ${r.type}</div>
             <div style="display:flex;align-items:center;gap:8px">
-              <div class="summary-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+              <div class="summary-badge ${colorClass}">${scoreDisplay} · ${colorLabel}</div>
               <div class="record-delete-btn" onclick="event.stopPropagation();confirmDeleteRecord('${r.id}','home')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
               </div>
@@ -3139,6 +3512,8 @@ function renderProfile() {
       <div class="profile-row"><span class="label">BMI</span><span class="value">${bmi} ${bmi < 18.5 ? '偏瘦' : bmi < 24 ? '正常' : bmi < 28 ? '偏胖' : '肥胖'}</span></div>
       <div class="profile-row"><span class="label">目标体重</span><span class="value editable" onclick="editField('targetWeight',${p.targetWeight})">${p.targetWeight}kg</span></div>
       <div class="profile-row"><span class="label">每周运动次数</span><span class="value editable" onclick="editField('exerciseFreq',${p.exerciseFreq})">${p.exerciseFreq}次</span></div>
+      <div class="profile-row"><span class="label">最大心率</span><span class="value editable" onclick="editField('maxHR',${p.maxHR || 0})">${p.maxHR || '未设置(公式估算)'}bpm</span></div>
+      <div class="profile-row"><span class="label">静息心率</span><span class="value editable" onclick="editField('restingHR',${p.restingHR || 0})">${p.restingHR || '未设置(默认65)'}bpm</span></div>
       <div class="profile-row"><span class="label">健康状况</span><span class="value editable" onclick="editField('condition','${p.condition}')">${p.condition}</span></div>
     </div>
 
@@ -3924,43 +4299,28 @@ async function recognizeImage(imageData) {
       }
     }, 10000);
     
-    const prompt = `你是一位专业的运动健康分析师。请分析这张运动健康App截图，提取运动数据并给出千人千面的个性化分析。
+    const prompt = `你是一位专业的运动数据识别助手。请分析这张运动健康App截图，精确提取运动原始数据。
 
-如果是运动记录截图，请提取数据并返回以下JSON格式：
+请返回以下JSON格式（只提取数据，不做分析评价）：
 {
   "valid": true,
-  "date": "YYYY-MM-DD",
-  "type": "运动类型",
-  "duration": 分钟数,
-  "distance": 公里数,
-  "avgHR": 平均心率,
-  "maxHR": 最大心率,
-  "calories": 消耗大卡,
-  "cadence": 步频,
-  "steps": 步数,
-  "pace": 配速,
-  "analysis": {
-    "score": 0-100的评分,
-    "colorLevel": "green/yellow/red",
-    "colorLabel": "优秀/良好/需改善",
-    "statusIcon": "✓/⚠/✗",
-    "analysisText": "详细的差异化分析文字，根据具体数据给出个性化评价",
-    "guidance": ["针对性的健康建议1", "建议2", "建议3"]
-  }
+  "date": "YYYY-MM-DD格式的运动日期",
+  "type": "运动类型（如：户外跑步、室内跑步、步行、骑行等）",
+  "duration": 运动时长（分钟，数字）,
+  "distance": 运动距离（公里，数字）,
+  "avgHR": 平均心率（bpm，数字）,
+  "maxHR": 最大心率（bpm，数字）,
+  "calories": 消耗卡路里（大卡，数字）,
+  "cadence": 平均步频（步/分钟，数字）,
+  "steps": 总步数（数字）,
+  "pace": 平均配速（分钟/公里，数字，如5.5表示5分30秒每公里）
 }
 
-分析要求（千人千面）：
-1. 根据用户的具体数据（心率、时长、步频等）给出个性化评价，不要套话
-2. 分析要具体：比如心率95bpm对于45岁用户意味着什么，是否达到减脂区间
-3. 步频160和140的评价要完全不同
-4. 时长30分钟和60分钟的评价要体现差异
-5. 结合运动类型（跑步/步行/骑行）给出针对性建议
-6. 如果检测到异常数据（如心率过高、步频过低），要特别提醒
-
-如果不是运动截图，返回：
-{"valid": false, "reason": "不是运动健康截图"}
-
-只返回JSON，不要有其他文字。`;
+注意：
+1. 如果截图不是运动记录，返回 {"valid": false, "reason": "不是运动记录截图"}
+2. 配速格式统一为分钟数，如 5分30秒/公里 = 5.5
+3. 无法识别的字段填0
+4. 只返回JSON，不要任何其他文字`;
 
     const body = {
       model: AI_MODEL,
@@ -4025,36 +4385,20 @@ async function recognizeImage(imageData) {
       }
       
       if (data.date || data.duration) {
-        // 自动保存分析结果
-        const analysis = data.analysis || generateDefaultAnalysis(data);
-        const record = {
-          id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-          date: data.date,
-          type: data.type,
-          duration: data.duration,
-          distance: data.distance,
-          avgHR: data.avgHR,
-          maxHR: data.maxHR,
-          calories: data.calories,
-          cadence: data.cadence,
-          steps: data.steps,
-          pace: data.pace,
-          aiAnalysis: analysis,
-          createdAt: new Date().toISOString()
-        };
-        const records = getRecords();
-        records.push(record);
-        records.sort((a, b) => new Date(b.date) - new Date(a.date));
-        saveRecords(records);
-        updateStreak();
-        currentAnalysisResult = null;
-        // 刷新所有区域
+        // 计算运动效果评估指标
+        if (progressText) progressText.textContent = '正在计算运动评估指标...';
+        const assessment = calculateDailyAssessment(data);
+        
+        // 调用KIMI生成AI评语
+        if (progressText) progressText.textContent = '正在生成AI评语...';
+        const aiComment = await requestKIMIAssessment(assessment, data);
+        
+        // 存入临时结果，等待用户保存
+        currentAnalysisResult = { data, assessment, aiComment };
+        
+        // 刷新显示
         renderLatestAnalysis();
-        renderRecords();
-        renderUserCard();
-        renderHealthTip();
-        checkStreakBroken();
-        showToast('✅ AI分析完成，轨迹已保存');
+        showToast('✅ 评估完成，请查看结果');
       } else {
         showToast('未能识别运动数据，请重试');
       }
@@ -4072,6 +4416,97 @@ async function recognizeImage(imageData) {
     } else {
       showToast('AI分析出错: ' + err.message);
     }
+  }
+}
+
+/**
+ * 调用KIMI API生成运动评语文案
+ * @param {Object} assessment - calculateDailyAssessment的返回结果
+ * @param {Object} record - 原始运动记录
+ * @returns {Object} {summary, risk, advice} 三段评语
+ */
+async function requestKIMIAssessment(assessment, record) {
+  const AI_API_KEY = localStorage.getItem('kimi_api_key') || 'sk-lNdlIBGQji7HF7eyftL4VnilTeLWSgnxRRkQUAjnhDWkFMdR';
+  const AI_API_URL = 'https://api.moonshot.cn/v1/chat/completions';
+  
+  const prompt = `你是一位幽默风趣的运动健康教练，擅长用大白话讲解运动科学。
+
+以下是一位跑者今天的运动数据和评估指标：
+
+【基础数据】
+- 运动类型：${record.type || '跑步'}
+- 运动时长：${assessment.duration}分钟
+- 运动距离：${assessment.distance}公里
+- 平均配速：${assessment.pace ? assessment.pace + '分钟/公里' : '无数据'}
+- 平均心率：${assessment.avgHR}bpm
+- 最大心率：${assessment.maxHR || '无数据'}bpm
+- 平均步频：${assessment.cadence || '无数据'}步/分
+
+【评估指标】
+- 单次运动负荷：${assessment.trainingLoad}
+- 负荷比值(ACWR)：${assessment.acwrRatio !== null ? assessment.acwrRatio + '（' + assessment.acwrLabel + '）' : '数据不足'}
+- 心肺进步率：${assessment.cardioProgress !== null ? assessment.cardioProgress + '%（' + assessment.cardioLabel + '）' : assessment.cardioDetail}
+- 跑步经济性：${assessment.runningEconomy !== null ? assessment.runningEconomy + '（' + assessment.economyLabel + '）' : '无数据'}
+- 有效有氧时长：${assessment.effectiveAerobicMin}分钟（${assessment.aerobicLabel}）
+- 疲劳强度系数：${assessment.intensityCoeff}（${assessment.fatigueLabel}）
+- 最大心率来源：${assessment.maxHRInfo.source}（${assessment.effectiveMaxHR}bpm）
+- 静息心率来源：${assessment.restingHRInfo.source}（${assessment.effectiveRestingHR}bpm）
+
+【综合得分】${assessment.score}/10 分（${assessment.gradeLabel}）
+
+请结合运动生理学（超量恢复、有氧阈值、跑步经济性、渐进超负荷理论），生成以下三段内容：
+
+① **运动效果总结**（2-3句话，幽默点评本次运动表现）
+② **身体状态与风险提醒**（1-2句话，提醒需要注意的健康风险）
+③ **下次训练建议**（2-3句话，给出具体可执行的训练调整方案）
+
+要求：
+- 语言幽默，大白话，像朋友聊天一样
+- 内容贴合实际数据，不要泛泛而谈
+- 篇幅简洁精炼，每段不超过50字
+- 用中文回答
+- 严格按以下JSON格式返回，不要任何其他文字：
+{"summary":"运动效果总结","risk":"风险提醒","advice":"训练建议"}`;
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+    
+    const resp = await fetch(AI_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + AI_API_KEY
+      },
+      body: JSON.stringify({
+        model: 'moonshot-v1-8k',
+        messages: [{ role: 'user', content: prompt }]
+      }),
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeout);
+    
+    if (!resp.ok) throw new Error('API请求失败: ' + resp.status);
+    
+    const result = await resp.json();
+    const content = result.choices[0].message.content;
+    
+    // 提取JSON
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0]);
+    }
+    
+    return { summary: content, risk: '', advice: '' };
+  } catch (e) {
+    console.error('[KIMI Assessment]', e);
+    // 网络故障时返回默认文案
+    return {
+      summary: `本次${record.type || '跑步'}${assessment.duration}分钟，消耗${record.calories || 0}大卡，运动负荷${assessment.trainingLoad}。`,
+      risk: assessment.fatigueLabel === '偏高' ? '注意休息恢复，避免连续高强度训练。' : '身体状态良好，保持运动习惯。',
+      advice: assessment.score >= 8 ? '表现优秀！保持当前训练节奏，注意循序渐进。' : assessment.score >= 5 ? '达标完成，可以适当增加训练强度或时长。' : '建议调整运动节奏，注意热身和拉伸。'
+    };
   }
 }
 
