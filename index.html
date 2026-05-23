@@ -3788,23 +3788,9 @@ function renderStats() {
     return;
   }
 
-  // 按日期排序
-  const sorted = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
-  
-  // 智能确定"本周"范围：基于记录中最晚的日期
-  const latestDate = new Date(sorted[sorted.length - 1].date);
-  const thisWeek = getWeekRange(latestDate);
-  const lastWeekStart = new Date(thisWeek.start);
-  lastWeekStart.setDate(lastWeekStart.getDate() - 7);
-  const lastWeek = getWeekRange(lastWeekStart);
-
-  // 获取本周和上周记录（基于记录日期的"本周"）
-  const weekRecords = getWeekRecords(thisWeek.startStr, thisWeek.endStr);
-  const lastWeekRecords = getWeekRecords(lastWeek.startStr, lastWeek.endStr);
-
-  // 如果本周无记录，则使用所有记录
-  const useRecords = weekRecords.length > 0 ? weekRecords : records;
-  const useLastWeekRecords = lastWeekRecords;
+  // 直接使用所有记录，不做日期过滤
+  const useRecords = records;
+  const useLastWeekRecords = []; // 无上周数据
 
   // 计算统计数据
   const stats = calculateWeeklyStats(useRecords, useLastWeekRecords);
@@ -3996,7 +3982,7 @@ function renderStats() {
     '<div class="week-table-card"><div class="week-section-title">每日运动明细</div>' + tableHtml + '</div>';
 
   // ===== 异步加载AI周总结 =====
-  loadWeeklySummary(stats, thisWeek.startStr);
+  loadWeeklySummary(stats, 'all');
 }
 
 // ===================== 周总结加载与缓存 =====================
