@@ -3475,10 +3475,12 @@ function getWeekRange(refDate) {
   const end = new Date(start);
   end.setDate(start.getDate() + 6);
   end.setHours(23, 59, 59, 999);
+  // 使用本地日期格式化，避免时区问题
+  const pad = n => String(n).padStart(2, '0');
   return {
     start, end,
-    startStr: start.toISOString().split('T')[0],
-    endStr: end.toISOString().split('T')[0]
+    startStr: `${start.getFullYear()}-${pad(start.getMonth()+1)}-${pad(start.getDate())}`,
+    endStr: `${end.getFullYear()}-${pad(end.getMonth()+1)}-${pad(end.getDate())}`
   };
 }
 
@@ -3814,8 +3816,8 @@ function renderStats() {
       const a = r.dailyAssessment || calculateDailyAssessment(r);
       if (a.score > maxScore) maxScore = a.score;
     });
-    if (maxScore >= 80) return '#27AE60';
-    if (maxScore >= 60) return '#F39C12';
+    if (maxScore >= 8) return '#27AE60';
+    if (maxScore >= 5) return '#F39C12';
     return '#E74C3C';
   });
 
