@@ -1,0 +1,22 @@
+{
+  "name": "循迹 - 循身体之迹，见前行之路",
+  "short_name": "循迹",
+  "description": "探索你的身体地图，让 AI 翻译你的健康密码",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f8faf6",
+  "theme_color": "#1B4332",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0idXJsKCNnKSIgcng9IjMyIi8+PHBhdGggZD0iTTQ4IDk2UTcyIDU2IDk2IDk2UTEyMCAxMzYgMTQ0IDk2IiBmaWxsPSJub25lIiBzdHJva2U9IiNERDVjODgiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDgiIGN5PSI5NiIgcj0iOCIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9IjgiIGZpbGw9IiNFOEE4MzgiLz48Y2lyY2xlIGN4PSIxNDQiIGN5PSI5NiIgcj0iOCIgZmlsbD0iI0U4QTgzOCIvPjwvc3ZnPg==",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0idXJsKCNnKSIgcng9IjgwIi8+PHBhdGggZD0iTTEyOCAyNTZRMjA4IDE3NiAyNTYgMjU2UTMwNCAzMzYgMzg0IDI1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjREQ1Qzg4IiBzdHJva2Utd2lkdGg9IjIwIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMjgiIGN5PSIyNTYiIHI9IjIwIiBmaWxsPSIjRThBODM4Ii8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIyMCIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9IjM4NCIgY3k9IjI1NiIgcj0iMjAiIGZpbGw9IiNFOEE4MzgiLz48L3N2Zz4=",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
