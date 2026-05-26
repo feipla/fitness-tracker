@@ -266,6 +266,283 @@ class AppState {
             difference: adjustment
         };
     }
+
+    // ==================== 数据持久化增强 ====================
+    loadFromStorage(key) {
+        try {
+            const data = localStorage.getItem(key);
+            if (!data) return null;
+            
+            const parsed = JSON.parse(data);
+            
+            // 数据完整性检查
+            if (key === this.STORAGE_KEYS.WORKOUT_RECORDS) {
+                if (!Array.isArray(parsed)) {
+                    console.warn('Workout records corrupted, resetting');
+                    return [];
+                }
+            }
+            
+            return parsed;
+        } catch (e) {
+            console.error('Error loading from storage:', e);
+            return null;
+        }
+    }
+
+    saveToStorage(key, data) {
+        try {
+            const serialized = JSON.stringify(data);
+            
+            // 检查存储容量
+            const totalStorage = this.calculateStorageSize();
+            const remaining = 5 * 1024 * 1024 - totalStorage; // 5MB 配额
+            if (serialized.length > remaining) {
+                console.warn('Storage limit approaching');
+            }
+            
+            localStorage.setItem(key, serialized);
+        } catch (e) {
+            console.error('Error saving to storage:', e);
+            if (e.name === 'QuotaExceededError') {
+                alert('存储空间已满，请清理数据后重试');
+            }
+        }
+    }
+
+    calculateStorageSize() {
+        let total = 0;
+        for (let key in localStorage) {
+            if (localStorage.hasOwnProperty(key)) {
+                total += localStorage[key].length;
+            }
+        }
+        return total;
+    }
+
+    // ==================== 数据完整性检查 ====================
+    checkDataIntegrity() {
+        const issues = [];
+        const fixes = [];
+        
+        // 检查运动记录
+        const records = this.state.workoutRecords;
+        if (!Array.isArray(records)) {
+            issues.push('运动记录格式错误');
+            fixes.push('重置运动记录');
+        } else {
+            records.forEach((record, index) => {
+                if (!record.id) {
+                    issues.push(`记录 ${index} 缺少ID`);
+                }
+                if (!record.date) {
+                    issues.push(`记录 ${index} 缺少日期`);
+                }
+            });
+        }
+        
+        // 检查用户资料
+        const profile = this.state.userProfile;
+        if (!profile) {
+            issues.push('用户资料损坏');
+            fixes.push('重置用户资料');
+        }
+        
+        return {
+            isValid: issues.length === 0,
+            issues,
+            fixes
+        };
+    }
+
+    repairData() {
+        const integrity = this.checkDataIntegrity();
+        let repaired = false;
+        
+        if (!Array.isArray(this.state.workoutRecords)) {
+            this.state.workoutRecords = [];
+            this.saveToStorage(this.STORAGE_KEYS.WORKOUT_RECORDS, []);
+            repaired = true;
+        }
+        
+        if (!this.state.userProfile) {
+            this.state.userProfile = {
+                actualAge: 30,
+                vision: null,
+                firstVisitDate: new Date().toISOString(),
+                hasCompletedOnboarding: false
+            };
+            this.saveToStorage(this.STORAGE_KEYS.USER_PROFILE, this.state.userProfile);
+            repaired = true;
+        }
+        
+        // 为缺少ID的记录生成ID
+        this.state.workoutRecords.forEach((record, index) => {
+            if (!record.id) {
+                record.id = Date.now() + '-' + index;
+                repaired = true;
+            }
+        });
+        
+        if (repaired) {
+            this.saveToStorage(this.STORAGE_KEYS.WORKOUT_RECORDS, this.state.workoutRecords);
+        }
+        
+        return repaired;
+    }
+
+    // ==================== 数据导出 ====================
+    exportToJSON() {
+        const exportData = {
+            version: '1.0',
+            exportDate: new Date().toISOString(),
+            userProfile: this.state.userProfile,
+            workoutRecords: this.state.workoutRecords,
+            treeState: this.state.treeState
+        };
+        
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `xunji-data-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    exportToCSV() {
+        const headers = ['ID', '日期', '类型', '时长(分钟)', '距离(公里)', '平均心率', '备注', '数据来源'];
+        const typeNames = {
+            running: '跑步',
+            cycling: '骑行',
+            swimming: '游泳',
+            walking: '步行',
+            other: '运动'
+        };
+        
+        const rows = this.state.workoutRecords.map(record => [
+            record.id,
+            record.date,
+            typeNames[record.type] || record.type,
+            record.duration || 0,
+            record.distance || 0,
+            record.avgHeartRate || '',
+            (record.notes || '').replace(/"/g, '""'),
+            record.source || 'manual'
+        ]);
+        
+        const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+        ].join('\n');
+        
+        const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `xunji-records-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // ==================== 数据导入 ====================
+    importFromJSON(jsonData) {
+        try {
+            if (jsonData.workoutRecords && Array.isArray(jsonData.workoutRecords)) {
+                this.state.workoutRecords = jsonData.workoutRecords;
+                this.saveToStorage(this.STORAGE_KEYS.WORKOUT_RECORDS, this.state.workoutRecords);
+            }
+            
+            if (jsonData.userProfile) {
+                this.state.userProfile = jsonData.userProfile;
+                this.saveToStorage(this.STORAGE_KEYS.USER_PROFILE, this.state.userProfile);
+            }
+            
+            if (jsonData.treeState) {
+                this.state.treeState = jsonData.treeState;
+                this.saveToStorage(this.STORAGE_KEYS.TREE_STATE, this.state.treeState);
+            }
+            
+            this.notify();
+            return { success: true, message: '数据导入成功' };
+        } catch (e) {
+            console.error('Import error:', e);
+            return { success: false, message: '数据格式错误' };
+        }
+    }
+
+    // ==================== 数据管理 ====================
+    deleteAllRecords() {
+        this.state.workoutRecords = [];
+        this.saveToStorage(this.STORAGE_KEYS.WORKOUT_RECORDS, []);
+        this.updateTreeState();
+        this.notify();
+    }
+
+    clearAllData() {
+        Object.values(this.STORAGE_KEYS).forEach(key => {
+            localStorage.removeItem(key);
+        });
+        
+        // 重置状态
+        this.state = {
+            currentView: 'welcome',
+            currentTab: 'today',
+            currentPeriod: 'week',
+            userProfile: {
+                actualAge: 30,
+                vision: null,
+                firstVisitDate: new Date().toISOString(),
+                hasCompletedOnboarding: false
+            },
+            workoutRecords: [],
+            treeState: {
+                trunkThickness: 1,
+                branches: [],
+                leaves: { density: 1, type: 'basic' },
+                flowers: [],
+                fruits: [],
+                stars: [],
+                ornaments: [],
+                historySnapshots: []
+            }
+        };
+        
+        this.notify();
+    }
+
+    getStatisticsOverview() {
+        const records = this.state.workoutRecords;
+        const totalRecords = records.length;
+        const totalDistance = records.reduce((sum, r) => sum + (r.distance || 0), 0);
+        const totalDuration = records.reduce((sum, r) => sum + (r.duration || 0), 0);
+        const storageSize = this.calculateStorageSize();
+        
+        return {
+            totalRecords,
+            totalDistance: Math.round(totalDistance * 10) / 10,
+            totalDuration,
+            storageSize: Math.round(storageSize / 1024) + ' KB'
+        };
+    }
+
+    // ==================== 性能优化：虚拟滚动（大数据量） ====================
+    getPaginatedRecords(page = 1, pageSize = 20, typeFilter = 'all', timeFilter = 'all') {
+        let records = this.getRecordsByFilter(typeFilter, timeFilter);
+        const start = (page - 1) * pageSize;
+        const end = start + pageSize;
+        
+        return {
+            records: records.slice(start, end),
+            total: records.length,
+            totalPages: Math.ceil(records.length / pageSize),
+            currentPage: page
+        };
+    }
 }
 
 // ==================== UI Controller ====================
@@ -319,7 +596,12 @@ class UIController {
         const uploadBtn = document.getElementById('upload-screenshot-btn');
         if (uploadBtn) {
             uploadBtn.addEventListener('click', () => {
-                this.showScreenshotUpload();
+                this.currentUploadState = {
+                    step: 'upload',
+                    imageData: null,
+                    parsedData: null
+                };
+                this.renderScreenshotModal();
             });
         }
         
@@ -362,6 +644,69 @@ class UIController {
         if (saveDiaryBtn) {
             saveDiaryBtn.addEventListener('click', () => {
                 this.saveDiaryAsImage();
+            });
+        }
+
+        // Data management page events
+        this.bindDataManagementEvents();
+    }
+
+    bindDataManagementEvents() {
+        // Export JSON
+        const exportJsonBtn = document.getElementById('export-json');
+        if (exportJsonBtn) {
+            exportJsonBtn.addEventListener('click', () => {
+                this.state.exportToJSON();
+            });
+        }
+
+        // Export CSV
+        const exportCsvBtn = document.getElementById('export-csv');
+        if (exportCsvBtn) {
+            exportCsvBtn.addEventListener('click', () => {
+                this.state.exportToCSV();
+            });
+        }
+
+        // Import data
+        const importDataBtn = document.getElementById('import-data');
+        const importFileInput = document.getElementById('import-file-input');
+        
+        if (importDataBtn && importFileInput) {
+            importDataBtn.addEventListener('click', () => {
+                importFileInput.click();
+            });
+
+            importFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    this.handleDataImport(file);
+                }
+                importFileInput.value = '';
+            });
+        }
+
+        // Delete all records
+        const deleteAllBtn = document.getElementById('delete-all-records');
+        if (deleteAllBtn) {
+            deleteAllBtn.addEventListener('click', () => {
+                this.confirmDeleteAllRecords();
+            });
+        }
+
+        // Clear all data
+        const clearDataBtn = document.getElementById('clear-local-storage');
+        if (clearDataBtn) {
+            clearDataBtn.addEventListener('click', () => {
+                this.confirmClearAllData();
+            });
+        }
+
+        // Check data integrity
+        const checkIntegrityBtn = document.getElementById('check-integrity');
+        if (checkIntegrityBtn) {
+            checkIntegrityBtn.addEventListener('click', () => {
+                this.checkDataIntegrity();
             });
         }
     }
@@ -427,6 +772,9 @@ class UIController {
                     case 'records':
                         this.renderRecordsContent();
                         break;
+                    case 'data':
+                        this.renderDataContent();
+                        break;
                     case 'journey':
                         this.renderJourneyContent();
                         break;
@@ -436,6 +784,223 @@ class UIController {
                 }
             }, 600);
         }
+    }
+
+    renderDataContent() {
+        const stats = this.state.getStatisticsOverview();
+        
+        // Update overview stats
+        const totalRecordsEl = document.getElementById('total-records');
+        const totalDistanceEl = document.getElementById('total-distance-overview');
+        const totalDurationEl = document.getElementById('total-duration-overview');
+        const dataSizeEl = document.getElementById('data-size');
+        
+        if (totalRecordsEl) totalRecordsEl.textContent = stats.totalRecords;
+        if (totalDistanceEl) totalDistanceEl.textContent = stats.totalDistance;
+        if (totalDurationEl) totalDurationEl.textContent = stats.totalDuration;
+        if (dataSizeEl) dataSizeEl.textContent = stats.storageSize;
+        
+        // Clear previous integrity result
+        const integrityResult = document.getElementById('integrity-result');
+        if (integrityResult) {
+            integrityResult.innerHTML = '';
+            integrityResult.className = 'integrity-result';
+        }
+    }
+
+    handleDataImport(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                const result = this.state.importFromJSON(data);
+                
+                if (result.success) {
+                    this.showImportSuccess();
+                } else {
+                    this.showImportError(result.message);
+                }
+            } catch (err) {
+                this.showImportError('文件格式错误');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    showImportSuccess() {
+        const content = `
+            <div class="detail-section">
+                <div class="detail-content" style="text-align: center;">
+                    <div style="width: 60px; height: 60px; margin: 0 auto 16px; background: rgba(76, 175, 80, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #4CAF50;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 32px; height: 32px;">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <p style="font-size: 16px; color: var(--color-text); margin-bottom: 8px;">数据导入成功</p>
+                    <p style="font-size: 14px; color: var(--color-text-muted);">您的运动数据已恢复</p>
+                </div>
+            </div>
+        `;
+        
+        this.showModal('导入成功', content, true);
+    }
+
+    showImportError(message) {
+        const content = `
+            <div class="detail-section">
+                <div class="detail-content" style="text-align: center;">
+                    <div style="width: 60px; height: 60px; margin: 0 auto 16px; background: rgba(244, 67, 54, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #F44336;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 32px; height: 32px;">
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                    </div>
+                    <p style="font-size: 16px; color: var(--color-text); margin-bottom: 8px;">导入失败</p>
+                    <p style="font-size: 14px; color: var(--color-text-muted);">${message}</p>
+                </div>
+            </div>
+        `;
+        
+        this.showModal('导入错误', content, true);
+    }
+
+    confirmDeleteAllRecords() {
+        const content = `
+            <div class="detail-section">
+                <div class="detail-content" style="text-align: center;">
+                    <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 16px;">
+                        确定要删除所有运动记录吗？此操作无法撤销。
+                    </p>
+                    <p style="font-size: 12px; color: var(--color-text-muted);">
+                        建议先导出数据进行备份
+                    </p>
+                </div>
+            </div>
+        `;
+        
+        this.showModal('清空记录', content, true, [
+            { text: '取消', type: 'cancel', action: () => this.closeModal() },
+            { 
+                text: '确定清空', 
+                type: 'danger', 
+                action: () => { 
+                    this.state.deleteAllRecords(); 
+                    this.closeModal();
+                    this.renderDataContent();
+                } 
+            }
+        ]);
+    }
+
+    confirmClearAllData() {
+        const content = `
+            <div class="detail-section">
+                <div class="detail-content" style="text-align: center;">
+                    <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 16px;">
+                        确定要清除所有数据吗？这将重置应用到初始状态，包括所有运动记录、用户资料和生命树数据。此操作无法撤销。
+                    </p>
+                    <p style="font-size: 12px; color: var(--color-text-muted);">
+                        强烈建议先导出数据进行备份
+                    </p>
+                </div>
+            </div>
+        `;
+        
+        this.showModal('清除所有数据', content, true, [
+            { text: '取消', type: 'cancel', action: () => this.closeModal() },
+            { 
+                text: '确定清除', 
+                type: 'danger', 
+                action: () => { 
+                    this.state.clearAllData(); 
+                    this.closeModal();
+                } 
+            }
+        ]);
+    }
+
+    checkDataIntegrity() {
+        const integrity = this.state.checkDataIntegrity();
+        const resultEl = document.getElementById('integrity-result');
+        
+        if (!resultEl) return;
+        
+        let html = '';
+        
+        if (integrity.isValid) {
+            html = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; color: #4CAF50;">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <div>
+                        <div style="font-weight: 500; margin-bottom: 4px;">数据状态良好</div>
+                        <div style="font-size: 13px; opacity: 0.8;">所有数据完整无误</div>
+                    </div>
+                </div>
+            `;
+            resultEl.className = 'integrity-result success';
+        } else {
+            html = `
+                <div style="margin-bottom: 12px;">
+                    <div style="font-weight: 500; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        发现 ${integrity.issues.length} 个问题
+                    </div>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px;">
+                        ${integrity.issues.map(issue => `<li>${issue}</li>`).join('')}
+                    </ul>
+                </div>
+                <button class="btn" style="width: 100%; background: var(--color-primary); color: white; border: none;" onclick="ui.repairData()">
+                    修复数据
+                </button>
+            `;
+            resultEl.className = 'integrity-result warning';
+        }
+        
+        resultEl.innerHTML = html;
+    }
+
+    repairData() {
+        const repaired = this.state.repairData();
+        const resultEl = document.getElementById('integrity-result');
+        
+        if (!resultEl) return;
+        
+        if (repaired) {
+            resultEl.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; color: #4CAF50;">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <div>
+                        <div style="font-weight: 500; margin-bottom: 4px;">修复成功</div>
+                        <div style="font-size: 13px; opacity: 0.8;">数据问题已解决</div>
+                    </div>
+                </div>
+            `;
+            resultEl.className = 'integrity-result success';
+        } else {
+            resultEl.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; color: #4CAF50;">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <div>
+                        <div style="font-weight: 500; margin-bottom: 4px;">无需修复</div>
+                        <div style="font-size: 13px; opacity: 0.8;">数据已经是最新状态</div>
+                    </div>
+                </div>
+            `;
+            resultEl.className = 'integrity-result success';
+        }
+        
+        this.renderDataContent();
     }
     
     renderTodayContent() {
@@ -1118,6 +1683,441 @@ class UIController {
         this.showModal('上传截图', content, true);
     }
     
+    // 新的截图上传功能
+    showScreenshotUploadNew() {
+        this.currentUploadState = {
+            step: 'upload',
+            imageData: null,
+            parsedData: null
+        };
+        this.renderScreenshotModal();
+    }
+
+    renderScreenshotModal() {
+        const { step, imageData, parsedData } = this.currentUploadState;
+        let content = '';
+
+        if (step === 'upload') {
+            content = this.renderUploadStep();
+        } else if (step === 'parsing') {
+            content = this.renderParsingStep();
+        } else if (step === 'confirm') {
+            content = this.renderConfirmStep();
+        }
+
+        this.showModal('上传截图', content, false);
+    }
+
+    renderUploadStep() {
+        return `
+            <div class="detail-section">
+                <div class="detail-content">
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z"/>
+                                <path d="M12 16V8m0 0l-4 4m4-4l4 4"/>
+                            </svg>
+                        </div>
+                        <div class="upload-title">上传运动截图</div>
+                        <div class="upload-hint">支持拖拽上传或点击选择图片</div>
+                        <button class="upload-btn" type="button">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                <path d="M12 5v14m-7-7h14"/>
+                            </svg>
+                            选择图片
+                        </button>
+                        <input type="file" id="file-input" class="upload-input" accept="image/*">
+                    </div>
+                    <div class="preview-container" id="preview-container" style="display: none;">
+                        <img id="preview-image" class="preview-image">
+                        <div class="preview-actions">
+                            <button class="btn btn-secondary" id="reupload-btn">重新上传</button>
+                            <button class="btn btn-primary" id="parse-btn">开始解析</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    renderParsingStep() {
+        return `
+            <div class="parsing-container">
+                <div class="parsing-steps">
+                    <div class="parsing-step">
+                        <div class="parsing-step-icon active" id="step1-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                            </svg>
+                        </div>
+                        <div class="parsing-step-text">
+                            <div class="parsing-step-title" id="step1-title">图片预处理</div>
+                            <div class="parsing-step-desc">优化图像质量，准备进行识别</div>
+                        </div>
+                    </div>
+                    <div class="parsing-step">
+                        <div class="parsing-step-icon pending" id="step2-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01"/>
+                            </svg>
+                        </div>
+                        <div class="parsing-step-text">
+                            <div class="parsing-step-title" id="step2-title">文字识别</div>
+                            <div class="parsing-step-desc">使用OCR识别图片中的文字数据</div>
+                        </div>
+                    </div>
+                    <div class="parsing-step">
+                        <div class="parsing-step-icon pending" id="step3-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+                            </svg>
+                        </div>
+                        <div class="parsing-step-text">
+                            <div class="parsing-step-title" id="step3-title">数据提取</div>
+                            <div class="parsing-step-desc">提取运动数据和健康指标</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    renderConfirmStep() {
+        const data = this.currentUploadState.parsedData;
+        const workoutTypes = ['running', 'cycling', 'swimming', 'walking', 'other'];
+        const typeNames = { running: '跑步', cycling: '骑行', swimming: '游泳', walking: '步行', other: '其他' };
+        
+        return `
+            <div class="data-confirm-container">
+                <div class="data-section">
+                    <div class="data-section-title">核心洞察数据</div>
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="data-label">训练负荷</div>
+                            <div class="data-value">${data.insights.trainingLoad}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="trainingLoad" value="${data.insights.trainingLoad}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">恢复时间</div>
+                            <div class="data-value">${data.insights.recoveryTime}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="recoveryTime" value="${data.insights.recoveryTime}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">有氧效果</div>
+                            <div class="data-value">${data.insights.aerobicEffect}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="aerobicEffect" value="${data.insights.aerobicEffect}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">无氧效果</div>
+                            <div class="data-value">${data.insights.anaerobicEffect}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="anaerobicEffect" value="${data.insights.anaerobicEffect}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">压力分数</div>
+                            <div class="data-value">${data.insights.stressScore}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="stressScore" value="${data.insights.stressScore}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">VO2max</div>
+                            <div class="data-value">${data.insights.vo2max}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="vo2max" value="${data.insights.vo2max}">
+                        </div>
+                        <div class="data-item" style="grid-column: span 2;">
+                            <div class="data-label">身体年龄</div>
+                            <div class="data-value">${data.insights.bodyAge}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="bodyAge" value="${data.insights.bodyAge}">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-section">
+                    <div class="data-section-title">基础运动数据</div>
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="data-label">运动类型</div>
+                            <div class="data-value">${typeNames[data.basic.type]}</div>
+                            <div class="data-source">设备数据</div>
+                            <select class="data-edit" data-field="type">
+                                ${workoutTypes.map(t => `<option value="${t}" ${data.basic.type === t ? 'selected' : ''}>${typeNames[t]}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">日期</div>
+                            <div class="data-value">${data.basic.date}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="date" class="data-edit" data-field="date" value="${data.basic.dateISO}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">时长</div>
+                            <div class="data-value">${data.basic.duration}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="duration" value="${data.basic.duration}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">距离</div>
+                            <div class="data-value">${data.basic.distance}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="distance" value="${data.basic.distance}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">平均心率</div>
+                            <div class="data-value">${data.basic.avgHeartRate}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="avgHeartRate" value="${data.basic.avgHeartRate}">
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">消耗热量</div>
+                            <div class="data-value">${data.basic.calories}</div>
+                            <div class="data-source">设备数据</div>
+                            <input type="text" class="data-edit" data-field="calories" value="${data.basic.calories}">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="confirm-actions">
+                    <button class="btn btn-secondary" id="cancel-confirm-btn">取消</button>
+                    <button class="btn btn-primary" id="save-confirm-btn">保存运动记录</button>
+                </div>
+            </div>
+        `;
+    }
+
+    bindUploadEvents() {
+        // 上传区域事件
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const previewContainer = document.getElementById('preview-container');
+        const previewImage = document.getElementById('preview-image');
+        const reuploadBtn = document.getElementById('reupload-btn');
+        const parseBtn = document.getElementById('parse-btn');
+
+        if (uploadArea && fileInput) {
+            // 点击上传
+            uploadArea.addEventListener('click', (e) => {
+                if (e.target !== fileInput) {
+                    fileInput.click();
+                }
+            });
+
+            // 文件选择
+            fileInput.addEventListener('change', (e) => {
+                this.handleFileSelect(e.target.files[0]);
+            });
+
+            // 拖放事件
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    this.handleFileSelect(file);
+                }
+            });
+        }
+
+        // 重新上传
+        if (reuploadBtn) {
+            reuploadBtn.addEventListener('click', () => {
+                this.currentUploadState.step = 'upload';
+                this.currentUploadState.imageData = null;
+                this.renderScreenshotModal();
+            });
+        }
+
+        // 开始解析
+        if (parseBtn) {
+            parseBtn.addEventListener('click', () => {
+                this.startParsing();
+            });
+        }
+
+        // 确认保存按钮
+        const cancelConfirmBtn = document.getElementById('cancel-confirm-btn');
+        const saveConfirmBtn = document.getElementById('save-confirm-btn');
+
+        if (cancelConfirmBtn) {
+            cancelConfirmBtn.addEventListener('click', () => {
+                this.closeModal();
+            });
+        }
+
+        if (saveConfirmBtn) {
+            saveConfirmBtn.addEventListener('click', () => {
+                this.saveParsedData();
+            });
+        }
+    }
+
+    handleFileSelect(file) {
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.currentUploadState.imageData = e.target.result;
+            
+            const previewContainer = document.getElementById('preview-container');
+            const previewImage = document.getElementById('preview-image');
+            const uploadArea = document.getElementById('upload-area');
+
+            if (previewContainer && previewImage) {
+                previewImage.src = e.target.result;
+                uploadArea.style.display = 'none';
+                previewContainer.style.display = 'block';
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    startParsing() {
+        this.currentUploadState.step = 'parsing';
+        this.renderScreenshotModal();
+
+        // 模拟解析过程
+        this.simulateParsing();
+    }
+
+    simulateParsing() {
+        const steps = ['step1', 'step2', 'step3'];
+        let currentStep = 0;
+
+        const updateStep = () => {
+            if (currentStep > 0) {
+                const prevIcon = document.getElementById(`${steps[currentStep - 1]}-icon`);
+                const prevTitle = document.getElementById(`${steps[currentStep - 1]}-title`);
+                if (prevIcon) {
+                    prevIcon.className = 'parsing-step-icon completed';
+                    prevIcon.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path d="M5 13l4 4L19 7"/>
+                        </svg>
+                    `;
+                }
+                if (prevTitle) {
+                    prevTitle.style.textDecoration = 'line-through';
+                    prevTitle.style.opacity = '0.6';
+                }
+            }
+
+            if (currentStep < steps.length) {
+                const currentIcon = document.getElementById(`${steps[currentStep]}-icon`);
+                if (currentIcon) {
+                    currentIcon.className = 'parsing-step-icon active';
+                }
+                currentStep++;
+                setTimeout(updateStep, 1000);
+            } else {
+                // 解析完成，生成模拟数据
+                this.currentUploadState.parsedData = this.generateMockData();
+                setTimeout(() => {
+                    this.currentUploadState.step = 'confirm';
+                    this.renderScreenshotModal();
+                }, 500);
+            }
+        };
+
+        setTimeout(updateStep, 500);
+    }
+
+    generateMockData() {
+        const types = ['running', 'cycling', 'swimming', 'walking'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        const today = new Date();
+        const date = new Date(today.setDate(today.getDate() - Math.floor(Math.random() * 7)));
+        const dateISO = date.toISOString().split('T')[0];
+        
+        // 生成随机数据
+        const duration = 20 + Math.floor(Math.random() * 60);
+        const distance = type === 'swimming' 
+            ? (0.5 + Math.random() * 1.5).toFixed(2)
+            : (2 + Math.random() * 10).toFixed(1);
+        
+        const actualAge = this.state.userProfile.actualAge || 30;
+        
+        return {
+            insights: {
+                trainingLoad: `${30 + Math.floor(Math.random() * 70)}`,
+                recoveryTime: `${12 + Math.floor(Math.random() * 36)}小时`,
+                aerobicEffect: (2.0 + Math.random() * 3.0).toFixed(1),
+                anaerobicEffect: (0.5 + Math.random() * 2.5).toFixed(1),
+                stressScore: `${20 + Math.floor(Math.random() * 40)}`,
+                vo2max: `${40 + Math.floor(Math.random() * 20)} mL/kg/min`,
+                bodyAge: `${actualAge - Math.floor(Math.random() * 10)}岁`
+            },
+            basic: {
+                type: type,
+                date: date.toLocaleDateString('zh-CN'),
+                dateISO: dateISO,
+                duration: `${duration}分钟`,
+                distance: `${distance}km`,
+                avgHeartRate: `${120 + Math.floor(Math.random() * 50)} bpm`,
+                calories: `${200 + Math.floor(Math.random() * 400)} kcal`
+            },
+            rawData: {
+                duration: duration,
+                distance: parseFloat(distance),
+                avgHeartRate: 120 + Math.floor(Math.random() * 50),
+                calories: 200 + Math.floor(Math.random() * 400)
+            }
+        };
+    }
+
+    saveParsedData() {
+        const data = this.currentUploadState.parsedData;
+        
+        // 收集编辑后的数据
+        const edits = {};
+        document.querySelectorAll('.data-edit').forEach(input => {
+            const field = input.dataset.field;
+            edits[field] = input.value;
+        });
+
+        const record = this.state.addWorkoutRecord({
+            type: edits.type || data.basic.type,
+            typeName: this.getTypeName(edits.type || data.basic.type),
+            duration: data.rawData.duration,
+            distance: data.rawData.distance,
+            avgHeartRate: data.rawData.avgHeartRate,
+            calories: data.rawData.calories,
+            source: 'device',
+            insights: {
+                trainingLoad: edits.trainingLoad || data.insights.trainingLoad,
+                recoveryTime: edits.recoveryTime || data.insights.recoveryTime,
+                aerobicEffect: edits.aerobicEffect || data.insights.aerobicEffect,
+                anaerobicEffect: edits.anaerobicEffect || data.insights.anaerobicEffect,
+                stressScore: edits.stressScore || data.insights.stressScore,
+                vo2max: edits.vo2max || data.insights.vo2max,
+                bodyAge: edits.bodyAge || data.insights.bodyAge
+            }
+        });
+
+        this.closeModal();
+        this.triggerStarAnimation();
+        this.renderCurrentView();
+    }
+
+    getTypeName(type) {
+        const names = { running: '跑步', cycling: '骑行', swimming: '游泳', walking: '步行', other: '其他' };
+        return names[type] || '其他';
+    }
+    
     triggerStarAnimation() {
         const container = document.getElementById('stars-container');
         if (!container) return;
@@ -1197,6 +2197,9 @@ class UIController {
                 this.closeModal();
             }
         });
+
+        // Bind upload events if needed
+        this.bindUploadEvents();
     }
     
     handleModalAction(index) {
