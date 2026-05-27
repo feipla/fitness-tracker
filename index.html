@@ -2,20 +2,39 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="循迹">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    
     <title>循迹 - 循身体之迹，见前行之路</title>
     <meta name="description" content="探索你的身体地图，让 AI 翻译你的健康密码">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1B4332">
-    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- 预连接和预加载优化 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    
+    <!-- PWA 相关 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B4332">
+    <meta name="msapplication-TileColor" content="#1B4332">
+    
+    <!-- 图标相关 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231B4332' rx='20'/%3E%3Cpath d='M20 50Q35 20 50 50Q65 80 80 50' fill='none' stroke='%23DDD5C8' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='50' r='6' fill='%23E8A838'/%3E%3Ccircle cx='50' cy='50' r='6' fill='%23E8A838'/%3E%3Ccircle cx='80' cy='50' r='6' fill='%23E8A838'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231B4332' rx='20'/%3E%3Cpath d='M20 50Q35 20 50 50Q65 80 80 50' fill='none' stroke='%23DDD5C8' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='50' r='6' fill='%23E8A838'/%3E%3Ccircle cx='50' cy='50' r='6' fill='%23E8A838'/%3E%3Ccircle cx='80' cy='50' r='6' fill='%23E8A838'/%3E%3C/svg%3E">
+    
+    <!-- 样式 -->
+    <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="app">
         <!-- 欢迎屏幕 -->
-        <section id="welcome-screen" class="screen active">
+        <section id="welcome-view" class="view active">
             <div class="welcome-container">
                 <div class="welcome-hero">
                     <div class="hero-background">
@@ -89,9 +108,9 @@
             </div>
         </section>
 
-        <!-- 主应用屏幕 -->
-        <section id="main-screen" class="screen">
-            <!-- 今日 Tab -->
+        <!-- 主应用视图 -->
+        <section id="main-view" class="view">
+            <!-- 今日视图 -->
             <div id="today-view" class="tab-view active">
                 <div class="tab-content">
                     <header class="view-header">
@@ -108,7 +127,6 @@
                     
                     <!-- 实际内容 -->
                     <div class="today-content" id="today-content" style="display: none;">
-                        <!-- 今日身体状态卡片 -->
                         <div class="status-card" id="status-card">
                             <div class="status-icon recovery-good" id="status-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -123,7 +141,6 @@
                             <div class="status-insight" id="status-insight">今天是进行训练的理想时机</div>
                         </div>
                         
-                        <!-- 负荷建议卡片 -->
                         <div class="load-card" id="load-card">
                             <h3 class="card-title">负荷建议</h3>
                             <div class="load-meter">
@@ -139,7 +156,6 @@
                             <p class="load-advice" id="load-advice">建议进行中等强度训练</p>
                         </div>
                         
-                        <!-- 记录今日运动按钮 -->
                         <div class="action-card">
                             <button class="action-btn primary" id="record-workout-btn">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -155,7 +171,6 @@
                             </button>
                         </div>
                         
-                        <!-- 今日之迹日记卡片 -->
                         <div class="diary-card" id="diary-card">
                             <div class="diary-header">
                                 <h3>今日之迹</h3>
@@ -178,18 +193,16 @@
                     </div>
                 </div>
                 
-                <!-- 生命树轻量入口 -->
                 <div class="tree-fab" id="tree-fab">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 22v-7m0 0l-3 3m3-3l3 3m-12-5h4l2-8h6l2 8h4"/>
                     </svg>
                 </div>
                 
-                <!-- 星星动画容器 -->
                 <div class="stars-container" id="stars-container"></div>
             </div>
 
-            <!-- 地图 Tab -->
+            <!-- 地图视图 -->
             <div id="map-view" class="tab-view">
                 <div class="tab-content">
                     <header class="view-header">
@@ -203,14 +216,12 @@
                     </div>
                     
                     <div class="map-content" id="map-content" style="display: none;">
-                        <!-- 周期切换 -->
                         <div class="period-toggle">
                             <button class="period-btn active" data-period="week">周</button>
                             <button class="period-btn" data-period="month">月</button>
                             <button class="period-btn" data-period="year">年</button>
                         </div>
                         
-                        <!-- 五维身体雷达图 -->
                         <div class="radar-card">
                             <div class="card-header">
                                 <h3 class="card-title">身体状态雷达图</h3>
@@ -237,17 +248,15 @@
                             </div>
                         </div>
                         
-                        <!-- 身体年龄趋势图 -->
                         <div class="trend-card">
                             <div class="card-header">
                                 <h3 class="card-title">身体年龄趋势</h3>
                             </div>
-                            <div class="trend-value" id="trend-value">年轻 2.3 岁</div>
+                            <div class="trend-value" id="trend-value">年轻 0 岁</div>
                             <div class="trend-chart" id="trend-chart"></div>
                             <div class="disclaimer">此估算基于运动数据模型，非医学诊断，仅供参考</div>
                         </div>
                         
-                        <!-- 周期总结卡片 -->
                         <div class="summary-card" id="summary-card">
                             <h3 class="card-title">周期总结</h3>
                             <div class="summary-stats">
@@ -269,7 +278,7 @@
                 </div>
             </div>
 
-            <!-- 记录 Tab -->
+            <!-- 记录视图 -->
             <div id="records-view" class="tab-view">
                 <div class="tab-content">
                     <header class="view-header">
@@ -277,7 +286,6 @@
                         <div class="view-subtitle">你的运动历史</div>
                     </header>
                     
-                    <!-- 筛选器 -->
                     <div class="filters" id="filters">
                         <div class="filter-group">
                             <label>运动类型</label>
@@ -310,7 +318,6 @@
                     </div>
                     
                     <div class="records-content" id="records-content" style="display: none;">
-                        <!-- 时间轴列表 -->
                         <div class="timeline" id="timeline"></div>
                         <div class="empty-state" id="empty-records" style="display: none;">
                             <div class="empty-icon">
@@ -324,122 +331,7 @@
                 </div>
             </div>
 
-            <!-- 数据管理页面 -->
-            <div id="data-view" class="tab-view">
-                <div class="tab-content">
-                    <header class="view-header">
-                        <h1 class="view-title">数据管理</h1>
-                        <div class="view-subtitle">管理和备份您的运动数据</div>
-                    </header>
-                    
-                    <div class="skeleton-container" id="data-skeleton">
-                        <div class="skeleton-card skeleton-large"></div>
-                        <div class="skeleton-card skeleton-medium"></div>
-                        <div class="skeleton-card skeleton-medium"></div>
-                    </div>
-                    
-                    <div class="data-content" id="data-content" style="display: none;">
-                        <!-- 数据统计概览 -->
-                        <div class="stats-overview-card">
-                            <h3 class="card-title">数据概览</h3>
-                            <div class="overview-stats">
-                                <div class="overview-stat">
-                                    <div class="overview-value" id="total-records">0</div>
-                                    <div class="overview-label">总记录数</div>
-                                </div>
-                                <div class="overview-stat">
-                                    <div class="overview-value" id="total-distance-overview">0</div>
-                                    <div class="overview-label">总距离(km)</div>
-                                </div>
-                                <div class="overview-stat">
-                                    <div class="overview-value" id="total-duration-overview">0</div>
-                                    <div class="overview-label">总时长(min)</div>
-                                </div>
-                                <div class="overview-stat">
-                                    <div class="overview-value" id="data-size">0 KB</div>
-                                    <div class="overview-label">数据大小</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 数据导出 -->
-                        <div class="data-section-card">
-                            <h3 class="card-title">数据导出</h3>
-                            <p class="section-desc">将您的运动数据导出为文件进行备份</p>
-                            <div class="export-buttons">
-                                <button class="action-btn primary" id="export-json">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                                    </svg>
-                                    <span>导出 JSON</span>
-                                </button>
-                                <button class="action-btn secondary" id="export-csv">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/>
-                                    </svg>
-                                    <span>导出 CSV</span>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- 数据导入（预留） -->
-                        <div class="data-section-card">
-                            <h3 class="card-title">数据导入</h3>
-                            <p class="section-desc">从备份文件恢复您的运动数据</p>
-                            <div class="import-section">
-                                <button class="action-btn secondary" id="import-data">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                                    </svg>
-                                    <span>选择文件导入</span>
-                                </button>
-                                <input type="file" id="import-file-input" accept=".json" style="display: none;">
-                                <p class="import-hint">支持导入 .json 格式的数据文件</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 批量操作 -->
-                        <div class="data-section-card">
-                            <h3 class="card-title">批量操作</h3>
-                            <p class="section-desc">对运动记录进行批量管理</p>
-                            <div class="batch-actions">
-                                <button class="action-btn danger" id="delete-all-records">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="3 6 5 6 21 6"/>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                    </svg>
-                                    <span>清空所有记录</span>
-                                </button>
-                                <button class="action-btn" id="clear-local-storage">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <line x1="15" y1="9" x2="9" y2="15"/>
-                                        <line x1="9" y1="9" x2="15" y2="15"/>
-                                    </svg>
-                                    <span>清除所有数据</span>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- 数据完整性检查 -->
-                        <div class="data-section-card">
-                            <h3 class="card-title">数据完整性</h3>
-                            <p class="section-desc">检查和验证您的数据状态</p>
-                            <div class="integrity-check">
-                                <button class="action-btn" id="check-integrity">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                    </svg>
-                                    <span>检查数据完整性</span>
-                                </button>
-                                <div class="integrity-result" id="integrity-result"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 旅途页面 -->
+            <!-- 旅途视图 -->
             <div id="journey-view" class="tab-view">
                 <div class="tab-content">
                     <header class="view-header">
@@ -454,7 +346,6 @@
                     </div>
                     
                     <div class="journey-content" id="journey-content" style="display: none;">
-                        <!-- 愿景设定卡片 -->
                         <div class="vision-card" id="vision-card">
                             <div class="vision-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -472,7 +363,6 @@
                             </div>
                         </div>
                         
-                        <!-- 自定义愿景弹窗 -->
                         <div class="custom-vision-modal" id="custom-vision-modal" style="display: none;">
                             <div class="custom-vision-content">
                                 <input type="text" id="custom-vision-input" class="custom-vision-input" placeholder="写下你的愿景...">
@@ -483,7 +373,6 @@
                             </div>
                         </div>
                         
-                        <!-- 旅途统计展示 -->
                         <div class="journey-stats" id="journey-stats" style="display: none;">
                             <div class="vision-display-card">
                                 <div class="vision-display-icon">
@@ -503,7 +392,6 @@
                                 </button>
                             </div>
                             
-                            <!-- 累计统计 -->
                             <div class="stats-grid">
                                 <div class="stat-card">
                                     <div class="stat-number" id="total-workouts">0</div>
@@ -523,7 +411,6 @@
                                 </div>
                             </div>
                             
-                            <!-- 身体年龄变化曲线 -->
                             <div class="trend-section">
                                 <div class="section-header">
                                     <h3 class="section-title">身体年龄变化</h3>
@@ -531,7 +418,6 @@
                                 <div class="body-age-chart" id="body-age-chart"></div>
                             </div>
                             
-                            <!-- 运动频次热力图 -->
                             <div class="heatmap-section">
                                 <div class="section-header">
                                     <h3 class="section-title">运动热力图</h3>
@@ -539,7 +425,6 @@
                                 <div class="heatmap-container" id="heatmap-container"></div>
                             </div>
                             
-                            <!-- 长期趋势报告 -->
                             <div class="trend-report-card">
                                 <div class="section-header">
                                     <h3 class="section-title">长期趋势报告</h3>
@@ -553,12 +438,12 @@
                                     <div class="report-item">
                                         <div class="report-icon">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                                <polyline points="20 12 18 12 15 21 9 3 6 12 2 12"/>
                                             </svg>
                                         </div>
                                         <div class="report-text">
                                             <div class="report-title">运动频率</div>
-                                            <div class="report-value" id="report-frequency">每周 3 次</div>
+                                            <div class="report-value" id="report-frequency">每周 0 次</div>
                                         </div>
                                     </div>
                                     <div class="report-item">
@@ -569,7 +454,7 @@
                                         </div>
                                         <div class="report-text">
                                             <div class="report-title">平均时长</div>
-                                            <div class="report-value" id="report-duration">45 分钟</div>
+                                            <div class="report-value" id="report-duration">0 分钟</div>
                                         </div>
                                     </div>
                                     <div class="report-item">
@@ -581,11 +466,11 @@
                                         </div>
                                         <div class="report-text">
                                             <div class="report-title">最佳时段</div>
-                                            <div class="report-value" id="report-time">早晨 7-9 点</div>
+                                            <div class="report-value" id="report-time">--</div>
                                         </div>
                                     </div>
                                     <div class="report-insight" id="report-insight">
-                                        坚持运动，身体状态持续改善中！继续保持，十年愿景一定能够实现。
+                                        开始你的运动之旅，坚持运动，身体状态会持续改善！
                                     </div>
                                 </div>
                             </div>
@@ -594,7 +479,7 @@
                 </div>
             </div>
 
-            <!-- 生命树 Tab -->
+            <!-- 生命树视图 -->
             <div id="tree-view" class="tab-view">
                 <div class="tab-content">
                     <header class="view-header">
@@ -607,7 +492,6 @@
                     </div>
                     
                     <div class="tree-content" id="tree-content" style="display: none;">
-                        <!-- 时间轴滑块 -->
                         <div class="timeline-slider-container">
                             <div class="timeline-label">
                                 <span class="timeline-start">开始</span>
@@ -616,19 +500,17 @@
                             <input type="range" class="timeline-slider" id="timeline-slider" min="0" max="100" value="100">
                         </div>
                         
-                        <!-- 生命树SVG容器 -->
                         <div class="tree-container" id="tree-svg-container">
                             <svg id="life-tree-svg" class="life-tree-svg" viewBox="0 0 400 500">
-                                <!-- 树干将通过JS渲染 -->
                                 <defs>
                                     <linearGradient id="trunkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" style="stop-color:#8B6914;stop-opacity:1" />
-                                        <stop offset="50%" style="stop-color:#A0826D;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#8B6914;stop-opacity:1" />
+                                        <stop offset="0%" style="stop-color:#8B6914;stop-opacity:1"/>
+                                        <stop offset="50%" style="stop-color:#A0826D;stop-opacity:1"/>
+                                        <stop offset="100%" style="stop-color:#8B6914;stop-opacity:1"/>
                                     </linearGradient>
                                     <radialGradient id="leafGradient" cx="50%" cy="50%" r="50%">
-                                        <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+                                        <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1"/>
+                                        <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1"/>
                                     </radialGradient>
                                     <filter id="glow">
                                         <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
@@ -641,7 +523,6 @@
                             </svg>
                         </div>
                         
-                        <!-- 树信息面板 -->
                         <div class="tree-info">
                             <div class="info-item">
                                 <span class="info-label">树干粗度</span>
@@ -649,15 +530,14 @@
                             </div>
                             <div class="info-item">
                                 <span class="info-label">分枝数量</span>
-                                <span class="info-value" id="branch-count">3</span>
+                                <span class="info-value" id="branch-count">0</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">树叶密度</span>
-                                <span class="info-value" id="leaf-density">中等</span>
+                                <span class="info-value" id="leaf-density">稀疏</span>
                             </div>
                         </div>
                         
-                        <!-- 操作按钮 -->
                         <div class="tree-actions">
                             <button class="action-btn tree-action-btn" id="help-btn">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -678,7 +558,7 @@
                 </div>
             </div>
 
-            <!-- 底部导航栏 -->
+            <!-- 底部导航 -->
             <nav class="bottom-nav">
                 <button class="nav-item active" data-tab="today">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -705,12 +585,6 @@
                     </svg>
                     <span>记录</span>
                 </button>
-                <button class="nav-item" data-tab="data">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"/>
-                    </svg>
-                    <span>数据</span>
-                </button>
                 <button class="nav-item" data-tab="journey">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -726,21 +600,280 @@
                 </button>
             </nav>
         </section>
+        
+        <!-- 上传截图模态框 -->
+        <div id="upload-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>上传运动截图</h2>
+                    <button class="modal-close" id="close-upload-modal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="file-input" accept="image/*" hidden>
+                        <div class="upload-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
+                                <path d="M21 16v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2"/>
+                            </svg>
+                        </div>
+                        <p class="upload-text">点击或拖拽上传截图</p>
+                        <p class="upload-hint">支持 JPG、PNG 格式</p>
+                    </div>
+                    <div class="preview-area" id="preview-area" style="display: none;">
+                        <img id="preview-image" alt="预览">
+                        <button class="remove-image-btn" id="remove-image-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="form-group" id="parsed-data" style="display: none;">
+                        <label>运动类型</label>
+                        <select id="parsed-type" class="form-input">
+                            <option value="running">跑步</option>
+                            <option value="cycling">骑行</option>
+                            <option value="swimming">游泳</option>
+                            <option value="walking">步行</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-row" id="parsed-data2" style="display: none;">
+                        <div class="form-group">
+                            <label>时长（分钟）</label>
+                            <input type="number" id="parsed-duration" class="form-input" placeholder="30">
+                        </div>
+                        <div class="form-group">
+                            <label>距离（公里）</label>
+                            <input type="number" id="parsed-distance" class="form-input" placeholder="5.0" step="0.1">
+                        </div>
+                    </div>
+                    <div class="form-row" id="parsed-data3" style="display: none;">
+                        <div class="form-group">
+                            <label>平均心率</label>
+                            <input type="number" id="parsed-hr" class="form-input" placeholder="140">
+                        </div>
+                        <div class="form-group">
+                            <label>消耗卡路里</label>
+                            <input type="number" id="parsed-calories" class="form-input" placeholder="300">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="cancel-upload">取消</button>
+                    <button class="btn-primary" id="confirm-upload" disabled>
+                        <span class="btn-text">确认添加</span>
+                        <span class="btn-loading" style="display: none;">解析中...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 运动详情弹窗 -->
+    <div id="workout-detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>运动详情</h2>
+                <button class="modal-close" id="close-detail-modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="detail-modal-body">
+                <!-- 详情内容将通过JS动态填充 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="delete-workout-btn">删除</button>
+                <button class="btn-primary" id="edit-workout-btn">编辑</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑运动记录弹窗 -->
+    <div id="edit-workout-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>编辑运动记录</h2>
+                <button class="modal-close" id="close-edit-modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>运动类型</label>
+                    <select id="edit-type" class="form-input">
+                        <option value="running">跑步</option>
+                        <option value="cycling">骑行</option>
+                        <option value="swimming">游泳</option>
+                        <option value="walking">步行</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>时长（分钟）</label>
+                        <input type="number" id="edit-duration" class="form-input" placeholder="30">
+                    </div>
+                    <div class="form-group">
+                        <label>距离（公里）</label>
+                        <input type="number" id="edit-distance" class="form-input" placeholder="5.0" step="0.1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>平均心率</label>
+                        <input type="number" id="edit-heartrate" class="form-input" placeholder="140">
+                    </div>
+                    <div class="form-group">
+                        <label>消耗卡路里</label>
+                        <input type="number" id="edit-calories" class="form-input" placeholder="300">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <input type="text" id="edit-notes" class="form-input" placeholder="记录您的运动感受...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-edit-btn">取消</button>
+                <button class="btn-primary" id="save-edit-btn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分享海报弹窗 -->
+    <div id="share-poster-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>分享我的旅途</h2>
+                <button class="modal-close" id="close-share-modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="share-poster" class="share-poster">
+                    <div class="poster-header">
+                        <div class="poster-logo">循迹</div>
+                        <div class="poster-vision" id="poster-vision">陪孩子爬山</div>
+                    </div>
+                    <div class="poster-stats">
+                        <div class="poster-stat">
+                            <div class="poster-number" id="poster-workouts">0</div>
+                            <div class="poster-label">总运动次数</div>
+                        </div>
+                        <div class="poster-stat">
+                            <div class="poster-number" id="poster-distance">0</div>
+                            <div class="poster-label">总公里数</div>
+                        </div>
+                        <div class="poster-stat">
+                            <div class="poster-number" id="poster-days">0</div>
+                            <div class="poster-label">坚持天数</div>
+                        </div>
+                    </div>
+                    <div class="poster-quote">"循身体之迹，见前行之路"</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-share-btn">取消</button>
+                <button class="btn-primary" id="save-poster-btn">保存海报</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 生命树帮助弹窗 -->
+    <div id="tree-help-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>如何成长</h2>
+                <button class="modal-close" id="close-tree-help-modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="help-content">
+                    <div class="help-section">
+                        <h3>🌳 树干</h3>
+                        <p>随着使用时间和总运动次数增加，树干会变得越来越粗壮，象征你的根基越来越稳固。</p>
+                    </div>
+                    <div class="help-section">
+                        <h3>🌿 主枝</h3>
+                        <p>每月完成一定运动目标后会生长出主枝，代表你的长期坚持和成长。</p>
+                    </div>
+                    <div class="help-section">
+                        <h3>🍃 次枝</h3>
+                        <p>每一次运动都会生成一条次枝，运动时长和强度决定了枝条的长度。</p>
+                    </div>
+                    <div class="help-section">
+                        <h3>🌸 花朵/果实</h3>
+                        <p>达成特殊成就时会绽放花朵或结出果实，是你运动旅程中的里程碑。</p>
+                    </div>
+                    <div class="help-section">
+                        <h3>⭐ 星星</h3>
+                        <p>运动质量达到标准时会点亮星星，激励你追求更高质量的锻炼。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="got-it-btn">我知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分享生命树海报弹窗 -->
+    <div id="share-tree-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>分享我的生命树</h2>
+                <button class="modal-close" id="close-share-tree-modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="tree-poster" class="tree-poster">
+                    <div class="tree-poster-header">
+                        <div class="tree-poster-logo">循迹 · 生命树</div>
+                    </div>
+                    <div class="tree-poster-tree">
+                        <svg id="poster-tree-svg" viewBox="0 0 300 400"></svg>
+                    </div>
+                    <div class="tree-poster-stats">
+                        <div class="tree-poster-stat">
+                            <span class="tree-poster-value" id="poster-trunk">基础</span>
+                            <span class="tree-poster-label">树干</span>
+                        </div>
+                        <div class="tree-poster-stat">
+                            <span class="tree-poster-value" id="poster-branches">0</span>
+                            <span class="tree-poster-label">分枝</span>
+                        </div>
+                        <div class="tree-poster-stat">
+                            <span class="tree-poster-value" id="poster-leaves">稀疏</span>
+                            <span class="tree-poster-label">树叶</span>
+                        </div>
+                    </div>
+                    <div class="tree-poster-quote">"每一次运动，都是生命的养分"</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-share-tree-btn">取消</button>
+                <button class="btn-primary" id="save-tree-poster-btn">保存海报</button>
+            </div>
+        </div>
     </div>
 
     <script src="js/main.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker 注册成功:', registration);
-                    })
-                    .catch(error => {
-                        console.log('ServiceWorker 注册失败:', error);
-                    });
-            });
-        }
-    </script>
 </body>
 </html>

@@ -1,22 +1,99 @@
 {
   "name": "循迹 - 循身体之迹，见前行之路",
   "short_name": "循迹",
-  "description": "探索你的身体地图，让 AI 翻译你的健康密码",
+  "description": "探索你的身体地图，记录每一次运动，见证身体状态的变化",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#f8faf6",
   "theme_color": "#1B4332",
   "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "zh-CN",
+  "categories": ["health", "fitness", "lifestyle"],
   "icons": [
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0idXJsKCNnKSIgcng9IjMyIi8+PHBhdGggZD0iTTQ4IDk2UTcyIDU2IDk2IDk2UTEyMCAxMzYgMTQ0IDk2IiBmaWxsPSJub25lIiBzdHJva2U9IiNERDVjODgiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDgiIGN5PSI5NiIgcj0iOCIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9IjgiIGZpbGw9IiNFOEE4MzgiLz48Y2lyY2xlIGN4PSIxNDQiIGN5PSI5NiIgcj0iOCIgZmlsbD0iI0U4QTgzOCIvPjwvc3ZnPg==",
-      "sizes": "192x192",
-      "type": "image/svg+xml"
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUI0MzMyIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjM1MDQxIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSJ1cmwoI2cpIiByeD0iOCIvPjxwYXRoIGQ9Ik0xMiAyNFEyMCAxNCAyNCAyNFEyOCAzNCAzNiAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjREQ1Qzg4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMjQiIHI9IjIiIGZpbGw9IiNFNEE4MzgiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI0IiByPSIyIiBmaWxsPSIjRThBODM4Ii8+PGNpcmNsZSBjeD0iMzYiIGN5PSIyNCIgcj0iMiIgZmlsbD0iI0U4QTgzOCIvPjwvc3ZnPg==",
+      "sizes": "48x48",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0idXJsKCNnKSIgcng9IjgwIi8+PHBhdGggZD0iTTEyOCAyNTZRMjA4IDE3NiAyNTYgMjU2UTMwNCAzMzYgMzg0IDI1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjREQ1Qzg4IiBzdHJva2Utd2lkdGg9IjIwIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMjgiIGN5PSIyNTYiIHI9IjIwIiBmaWxsPSIjRThBODM4Ii8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIyMCIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9IjM4NCIgY3k9IjI1NiIgcj0iMjAiIGZpbGw9IiNFOEE4MzgiLz48L3N2Zz4=",
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUI0MzMyIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjM1MDQxIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjcyIiBoZWlnaHQ9IjcyIiBmaWxsPSJ1cmwoI2cpIiByeD0iMTIiLz48cGF0aCBkPSJNMTggMzZRMzAgMjMgMzYgMzZRNDIgNDkgNTQgMzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0RENUM4OCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxOCIgY3k9IjM2IiByPSIzIiBmaWxsPSIjRThBODM4Ii8+PGNpcmNsZSBjeD0iMzYiIGN5PSIzNiIgcj0iMyIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9IjU0IiBjeT0iMzYiIHI9IjMiIGZpbGw9IiNFNEE4MzgiLz48L3N2Zz4=",
+      "sizes": "72x72",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUI0MzMyIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjM1MDQxIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSJ1cmwoI2cpIiByeD0iMTYiLz48cGF0aCBkPSJNMjQgNDhRMzYgMzIgNDggNDhRNjAgNjQgNzIgNDgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0RENUM4OCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjQ4IiByPSI0IiBmaWxsPSIjRThBODM4Ii8+PGNpcmNsZSBjeD0iNDgiIGN5PSI0OCIgcj0iNCIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9IjcyIiBjeT0iNDgiIHI9IjQiIGZpbGw9IiNFNEE4MzgiLz48L3N2Zz4=",
+      "sizes": "96x96",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4Ij48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgZmlsbD0idXJsKCNnKSIgcng9IjIwIi8+PHBhdGggZD0iTTMyIDY0UTQ4IDQxIDY0IDY0UTgwIDg3IDk2IDY0IiBmaWxsPSJub25lIiBzdHJva2U9IiNERDVjODgiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMzIiIGN5PSI2NCIgcj0iNSIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9IjY0IiBjeT0iNjQiIHI9IjUiIGZpbGw9IiNFNEE4MzgiLz48Y2lyY2xlIGN4PSI5NiIgY3k9IjY0IiByPSI1IiBmaWxsPSIjRThBODM4Ii8+PC9zdmc+",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQgMTQ0Ij48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjE0NCIgZmlsbD0idXJsKCNnKSIgcng9IjI0Ii8+PHBhdGggZD0iTTM2IDcyUTU0IDQ3IDcyIDcyUTkwIDk3IDEwOCA3MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjREQ1Qzg4IiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjM2IiBjeT0iNzIiIHI9IjYiIGZpbGw9IiNFNEE4MzgiLz48Y2lyY2xlIGN4PSI3MiIgY3k9IjcyIiByPSI2IiBmaWxsPSIjRThBODM4Ii8+PGNpcmNsZSBjeD0iMTA4IiBjeT0iNzIiIHI9IjYiIGZpbGw9IiNFNEE4MzgiLz48L3N2Zz4=",
+      "sizes": "144x144",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0idXJsKCNnKSIgcng9IjMyIi8+PHBhdGggZD0iTTQ4IDk2UTcyIDU2IDk2IDk2UTEyMCAxMzYgMTQ0IDk2IiBmaWxsPSJub25lIiBzdHJva2U9IiNERDVjODgiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDgiIGN5PSI5NiIgcj0iOCIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9IjgiIGZpbGw9IiNFNEE4MzgiLz48Y2lyY2xlIGN4PSIxNDQiIGN5PSI5NiIgcj0iOCIgZmlsbD0iI0U4QTgzOCIvPjwvc3ZnPg==",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0idXJsKCNnKSIgcng9IjQwIi8+PHBhdGggZD0iTTY0IDEyOFExMDQgNzYgMTI4IDEyOFExNTIgMTgwIDE5MiAxMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0RENUM4OCIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNjQiIGN5PSIxMjgiIHI9IjEwIiBmaWxsPSIjRThBODM4Ii8+PGNpcmNsZSBjeD0iMTI4IiBjeT0iMTI4IiByPSIxMCIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9IjE5MiIgY3k9IjEyOCIgcj0iMTAiIGZpbGw9IiNFNEE4MzgiLz48L3N2Zz4=",
+      "sizes": "256x256",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODQgMzg0Ij48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMzg0IiBoZWlnaHQ9IjM4NCIgZmlsbD0idXJsKCNnKSIgcng9IjYwIi8+PHBhdGggZD0iTTk2IDE5MlExNTIgMTE0IDE5MiAxOTJRMjMyIDI3MCAyODggMTkyIiBmaWxsPSJub25lIiBzdHJva2U9IiNERDVjODgiIHN0cm9rZS13aWR0aD0iMTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9Ijk2IiBjeT0iMTkyIiByPSIxNSIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9IjE5MiIgY3k9IjE5MiIgcj0iMTUiIGZpbGw9IiNFNEE4MzgiLz48Y2lyY2xlIGN4PSIyODgiIGN5PSIxOTIiIHI9IjE1IiBmaWxsPSIjRThBODM4Ii8+PC9zdmc+",
+      "sizes": "384x384",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjQzMzIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyMzUwNDEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0idXJsKCNnKSIgcng9IjgwIi8+PHBhdGggZD0iTTEyOCAyNTZRMjA4IDE3NiAyNTYgMjU2UTMwNCAzMzYgMzg0IDI1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjREQ1Qzg4IiBzdHJva2Utd2lkdGg9IjIwIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMjgiIGN5PSIyNTYiIHI9IjIwIiBmaWxsPSIjRThBODM4Ii8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIyMCIgZmlsbD0iI0U4QTgzOCIvPjxjaXJjbGUgY3g9IjM4NCIgY3k9IjI1NiIgcj0iMjAiIGZpbGw9IiNFNEE4MzgiLz48L3N2Zz4=",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MjAgMTI4MCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUI0MzMyIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjM1MDQxIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjcyMCIgaGVpZ2h0PSIxMjgwIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iMzYwIiB5PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNERDVjODgiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtZmFtaWx5PSJSb2JvdG8iPuaVsOW5szwvdGV4dD48dGV4dCB4PSIzNjAiIHk9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSIyNCIgZm9udC1mYW1pbHk9IlJvYm90byI+5b6u6L2v5Lu25a2m5Lmg57qn6ZuGPC90ZXh0Pjwvc3ZnPg==",
+      "sizes": "720x1280",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "记录运动",
+      "short_name": "记录",
+      "description": "快速记录一次运动",
+      "url": "/index.html?tab=records",
+      "icons": [{
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGNpcmNsZSBjeD0iNDgiIGN5PSI0OCIgcj0iNDgiIGZpbGw9IiMxQjQzMzIiLz48cGF0aCBkPSJNNDggMjR2NDhNMjQgNDhoNDgiIHN0cm9rZT0iI0RENUM4OCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=",
+        "sizes": "96x96"
+      }]
+    },
+    {
+      "name": "查看今日",
+      "short_name": "今日",
+      "description": "查看今日状态",
+      "url": "/index.html?tab=today",
+      "icons": [{
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGNpcmNsZSBjeD0iNDgiIGN5PSI0OCIgcj0iNDgiIGZpbGw9IiMxQjQzMzIiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjREQ1Qzg4IiBzdHJva2Utd2lkdGg9IjYiLz48cGF0aCBkPSJNNDggMjRWMzZNNDggNjBWNzJNNjAgNDhIMzciIHN0cm9rZT0iI0RENUM4OCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=",
+        "sizes": "96x96"
+      }]
     }
   ]
 }
