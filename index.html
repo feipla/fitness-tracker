@@ -9,33 +9,124 @@
     <title>循迹 - 循身体之迹，见前行之路</title>
     <meta name="description" content="探索你的身体地图，让运动数据转化为健康洞察">
     
-    <!-- 字体预加载 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
     
-    <!-- 样式 -->
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <div id="app">
-        <!-- 主容器 -->
         <main class="container">
-            <!-- 页面标题 -->
             <header class="header">
                 <h1 class="brand-title">循迹</h1>
                 <p class="brand-subtitle">循身体之迹，见前行之路</p>
             </header>
 
-            <!-- 内容区域 -->
-            <div class="content">
-                <p class="placeholder-text">Phase 0 基础框架已就绪 ✅</p>
-            </div>
+            <!-- 上传区域 -->
+            <section class="upload-section">
+                <h2 class="section-title">上传运动截图</h2>
+                
+                <!-- 上传交互区 -->
+                <div id="uploadArea" class="upload-area">
+                    <input type="file" id="fileInput" accept="image/*" capture="environment">
+                    
+                    <div id="uploadPrompt" class="upload-prompt">
+                        <div class="upload-icon">📷</div>
+                        <p class="upload-text">点击或拖拽上传</p>
+                        <p class="upload-hint">支持 JPG、PNG 等常见图片格式</p>
+                    </div>
+
+                    <!-- 图片预览 -->
+                    <div id="previewSection" class="preview-section" style="display: none;">
+                        <img id="previewImage" class="preview-image" alt="预览图片">
+                        <div class="preview-actions">
+                            <button id="removeBtn" class="btn btn-secondary">重新选择</button>
+                            <button id="parseBtn" class="btn btn-primary">开始解析</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 解析动画 -->
+                <div id="parsingSection" class="parsing-section" style="display: none;">
+                    <div class="parsing-loader">
+                        <div class="loader-spinner"></div>
+                    </div>
+                    <p id="parsingText" class="parsing-text">正在分析图片...</p>
+                </div>
+
+                <!-- 解析结果确认 -->
+                <div id="confirmSection" class="confirm-section" style="display: none;">
+                    <h3 class="confirm-title">确认运动信息</h3>
+                    
+                    <form id="confirmForm">
+                        <div class="form-group">
+                            <label class="form-label">运动类型</label>
+                            <select id="workoutType" class="form-select">
+                                <option value="running">🏃 跑步</option>
+                                <option value="cycling">🚴 骑行</option>
+                                <option value="swimming">🏊 游泳</option>
+                                <option value="walking">🚶 徒步</option>
+                                <option value="yoga">🧘 瑜伽</option>
+                                <option value="strength">💪 力量训练</option>
+                                <option value="other">🎯 其他</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">距离 (km)</label>
+                                <input type="number" id="workoutDistance" class="form-input" 
+                                       step="0.1" min="0" placeholder="5.2">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">时长 (分钟)</label>
+                                <input type="number" id="workoutDuration" class="form-input" 
+                                       min="0" placeholder="45">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">平均心率</label>
+                            <input type="number" id="workoutHeartRate" class="form-input" 
+                                   min="0" max="220" placeholder="145">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">备注</label>
+                            <textarea id="workoutNotes" class="form-textarea" 
+                                      placeholder="今天的感受..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="cancelBtn" class="btn btn-secondary">取消</button>
+                            <button type="submit" class="btn btn-primary">保存记录</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 运动记录列表 -->
+            <section class="records-section">
+                <div class="records-header">
+                    <h2 class="section-title">运动记录</h2>
+                    <span id="recordsCount" class="records-count">0 条</span>
+                </div>
+
+                <div id="recordsList" class="records-list">
+                    <div id="emptyState" class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <p class="empty-text">还没有运动记录</p>
+                        <p class="empty-hint">上传第一张截图开始记录</p>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
-    <!-- 脚本 -->
     <script src="js/state.js"></script>
+    <script src="js/upload.js"></script>
+    <script src="js/records.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
