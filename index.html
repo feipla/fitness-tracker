@@ -2,639 +2,670 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="循迹">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    
-    <title>循迹 - 循身体之迹，见前行之路</title>
-    <meta name="description" content="探索你的身体地图，让 AI 翻译你的健康密码">
-    
-    <!-- 预连接和预加载优化 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>循迹 - 健身追踪器</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    
-    <!-- PWA 相关 -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1B4332">
-    <meta name="msapplication-TileColor" content="#1B4332">
-    
-    <!-- 图标相关 -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231B4332' rx='20'/%3E%3Cpath d='M20 50Q35 20 50 50Q65 80 80 50' fill='none' stroke='%23DDD5C8' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='50' r='6' fill='%23E8A838'/%3E%3Ccircle cx='50' cy='50' r='6' fill='%23E8A838'/%3E%3Ccircle cx='80' cy='50' r='6' fill='%23E8A838'/%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231B4332' rx='20'/%3E%3Cpath d='M20 50Q35 20 50 50Q65 80 80 50' fill='none' stroke='%23DDD5C8' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='50' r='6' fill='%23E8A838'/%3E%3Ccircle cx='50' cy='50' r='6' fill='%23E8A838'/%3E%3Ccircle cx='80' cy='50' r='6' fill='%23E8A838'/%3E%3C/svg%3E">
-    
-    <!-- 样式 -->
-    <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* 设计系统 */
+        :root {
+            --color-primary: #1B4332;
+            --color-primary-light: #2D5A3D;
+            --color-accent: #E8A838;
+            --color-success: #4CAF50;
+            --color-warning: #FF9800;
+            --color-error: #F44336;
+            --color-bg: #F5F3F0;
+            --color-surface: #FFFFFF;
+            --color-text: #1B4332;
+            --color-text-muted: #6B7280;
+            --border-radius: 16px;
+            --shadow-soft: 0 4px 20px rgba(27, 67, 50, 0.1);
+            --shadow-medium: 0 8px 30px rgba(27, 67, 50, 0.15);
+            --transition-fast: 200ms ease;
+            --transition-medium: 350ms ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #app {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 头部 */
+        .header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .header-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            font-size: 1rem;
+            color: var(--color-text-muted);
+        }
+
+        /* 上传区域 */
+        .upload-section {
+            background: var(--color-surface);
+            border-radius: var(--border-radius);
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 24px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--color-primary-light);
+            border-radius: var(--border-radius);
+            padding: 48px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: var(--color-primary);
+            background: rgba(27, 67, 50, 0.03);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--color-accent);
+            background: rgba(232, 168, 56, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            color: var(--color-primary);
+        }
+
+        .upload-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .upload-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* 预览区域 */
+        .preview-section {
+            display: none;
+            margin-top: 24px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .preview-section.show {
+            display: block;
+        }
+
+        .preview-image-container {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .preview-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        .preview-remove {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .preview-remove:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        /* 按钮 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(27, 67, 50, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(27, 67, 50, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--color-surface);
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary-light);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(27, 67, 50, 0.05);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        /* 解析进度 */
+        .parsing-section {
+            display: none;
+            margin-top: 24px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .parsing-section.show {
+            display: block;
+        }
+
+        .parsing-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .parsing-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--color-bg);
+            border-radius: 12px;
+            transition: all var(--transition-medium);
+        }
+
+        .parsing-step.active {
+            background: rgba(27, 67, 50, 0.05);
+        }
+
+        .parsing-step.completed {
+            background: rgba(76, 175, 80, 0.08);
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-icon.pending {
+            background: var(--color-text-muted);
+            color: white;
+        }
+
+        .step-icon.active {
+            background: var(--color-accent);
+            color: white;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .step-icon.completed {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        /* 结果确认 */
+        .result-section {
+            display: none;
+            margin-top: 24px;
+            animation: slideUp 0.5s ease;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--color-bg);
+        }
+
+        .result-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(76, 175, 80, 0.15);
+            color: var(--color-success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* 数据卡片 */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .data-card {
+            background: var(--color-bg);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .data-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 8px;
+        }
+
+        .data-value {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .data-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--color-bg);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: white;
+            transition: all var(--transition-fast);
+        }
+
+        .data-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .data-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--color-bg);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* 记录列表 */
+        .records-section {
+            background: var(--color-surface);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .records-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .records-count {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .record-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--color-bg);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .record-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(27, 67, 50, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary);
+            flex-shrink: 0;
+        }
+
+        .record-content {
+            flex: 1;
+        }
+
+        .record-type {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .record-meta {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        .record-stats {
+            text-align: right;
+        }
+
+        .record-distance {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .record-date {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        .record-empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--color-text-muted);
+        }
+
+        .record-empty-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            opacity: 0.5;
+        }
+
+        /* 通知 */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--color-primary);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-medium);
+            opacity: 0;
+            transition: all var(--transition-medium);
+            z-index: 1000;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: var(--color-success);
+        }
+
+        .toast.error {
+            background: var(--color-error);
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .header-title {
+                font-size: 2rem;
+            }
+
+            .upload-section {
+                padding: 20px;
+            }
+
+            .upload-area {
+                padding: 32px 16px;
+            }
+
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <!-- 欢迎屏幕 -->
-        <section id="welcome-view" class="view active">
-            <div class="welcome-container">
-                <div class="welcome-hero">
-                    <div class="hero-background">
-                        <div class="map-grid"></div>
-                        <div class="trail-line"></div>
-                        <div class="pulse-ring"></div>
-                    </div>
-                    
-                    <div class="hero-content">
-                        <div class="brand-mark">
-                            <svg viewBox="0 0 100 100" class="logo-mark">
-                                <path d="M20,50 Q35,20 50,50 Q65,80 80,50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <circle cx="20" cy="50" r="3" fill="currentColor"/>
-                                <circle cx="50" cy="50" r="3" fill="currentColor"/>
-                                <circle cx="80" cy="50" r="3" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        
-                        <h1 class="brand-title">循迹</h1>
-                        <p class="brand-tagline">循身体之迹，见前行之路</p>
-                    </div>
-                </div>
+        <header class="header">
+            <h1 class="header-title">循迹</h1>
+            <p class="header-subtitle">记录每一次运动，见证身体变化</p>
+        </header>
 
-                <div class="story-section">
-                    <div class="story-card">
-                        <div class="story-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-                            </svg>
-                        </div>
-                        <h2 class="story-heading">你的身体，即是地图</h2>
-                        <p class="story-text">
-                            在健康这条路上，我们常常手握两张地图：一张是外在的路径，记录着我们在公园、街道、山野间跑过的每一公里；另一张是内在的风景，描绘着心率、恢复、压力与能量——这些身体默默诉说的无声语言。
-                        </p>
-                    </div>
+        <section class="upload-section">
+            <div class="upload-area" id="uploadArea">
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <h2 class="upload-title">上传运动截图</h2>
+                <p class="upload-hint">点击或拖拽图片到这里</p>
+                <input type="file" class="upload-input" id="fileInput" accept="image/*">
+            </div>
 
-                    <div class="story-card story-card-dark">
-                        <div class="story-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 6v6l4 2"/>
-                            </svg>
-                        </div>
-                        <h2 class="story-heading">读懂第二张地图</h2>
-                        <p class="story-text">
-                            "循"是探寻与遵循，"迹"是内在的轨迹与印记。我们不止步于记录你跑了多远，更深耕于理解每一次奔跑如何塑造你——今天的恢复是否充分？明日的训练强度该如何调整？
-                        </p>
-                    </div>
-
-                    <div class="story-card">
-                        <div class="story-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                            </svg>
-                        </div>
-                        <h2 class="story-heading">翻译与向导</h2>
-                        <p class="story-text">
-                            我们的角色，并非教练，而是翻译与向导。我们将你身体复杂的生物数据，翻译成你能理解的洞察。在"循迹"，每一次奔跑都是对内在地图的又一次测绘。
-                        </p>
-                    </div>
-                </div>
-
-                <div class="cta-section">
-                    <button id="start-btn" class="btn-primary">
-                        <span class="btn-text">开始探索</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
+            <div class="preview-section" id="previewSection">
+                <div class="preview-image-container">
+                    <img class="preview-image" id="previewImage" alt="预览">
+                    <button class="preview-remove" id="removeBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
                         </svg>
                     </button>
                 </div>
-            </div>
-        </section>
-
-        <!-- 主应用视图 -->
-        <section id="main-view" class="view">
-            <!-- 今日视图 -->
-            <div id="today-view" class="tab-view active">
-                <div class="tab-content">
-                    <header class="view-header">
-                        <h1 class="view-title">今日</h1>
-                        <div class="view-subtitle" id="today-date"></div>
-                    </header>
-                    
-                    <!-- 骨架屏 -->
-                    <div class="skeleton-container" id="today-skeleton">
-                        <div class="skeleton-card skeleton-large"></div>
-                        <div class="skeleton-card skeleton-medium"></div>
-                        <div class="skeleton-card skeleton-medium"></div>
-                    </div>
-                    
-                    <!-- 实际内容 -->
-                    <div class="today-content" id="today-content" style="display: none;">
-                        <div class="status-card" id="status-card">
-                            <div class="status-icon recovery-good" id="status-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                                </svg>
-                            </div>
-                            <div class="status-info">
-                                <div class="status-title">恢复状态</div>
-                                <div class="status-value" id="status-value">良好</div>
-                                <div class="status-source" id="status-source">循迹估算</div>
-                            </div>
-                            <div class="status-insight" id="status-insight">今天是进行训练的理想时机</div>
-                        </div>
-                        
-                        <div class="load-card" id="load-card">
-                            <h3 class="card-title">负荷建议</h3>
-                            <div class="load-meter">
-                                <div class="load-bar">
-                                    <div class="load-fill" id="load-fill"></div>
-                                </div>
-                                <div class="load-labels">
-                                    <span>低</span>
-                                    <span>中</span>
-                                    <span>高</span>
-                                </div>
-                            </div>
-                            <p class="load-advice" id="load-advice">建议进行中等强度训练</p>
-                        </div>
-                        
-                        <div class="action-card">
-                            <button class="action-btn primary" id="record-workout-btn">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 4v16m8-8H4"/>
-                                </svg>
-                                <span>记录今日运动</span>
-                            </button>
-                            <button class="action-btn secondary" id="upload-screenshot-btn">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM14.8 9.2L12 12 9.2 9.2c-.39-.39-1.02-.39-1.41 0l-3 3c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L11 12.4V17c0 .55.45 1 1 1s1-.45 1-1v-4.6l1.6 1.6c.39.39 1.02.39 1.41 0l3-3c.39-.39.39-1.02 0-1.41z"/>
-                                </svg>
-                                <span>上传截图解析</span>
-                            </button>
-                        </div>
-                        
-                        <div class="diary-card" id="diary-card">
-                            <div class="diary-header">
-                                <h3>今日之迹</h3>
-                            </div>
-                            <div class="diary-empty" id="diary-empty">
-                                <p>完成今日运动后，这里会生成你的专属日记卡片</p>
-                            </div>
-                            <div class="diary-content" id="diary-content" style="display: none;">
-                                <div class="diary-date" id="diary-date-display"></div>
-                                <div class="diary-quote" id="diary-quote"></div>
-                                <div class="diary-summary" id="diary-summary"></div>
-                                <button class="save-diary-btn" id="save-diary-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                                    </svg>
-                                    <span>保存为图片</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tree-fab" id="tree-fab">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 22v-7m0 0l-3 3m3-3l3 3m-12-5h4l2-8h6l2 8h4"/>
-                    </svg>
-                </div>
-                
-                <div class="stars-container" id="stars-container"></div>
-            </div>
-
-            <!-- 地图视图 -->
-            <div id="map-view" class="tab-view">
-                <div class="tab-content">
-                    <header class="view-header">
-                        <h1 class="view-title">地图</h1>
-                        <div class="view-subtitle">探索你的身体数据</div>
-                    </header>
-                    
-                    <div class="skeleton-container" id="map-skeleton">
-                        <div class="skeleton-card skeleton-large"></div>
-                        <div class="skeleton-card skeleton-medium"></div>
-                    </div>
-                    
-                    <div class="map-content" id="map-content" style="display: none;">
-                        <div class="period-toggle">
-                            <button class="period-btn active" data-period="week">周</button>
-                            <button class="period-btn" data-period="month">月</button>
-                            <button class="period-btn" data-period="year">年</button>
-                        </div>
-                        
-                        <div class="radar-card">
-                            <div class="card-header">
-                                <h3 class="card-title">身体状态雷达图</h3>
-                                <button class="explain-btn" id="explain-radar-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="radar-container">
-                                <svg viewBox="0 0 300 300" class="radar-svg" id="radar-svg"></svg>
-                            </div>
-                            <div class="radar-legend">
-                                <div class="legend-item">
-                                    <span class="legend-dot current"></span>
-                                    <span>当前周期</span>
-                                </div>
-                                <div class="legend-item">
-                                    <span class="legend-dot previous"></span>
-                                    <span>上一周期</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="trend-card">
-                            <div class="card-header">
-                                <h3 class="card-title">身体年龄趋势</h3>
-                            </div>
-                            <div class="trend-value" id="trend-value">年轻 0 岁</div>
-                            <div class="trend-chart" id="trend-chart"></div>
-                            <div class="disclaimer">此估算基于运动数据模型，非医学诊断，仅供参考</div>
-                        </div>
-                        
-                        <div class="summary-card" id="summary-card">
-                            <h3 class="card-title">周期总结</h3>
-                            <div class="summary-stats">
-                                <div class="summary-stat">
-                                    <div class="summary-value" id="summary-workouts">0</div>
-                                    <div class="summary-label">运动次数</div>
-                                </div>
-                                <div class="summary-stat">
-                                    <div class="summary-value" id="summary-distance">0</div>
-                                    <div class="summary-label">总距离 (km)</div>
-                                </div>
-                                <div class="summary-stat">
-                                    <div class="summary-value" id="summary-duration">0</div>
-                                    <div class="summary-label">总时长 (min)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="reuploadBtn">重新选择</button>
+                    <button class="btn btn-primary" id="parseBtn">开始解析</button>
                 </div>
             </div>
 
-            <!-- 记录视图 -->
-            <div id="records-view" class="tab-view">
-                <div class="tab-content">
-                    <header class="view-header">
-                        <h1 class="view-title">记录</h1>
-                        <div class="view-subtitle">你的运动历史</div>
-                    </header>
-                    
-                    <div class="filters" id="filters">
-                        <div class="filter-group">
-                            <label>运动类型</label>
-                            <select class="filter-select" id="type-filter">
-                                <option value="all">全部</option>
-                                <option value="running">跑步</option>
-                                <option value="cycling">骑行</option>
-                                <option value="swimming">游泳</option>
-                                <option value="walking">步行</option>
-                                <option value="other">其他</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>时间范围</label>
-                            <select class="filter-select" id="time-filter">
-                                <option value="all">全部</option>
-                                <option value="week">本周</option>
-                                <option value="month">本月</option>
-                                <option value="year">今年</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="skeleton-container" id="records-skeleton">
-                        <div class="skeleton-list">
-                            <div class="skeleton-item"></div>
-                            <div class="skeleton-item"></div>
-                            <div class="skeleton-item"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="records-content" id="records-content" style="display: none;">
-                        <div class="timeline" id="timeline"></div>
-                        <div class="empty-state" id="empty-records" style="display: none;">
-                            <div class="empty-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                </svg>
-                            </div>
-                            <p>还没有运动记录，开始你的第一次吧！</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 旅途视图 -->
-            <div id="journey-view" class="tab-view">
-                <div class="tab-content">
-                    <header class="view-header">
-                        <h1 class="view-title">旅途</h1>
-                        <div class="view-subtitle">十年之约</div>
-                    </header>
-                    
-                    <div class="skeleton-container" id="journey-skeleton">
-                        <div class="skeleton-card skeleton-large"></div>
-                        <div class="skeleton-card skeleton-medium"></div>
-                        <div class="skeleton-card skeleton-medium"></div>
-                    </div>
-                    
-                    <div class="journey-content" id="journey-content" style="display: none;">
-                        <div class="vision-card" id="vision-card">
-                            <div class="vision-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                                </svg>
-                            </div>
-                            <h3>设定你的十年愿景</h3>
-                            <p>想象一下，十年后的你，最想用自己的身体去完成什么事？</p>
-                            <div class="vision-options">
-                                <button class="vision-option" data-vision="climb">陪孩子爬山</button>
-                                <button class="vision-option" data-vision="marathon">完成马拉松</button>
-                                <button class="vision-option" data-vision="travel">70岁独立旅行</button>
-                                <button class="vision-option" data-vision="energy">保持充沛精力</button>
-                                <button class="vision-option" data-vision="custom">自定义...</button>
-                            </div>
-                        </div>
-                        
-                        <div class="custom-vision-modal" id="custom-vision-modal" style="display: none;">
-                            <div class="custom-vision-content">
-                                <input type="text" id="custom-vision-input" class="custom-vision-input" placeholder="写下你的愿景...">
-                                <div class="custom-vision-actions">
-                                    <button class="btn-secondary" id="cancel-custom-vision">取消</button>
-                                    <button class="btn-primary" id="save-custom-vision">保存</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="journey-stats" id="journey-stats" style="display: none;">
-                            <div class="vision-display-card">
-                                <div class="vision-display-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                                    </svg>
-                                </div>
-                                <div class="vision-display-text">
-                                    <div class="vision-display-title">我的十年愿景</div>
-                                    <div class="vision-display-value" id="vision-display-value"></div>
-                                </div>
-                                <button class="vision-change-btn" id="change-vision-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            
-                            <div class="stats-grid">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="total-workouts">0</div>
-                                    <div class="stat-desc">总运动次数</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-number" id="total-distance">0</div>
-                                    <div class="stat-desc">总公里数</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-number" id="streak">0</div>
-                                    <div class="stat-desc">连续天数</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-number" id="total-calories">0</div>
-                                    <div class="stat-desc">消耗热量(kcal)</div>
-                                </div>
-                            </div>
-                            
-                            <div class="trend-section">
-                                <div class="section-header">
-                                    <h3 class="section-title">身体年龄变化</h3>
-                                </div>
-                                <div class="body-age-chart" id="body-age-chart"></div>
-                            </div>
-                            
-                            <div class="heatmap-section">
-                                <div class="section-header">
-                                    <h3 class="section-title">运动热力图</h3>
-                                </div>
-                                <div class="heatmap-container" id="heatmap-container"></div>
-                            </div>
-                            
-                            <div class="trend-report-card">
-                                <div class="section-header">
-                                    <h3 class="section-title">长期趋势报告</h3>
-                                    <button class="explain-btn" id="share-journey-btn">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="report-content">
-                                    <div class="report-item">
-                                        <div class="report-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="20 12 18 12 15 21 9 3 6 12 2 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="report-text">
-                                            <div class="report-title">运动频率</div>
-                                            <div class="report-value" id="report-frequency">每周 0 次</div>
-                                        </div>
-                                    </div>
-                                    <div class="report-item">
-                                        <div class="report-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M17.5 19H9a7 7 0 116.71-9h1.79a4.5 4.5 0 110 9Z"/>
-                                            </svg>
-                                        </div>
-                                        <div class="report-text">
-                                            <div class="report-title">平均时长</div>
-                                            <div class="report-value" id="report-duration">0 分钟</div>
-                                        </div>
-                                    </div>
-                                    <div class="report-item">
-                                        <div class="report-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <polyline points="12 6 12 12 16 14"/>
-                                            </svg>
-                                        </div>
-                                        <div class="report-text">
-                                            <div class="report-title">最佳时段</div>
-                                            <div class="report-value" id="report-time">--</div>
-                                        </div>
-                                    </div>
-                                    <div class="report-insight" id="report-insight">
-                                        开始你的运动之旅，坚持运动，身体状态会持续改善！
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 生命树视图 -->
-            <div id="tree-view" class="tab-view">
-                <div class="tab-content">
-                    <header class="view-header">
-                        <h1 class="view-title">生命树</h1>
-                        <div class="view-subtitle">见证你的成长</div>
-                    </header>
-                    
-                    <div class="skeleton-container" id="tree-skeleton">
-                        <div class="skeleton-card skeleton-xlarge"></div>
-                    </div>
-                    
-                    <div class="tree-content" id="tree-content" style="display: none;">
-                        <div class="timeline-slider-container">
-                            <div class="timeline-label">
-                                <span class="timeline-start">开始</span>
-                                <span class="timeline-current" id="timeline-current-date">今天</span>
-                            </div>
-                            <input type="range" class="timeline-slider" id="timeline-slider" min="0" max="100" value="100">
-                        </div>
-                        
-                        <div class="tree-container" id="tree-svg-container">
-                            <svg id="life-tree-svg" class="life-tree-svg" viewBox="0 0 400 500">
-                                <defs>
-                                    <linearGradient id="trunkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" style="stop-color:#8B6914;stop-opacity:1"/>
-                                        <stop offset="50%" style="stop-color:#A0826D;stop-opacity:1"/>
-                                        <stop offset="100%" style="stop-color:#8B6914;stop-opacity:1"/>
-                                    </linearGradient>
-                                    <radialGradient id="leafGradient" cx="50%" cy="50%" r="50%">
-                                        <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1"/>
-                                        <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1"/>
-                                    </radialGradient>
-                                    <filter id="glow">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                                        <feMerge>
-                                            <feMergeNode in="coloredBlur"/>
-                                            <feMergeNode in="SourceGraphic"/>
-                                        </feMerge>
-                                    </filter>
-                                </defs>
+            <div class="parsing-section" id="parsingSection">
+                <div class="parsing-steps">
+                    <div class="parsing-step" id="step1">
+                        <div class="step-icon pending">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
                             </svg>
                         </div>
-                        
-                        <div class="tree-info">
-                            <div class="info-item">
-                                <span class="info-label">树干粗度</span>
-                                <span class="info-value" id="trunk-thickness">基础</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">分枝数量</span>
-                                <span class="info-value" id="branch-count">0</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">树叶密度</span>
-                                <span class="info-value" id="leaf-density">稀疏</span>
-                            </div>
+                        <div class="step-content">
+                            <div class="step-title">加载图片</div>
+                            <div class="step-desc">正在读取图片数据...</div>
                         </div>
-                        
-                        <div class="tree-actions">
-                            <button class="action-btn tree-action-btn" id="help-btn">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-                                    <line x1="12" y1="17" x2="12.01" y2="17"/>
-                                </svg>
-                                <span>如何成长</span>
-                            </button>
-                            <button class="action-btn tree-action-btn primary" id="share-tree-btn">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                                </svg>
-                                <span>分享生命树</span>
-                            </button>
+                    </div>
+                    <div class="parsing-step" id="step2">
+                        <div class="step-icon pending">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">分析数据</div>
+                            <div class="step-desc">识别运动信息...</div>
+                        </div>
+                    </div>
+                    <div class="parsing-step" id="step3">
+                        <div class="step-icon pending">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">提取信息</div>
+                            <div class="step-desc">解析距离、时长等数据...</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 底部导航 -->
-            <nav class="bottom-nav">
-                <button class="nav-item active" data-tab="today">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    <span>今日</span>
-                </button>
-                <button class="nav-item" data-tab="map">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
-                        <line x1="9" y1="3" x2="9" y2="18"/>
-                        <line x1="15" y1="6" x2="15" y2="21"/>
-                    </svg>
-                    <span>地图</span>
-                </button>
-                <button class="nav-item" data-tab="records">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="16" y1="13" x2="8" y2="13"/>
-                        <line x1="16" y1="17" x2="8" y2="17"/>
-                        <polyline points="10 9 9 9 8 9"/>
-                    </svg>
-                    <span>记录</span>
-                </button>
-                <button class="nav-item" data-tab="journey">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                    <span>旅途</span>
-                </button>
-                <button class="nav-item" data-tab="tree">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 22v-7m0 0l-3 3m3-3l3 3m-12-5h4l2-8h6l2 8h4"/>
-                    </svg>
-                    <span>生命树</span>
-                </button>
-            </nav>
-        </section>
-        
-        <!-- 上传截图模态框 -->
-        <div id="upload-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>上传运动截图</h2>
-                    <button class="modal-close" id="close-upload-modal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12"/>
+            <div class="result-section" id="resultSection">
+                <div class="result-header">
+                    <div class="result-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
                         </svg>
-                    </button>
+                    </div>
+                    <h2 class="result-title">解析完成</h2>
                 </div>
-                <div class="modal-body">
-                    <div class="upload-area" id="upload-area">
-                        <input type="file" id="file-input" accept="image/*" hidden>
-                        <div class="upload-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
-                                <path d="M21 16v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2"/>
-                            </svg>
-                        </div>
-                        <p class="upload-text">点击或拖拽上传截图</p>
-                        <p class="upload-hint">支持 JPG、PNG 格式</p>
-                    </div>
-                    <div class="preview-area" id="preview-area" style="display: none;">
-                        <img id="preview-image" alt="预览">
-                        <button class="remove-image-btn" id="remove-image-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 6L6 18M6 6l12 12"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="form-group" id="parsed-data" style="display: none;">
-                        <label>运动类型</label>
-                        <select id="parsed-type" class="form-input">
+
+                <div class="data-grid">
+                    <div class="data-card">
+                        <label class="data-label">运动类型</label>
+                        <select class="data-select" id="workoutType">
                             <option value="running">跑步</option>
                             <option value="cycling">骑行</option>
                             <option value="swimming">游泳</option>
@@ -642,238 +673,347 @@
                             <option value="other">其他</option>
                         </select>
                     </div>
-                    <div class="form-row" id="parsed-data2" style="display: none;">
-                        <div class="form-group">
-                            <label>时长（分钟）</label>
-                            <input type="number" id="parsed-duration" class="form-input" placeholder="30">
-                        </div>
-                        <div class="form-group">
-                            <label>距离（公里）</label>
-                            <input type="number" id="parsed-distance" class="form-input" placeholder="5.0" step="0.1">
-                        </div>
+                    <div class="data-card">
+                        <label class="data-label">距离 (公里)</label>
+                        <input type="number" class="data-input" id="workoutDistance" step="0.1" min="0" value="5.2">
                     </div>
-                    <div class="form-row" id="parsed-data3" style="display: none;">
-                        <div class="form-group">
-                            <label>平均心率</label>
-                            <input type="number" id="parsed-hr" class="form-input" placeholder="140">
-                        </div>
-                        <div class="form-group">
-                            <label>消耗卡路里</label>
-                            <input type="number" id="parsed-calories" class="form-input" placeholder="300">
-                        </div>
+                    <div class="data-card">
+                        <label class="data-label">时长 (分钟)</label>
+                        <input type="number" class="data-input" id="workoutDuration" min="1" value="35">
+                    </div>
+                    <div class="data-card">
+                        <label class="data-label">平均心率</label>
+                        <input type="number" class="data-input" id="workoutHeartRate" min="30" max="220" value="138">
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn-secondary" id="cancel-upload">取消</button>
-                    <button class="btn-primary" id="confirm-upload" disabled>
-                        <span class="btn-text">确认添加</span>
-                        <span class="btn-loading" style="display: none;">解析中...</span>
-                    </button>
+
+                <div class="data-card" style="grid-column: 1 / -1;">
+                    <label class="data-label">备注</label>
+                    <input type="text" class="data-input" id="workoutNotes" placeholder="添加备注（可选）">
+                </div>
+
+                <div class="btn-group" style="margin-top: 24px;">
+                    <button class="btn btn-secondary" id="cancelBtn">取消</button>
+                    <button class="btn btn-primary" id="saveBtn">保存记录</button>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- 运动详情弹窗 -->
-    <div id="workout-detail-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>运动详情</h2>
-                <button class="modal-close" id="close-detail-modal">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
+        <section class="records-section">
+            <div class="records-header">
+                <h2 class="records-title">运动记录</h2>
+                <span class="records-count" id="recordsCount">0 条</span>
+            </div>
+            <div id="recordsList">
+                <div class="record-empty" id="emptyState">
+                    <svg class="record-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="9" y1="9" x2="15" y2="9"/>
+                        <line x1="9" y1="15" x2="15" y2="15"/>
                     </svg>
-                </button>
+                    <p>还没有运动记录</p>
+                    <p style="font-size: 0.875rem; margin-top: 8px;">上传第一张截图开始记录吧</p>
+                </div>
             </div>
-            <div class="modal-body" id="detail-modal-body">
-                <!-- 详情内容将通过JS动态填充 -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="delete-workout-btn">删除</button>
-                <button class="btn-primary" id="edit-workout-btn">编辑</button>
-            </div>
-        </div>
+        </section>
     </div>
 
-    <!-- 编辑运动记录弹窗 -->
-    <div id="edit-workout-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>编辑运动记录</h2>
-                <button class="modal-close" id="close-edit-modal">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>运动类型</label>
-                    <select id="edit-type" class="form-input">
-                        <option value="running">跑步</option>
-                        <option value="cycling">骑行</option>
-                        <option value="swimming">游泳</option>
-                        <option value="walking">步行</option>
-                        <option value="other">其他</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>时长（分钟）</label>
-                        <input type="number" id="edit-duration" class="form-input" placeholder="30">
-                    </div>
-                    <div class="form-group">
-                        <label>距离（公里）</label>
-                        <input type="number" id="edit-distance" class="form-input" placeholder="5.0" step="0.1">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>平均心率</label>
-                        <input type="number" id="edit-heartrate" class="form-input" placeholder="140">
-                    </div>
-                    <div class="form-group">
-                        <label>消耗卡路里</label>
-                        <input type="number" id="edit-calories" class="form-input" placeholder="300">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>备注</label>
-                    <input type="text" id="edit-notes" class="form-input" placeholder="记录您的运动感受...">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="cancel-edit-btn">取消</button>
-                <button class="btn-primary" id="save-edit-btn">保存</button>
-            </div>
-        </div>
-    </div>
+    <div class="toast" id="toast"></div>
 
-    <!-- 分享海报弹窗 -->
-    <div id="share-poster-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>分享我的旅途</h2>
-                <button class="modal-close" id="close-share-modal">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="share-poster" class="share-poster">
-                    <div class="poster-header">
-                        <div class="poster-logo">循迹</div>
-                        <div class="poster-vision" id="poster-vision">陪孩子爬山</div>
-                    </div>
-                    <div class="poster-stats">
-                        <div class="poster-stat">
-                            <div class="poster-number" id="poster-workouts">0</div>
-                            <div class="poster-label">总运动次数</div>
-                        </div>
-                        <div class="poster-stat">
-                            <div class="poster-number" id="poster-distance">0</div>
-                            <div class="poster-label">总公里数</div>
-                        </div>
-                        <div class="poster-stat">
-                            <div class="poster-number" id="poster-days">0</div>
-                            <div class="poster-label">坚持天数</div>
-                        </div>
-                    </div>
-                    <div class="poster-quote">"循身体之迹，见前行之路"</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="cancel-share-btn">取消</button>
-                <button class="btn-primary" id="save-poster-btn">保存海报</button>
-            </div>
-        </div>
-    </div>
+    <script>
+        // 应用状态
+        const state = {
+            currentImage: null,
+            records: JSON.parse(localStorage.getItem('fitnessRecords') || '[]'),
+            currentStep: 'upload' // upload, preview, parsing, result
+        };
 
-    <!-- 生命树帮助弹窗 -->
-    <div id="tree-help-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>如何成长</h2>
-                <button class="modal-close" id="close-tree-help-modal">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="help-content">
-                    <div class="help-section">
-                        <h3>🌳 树干</h3>
-                        <p>随着使用时间和总运动次数增加，树干会变得越来越粗壮，象征你的根基越来越稳固。</p>
-                    </div>
-                    <div class="help-section">
-                        <h3>🌿 主枝</h3>
-                        <p>每月完成一定运动目标后会生长出主枝，代表你的长期坚持和成长。</p>
-                    </div>
-                    <div class="help-section">
-                        <h3>🍃 次枝</h3>
-                        <p>每一次运动都会生成一条次枝，运动时长和强度决定了枝条的长度。</p>
-                    </div>
-                    <div class="help-section">
-                        <h3>🌸 花朵/果实</h3>
-                        <p>达成特殊成就时会绽放花朵或结出果实，是你运动旅程中的里程碑。</p>
-                    </div>
-                    <div class="help-section">
-                        <h3>⭐ 星星</h3>
-                        <p>运动质量达到标准时会点亮星星，激励你追求更高质量的锻炼。</p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-primary" id="got-it-btn">我知道了</button>
-            </div>
-        </div>
-    </div>
+        console.log('🚀 健身追踪器应用初始化');
+        console.log('📦 初始状态:', state);
 
-    <!-- 分享生命树海报弹窗 -->
-    <div id="share-tree-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>分享我的生命树</h2>
-                <button class="modal-close" id="close-share-tree-modal">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="tree-poster" class="tree-poster">
-                    <div class="tree-poster-header">
-                        <div class="tree-poster-logo">循迹 · 生命树</div>
-                    </div>
-                    <div class="tree-poster-tree">
-                        <svg id="poster-tree-svg" viewBox="0 0 300 400"></svg>
-                    </div>
-                    <div class="tree-poster-stats">
-                        <div class="tree-poster-stat">
-                            <span class="tree-poster-value" id="poster-trunk">基础</span>
-                            <span class="tree-poster-label">树干</span>
-                        </div>
-                        <div class="tree-poster-stat">
-                            <span class="tree-poster-value" id="poster-branches">0</span>
-                            <span class="tree-poster-label">分枝</span>
-                        </div>
-                        <div class="tree-poster-stat">
-                            <span class="tree-poster-value" id="poster-leaves">稀疏</span>
-                            <span class="tree-poster-label">树叶</span>
-                        </div>
-                    </div>
-                    <div class="tree-poster-quote">"每一次运动，都是生命的养分"</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="cancel-share-tree-btn">取消</button>
-                <button class="btn-primary" id="save-tree-poster-btn">保存海报</button>
-            </div>
-        </div>
-    </div>
+        // DOM 元素
+        const elements = {
+            uploadArea: document.getElementById('uploadArea'),
+            fileInput: document.getElementById('fileInput'),
+            previewSection: document.getElementById('previewSection'),
+            previewImage: document.getElementById('previewImage'),
+            removeBtn: document.getElementById('removeBtn'),
+            reuploadBtn: document.getElementById('reuploadBtn'),
+            parseBtn: document.getElementById('parseBtn'),
+            parsingSection: document.getElementById('parsingSection'),
+            resultSection: document.getElementById('resultSection'),
+            workoutType: document.getElementById('workoutType'),
+            workoutDistance: document.getElementById('workoutDistance'),
+            workoutDuration: document.getElementById('workoutDuration'),
+            workoutHeartRate: document.getElementById('workoutHeartRate'),
+            workoutNotes: document.getElementById('workoutNotes'),
+            cancelBtn: document.getElementById('cancelBtn'),
+            saveBtn: document.getElementById('saveBtn'),
+            recordsList: document.getElementById('recordsList'),
+            recordsCount: document.getElementById('recordsCount'),
+            emptyState: document.getElementById('emptyState'),
+            toast: document.getElementById('toast')
+        };
 
-    <script src="js/main.js"></script>
+        // 工具函数
+        function showToast(message, type = 'success') {
+            console.log(`📢 显示通知: ${message} (${type})`);
+            elements.toast.textContent = message;
+            elements.toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                elements.toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function saveRecords() {
+            console.log('💾 保存记录到 localStorage');
+            localStorage.setItem('fitnessRecords', JSON.stringify(state.records));
+        }
+
+        function getIconForType(type) {
+            const icons = {
+                running: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/></svg>',
+                cycling: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5V14l-3-3 4-3 2 3h3"/></svg>',
+                swimming: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 10c1 0 1.5 1 3 1s2-1 3-1 1.5 1 3 1 2-1 3-1"/><path d="M9 17c1 0 1.5 1 3 1s2-1 3-1 1.5 1 3 1 2-1 3-1"/><path d="M12 5c-1 1-2 1-3 1s-1.5-1-3-1-2 1-3 1"/><path d="M5 5l1.5 3H9"/><path d="M15 5l1.5 3H19"/></svg>',
+                walking: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="4.5" r="2.5"/><path d="M10 21.5V15l-2 1.5"/><path d="M15.5 8.5 12 12l1.5 5.5"/><path d="M10 12h3l1.5 3.5"/></svg>',
+                other: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>'
+            };
+            return icons[type] || icons.other;
+        }
+
+        function getTypeName(type) {
+            const names = {
+                running: '跑步',
+                cycling: '骑行',
+                swimming: '游泳',
+                walking: '步行',
+                other: '运动'
+            };
+            return names[type] || '运动';
+        }
+
+        function formatDate(date) {
+            const d = new Date(date);
+            const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return d.toLocaleDateString('zh-CN', options);
+        }
+
+        // 渲染记录列表
+        function renderRecords() {
+            console.log('🎨 渲染记录列表，共', state.records.length, '条');
+            
+            if (state.records.length === 0) {
+                elements.emptyState.style.display = 'block';
+                elements.recordsCount.textContent = '0 条';
+                return;
+            }
+
+            elements.emptyState.style.display = 'none';
+            elements.recordsCount.textContent = `${state.records.length} 条`;
+
+            const recordsHTML = state.records
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map((record, index) => `
+                    <div class="record-item" style="animation-delay: ${index * 0.05}s">
+                        <div class="record-icon">
+                            ${getIconForType(record.type)}
+                        </div>
+                        <div class="record-content">
+                            <div class="record-type">${getTypeName(record.type)}</div>
+                            <div class="record-meta">
+                                ${record.duration} 分钟 · 心率 ${record.heartRate || '-'} 次/分
+                                ${record.notes ? ` · ${record.notes}` : ''}
+                            </div>
+                        </div>
+                        <div class="record-stats">
+                            <div class="record-distance">${record.distance} km</div>
+                            <div class="record-date">${formatDate(record.date)}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+            elements.recordsList.innerHTML = recordsHTML + elements.emptyState.outerHTML;
+        }
+
+        // 重置到初始状态
+        function resetToUpload() {
+            console.log('🔄 重置到上传状态');
+            state.currentImage = null;
+            state.currentStep = 'upload';
+            
+            elements.previewSection.classList.remove('show');
+            elements.parsingSection.classList.remove('show');
+            elements.resultSection.classList.remove('show');
+            elements.fileInput.value = '';
+            
+            // 重置步骤图标
+            ['step1', 'step2', 'step3'].forEach(id => {
+                const step = document.getElementById(id);
+                step.classList.remove('active', 'completed');
+                step.querySelector('.step-icon').className = 'step-icon pending';
+            });
+        }
+
+        // 处理文件选择
+        function handleFileSelect(file) {
+            console.log('📁 处理文件选择:', file.name);
+            
+            if (!file.type.startsWith('image/')) {
+                showToast('请选择图片文件', 'error');
+                console.error('❌ 文件类型错误:', file.type);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                console.log('✅ 文件读取完成');
+                state.currentImage = e.target.result;
+                state.currentStep = 'preview';
+                
+                elements.previewImage.src = e.target.result;
+                elements.previewSection.classList.add('show');
+                
+                // 生成模拟数据
+                elements.workoutDistance.value = (Math.random() * 10 + 1).toFixed(1);
+                elements.workoutDuration.value = Math.floor(Math.random() * 60 + 20);
+                elements.workoutHeartRate.value = Math.floor(Math.random() * 50 + 110);
+                
+                console.log('📊 生成的模拟数据:', {
+                    distance: elements.workoutDistance.value,
+                    duration: elements.workoutDuration.value,
+                    heartRate: elements.workoutHeartRate.value
+                });
+            };
+            
+            reader.onerror = (error) => {
+                console.error('❌ 文件读取失败:', error);
+                showToast('文件读取失败', 'error');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        // 模拟解析过程
+        async function simulateParsing() {
+            console.log('🔍 开始解析流程');
+            state.currentStep = 'parsing';
+            
+            elements.previewSection.classList.remove('show');
+            elements.parsingSection.classList.add('show');
+            
+            const steps = ['step1', 'step2', 'step3'];
+            
+            for (let i = 0; i < steps.length; i++) {
+                const step = document.getElementById(steps[i]);
+                step.classList.add('active');
+                step.querySelector('.step-icon').className = 'step-icon active';
+                console.log(`⏳ 执行步骤 ${i + 1}: ${step.querySelector('.step-title').textContent}`);
+                
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                step.classList.remove('active');
+                step.classList.add('completed');
+                step.querySelector('.step-icon').className = 'step-icon completed';
+                console.log(`✅ 步骤 ${i + 1} 完成`);
+            }
+            
+            console.log('🎉 解析完成，显示结果');
+            elements.parsingSection.classList.remove('show');
+            elements.resultSection.classList.add('show');
+            state.currentStep = 'result';
+        }
+
+        // 保存记录
+        function saveRecord() {
+            console.log('💾 准备保存记录');
+            
+            const record = {
+                id: Date.now().toString(),
+                type: elements.workoutType.value,
+                distance: parseFloat(elements.workoutDistance.value),
+                duration: parseInt(elements.workoutDuration.value),
+                heartRate: parseInt(elements.workoutHeartRate.value) || null,
+                notes: elements.workoutNotes.value || '',
+                date: new Date().toISOString(),
+                image: state.currentImage
+            };
+            
+            console.log('📝 记录数据:', record);
+            
+            state.records.push(record);
+            saveRecords();
+            renderRecords();
+            
+            showToast('记录保存成功！');
+            console.log('✅ 记录已保存');
+            
+            resetToUpload();
+        }
+
+        // 事件绑定
+        elements.uploadArea.addEventListener('click', () => {
+            console.log('👆 点击上传区域');
+            elements.fileInput.click();
+        });
+
+        elements.uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            elements.uploadArea.classList.add('dragover');
+        });
+
+        elements.uploadArea.addEventListener('dragleave', () => {
+            elements.uploadArea.classList.remove('dragover');
+        });
+
+        elements.uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            elements.uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                console.log('🖱️ 文件拖放');
+                handleFileSelect(files[0]);
+            }
+        });
+
+        elements.fileInput.addEventListener('change', (e) => {
+            console.log('📁 文件输入变化');
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        elements.removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log('🗑️ 点击移除按钮');
+            resetToUpload();
+        });
+
+        elements.reuploadBtn.addEventListener('click', () => {
+            console.log('🔄 点击重新选择');
+            resetToUpload();
+            elements.fileInput.click();
+        });
+
+        elements.parseBtn.addEventListener('click', () => {
+            console.log('▶️ 点击开始解析');
+            simulateParsing();
+        });
+
+        elements.cancelBtn.addEventListener('click', () => {
+            console.log('❌ 点击取消');
+            resetToUpload();
+        });
+
+        elements.saveBtn.addEventListener('click', () => {
+            console.log('💾 点击保存');
+            saveRecord();
+        });
+
+        // 初始化
+        console.log('🏁 应用启动，开始初始化');
+        renderRecords();
+        console.log('✅ 初始化完成');
+    </script>
 </body>
 </html>
