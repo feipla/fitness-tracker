@@ -628,3 +628,166 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* ==================== 分析流程样式 ==================== */
+
+/* 分析中 */
+.analyzing-section {
+    padding: var(--space-xl) 0;
+}
+
+.analysis-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    opacity: 0.5;
+    transition: all var(--transition-medium);
+}
+
+.step.active {
+    opacity: 1;
+    background: rgba(76, 175, 80, 0.15);
+    border: 1px solid var(--color-primary);
+}
+
+.step.completed {
+    opacity: 0.8;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.step-icon {
+    font-size: 28px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-text {
+    font-size: var(--text-lg);
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: var(--space-xs);
+}
+
+.step-status {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* 分析结果 */
+.analysis-result-section {
+    padding-top: var(--space-md);
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+}
+
+.result-title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+/* 指标卡片 */
+.metrics-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.metrics-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+}
+
+.metric-item {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    text-align: center;
+}
+
+.metric-value {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-primary-light);
+    margin-bottom: var(--space-xs);
+}
+
+.metric-label {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* 解读卡片 */
+.interpretation-card,
+.recommendation-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.interpretation-title,
+.recommendation-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+}
+
+.interpretation-text,
+.recommendation-text {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text);
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-xl);
+}
+
+/* 响应式调整 */
+@media (max-width: 480px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+

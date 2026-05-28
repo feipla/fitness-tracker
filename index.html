@@ -42,67 +42,61 @@
                         <img id="previewImage" class="preview-image" alt="预览图片">
                         <div class="preview-actions">
                             <button id="removeBtn" class="btn btn-secondary">重新选择</button>
-                            <button id="parseBtn" class="btn btn-primary">开始解析</button>
+                            <button id="parseBtn" class="btn btn-primary">开始分析</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 解析动画 -->
-                <div id="parsingSection" class="parsing-section" style="display: none;">
-                    <div class="parsing-loader">
-                        <div class="loader-spinner"></div>
+                <!-- 分析中动画 -->
+                <div id="analyzingSection" class="analyzing-section" style="display: none;">
+                    <div class="analysis-steps">
+                        <div class="step active" id="step-ocr">
+                            <div class="step-icon">🔍</div>
+                            <div class="step-text">OCR 识别文字</div>
+                            <div class="step-status">正在识别...</div>
+                        </div>
+                        <div class="step" id="step-extract">
+                            <div class="step-icon">📊</div>
+                            <div class="step-text">提取健康指标</div>
+                            <div class="step-status">等待中...</div>
+                        </div>
+                        <div class="step" id="step-analyze">
+                            <div class="step-icon">🤖</div>
+                            <div class="step-text">大模型分析</div>
+                            <div class="step-status">等待中...</div>
+                        </div>
                     </div>
-                    <p id="parsingText" class="parsing-text">正在分析图片...</p>
                 </div>
 
-                <!-- 解析结果确认 -->
-                <div id="confirmSection" class="confirm-section" style="display: none;">
-                    <h3 class="confirm-title">确认运动信息</h3>
-                    
-                    <form id="confirmForm">
-                        <div class="form-group">
-                            <label class="form-label">运动类型</label>
-                            <select id="workoutType" class="form-select">
-                                <option value="running">🏃 跑步</option>
-                                <option value="cycling">🚴 骑行</option>
-                                <option value="swimming">🏊 游泳</option>
-                                <option value="walking">🚶 徒步</option>
-                                <option value="yoga">🧘 瑜伽</option>
-                                <option value="strength">💪 力量训练</option>
-                                <option value="other">🎯 其他</option>
-                            </select>
-                        </div>
+                <!-- 分析结果展示 -->
+                <div id="analysisResultSection" class="analysis-result-section" style="display: none;">
+                    <div class="result-header">
+                        <h3 class="result-title">📝 分析结果</h3>
+                        <button id="retryBtn" class="btn btn-secondary btn-small">重新分析</button>
+                    </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">距离 (km)</label>
-                                <input type="number" id="workoutDistance" class="form-input" 
-                                       step="0.1" min="0" placeholder="5.2">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">时长 (分钟)</label>
-                                <input type="number" id="workoutDuration" class="form-input" 
-                                       min="0" placeholder="45">
-                            </div>
-                        </div>
+                    <!-- 提取的指标 -->
+                    <div class="metrics-card">
+                        <h4 class="metrics-title">🏃 运动指标</h4>
+                        <div id="metricsDisplay" class="metrics-grid"></div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label">平均心率</label>
-                            <input type="number" id="workoutHeartRate" class="form-input" 
-                                   min="0" max="220" placeholder="145">
-                        </div>
+                    <!-- 大白话解读 -->
+                    <div class="interpretation-card">
+                        <h4 class="interpretation-title">💡 大白话解读</h4>
+                        <div id="interpretationText" class="interpretation-text"></div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label">备注</label>
-                            <textarea id="workoutNotes" class="form-textarea" 
-                                      placeholder="今天的感受..."></textarea>
-                        </div>
+                    <!-- 下次锻炼建议 -->
+                    <div class="recommendation-card">
+                        <h4 class="recommendation-title">🎯 下次锻炼建议</h4>
+                        <div id="recommendationText" class="recommendation-text"></div>
+                    </div>
 
-                        <div class="form-actions">
-                            <button type="button" id="cancelBtn" class="btn btn-secondary">取消</button>
-                            <button type="submit" class="btn btn-primary">保存记录</button>
-                        </div>
-                    </form>
+                    <!-- 保存按钮 -->
+                    <div class="result-actions">
+                        <button id="saveResultBtn" class="btn btn-primary">保存记录</button>
+                    </div>
                 </div>
             </section>
 

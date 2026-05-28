@@ -83,27 +83,16 @@ class RecordsController {
         card.dataset.id = workout.id;
         
         const typeIcons = {
-            running: '🏃',
-            cycling: '🚴',
-            swimming: '🏊',
-            walking: '🚶',
-            yoga: '🧘',
-            strength: '💪',
-            other: '🎯'
-        };
-        
-        const typeNames = {
-            running: '跑步',
-            cycling: '骑行',
-            swimming: '游泳',
-            walking: '徒步',
-            yoga: '瑜伽',
-            strength: '力量训练',
-            other: '其他'
+            '跑步': '🏃',
+            '骑行': '🚴',
+            '游泳': '🏊',
+            'walking': '🚶',
+            '瑜伽': '🧘',
+            '力量训练': '💪',
+            'other': '🎯'
         };
         
         const icon = typeIcons[workout.type] || '🎯';
-        const typeName = typeNames[workout.type] || '其他';
         
         let detailsHTML = '';
         
@@ -125,10 +114,10 @@ class RecordsController {
             `;
         }
         
-        if (workout.heartRate) {
+        if (workout.avgHeartRate) {
             detailsHTML += `
                 <div class="record-detail">
-                    <div class="detail-value">${workout.heartRate} bpm</div>
+                    <div class="detail-value">${workout.avgHeartRate} bpm</div>
                     <div class="detail-label">心率</div>
                 </div>
             `;
@@ -136,19 +125,20 @@ class RecordsController {
         
         let notesHTML = '';
         if (workout.notes) {
-            notesHTML = `<p class="record-notes">${this.escapeHtml(workout.notes)}</p>`;
+            notesHTML = `<p class="record-notes">💡 ${this.escapeHtml(workout.notes)}</p>`;
+        } else if (workout.recommendation) {
+            notesHTML = `<p class="record-notes">🎯 ${this.escapeHtml(workout.recommendation)}</p>`;
         }
         
-        const dateDisplay = this.formatDate(workout.date);
+        const dateDisplay = this.formatDate(workout.date || workout.createdAt);
         
         card.innerHTML = `
             <div class="record-header">
                 <div>
                     <div class="record-icon">${icon}</div>
-                    <div class="record-type">${typeName}</div>
+                    <div class="record-type">${workout.type || '运动'}</div>
                 </div>
                 <div class="record-actions">
-                    <button class="btn btn-secondary btn-small" data-action="edit" data-id="${workout.id}">编辑</button>
                     <button class="btn btn-secondary btn-small" data-action="delete" data-id="${workout.id}">删除</button>
                 </div>
             </div>
@@ -161,30 +151,19 @@ class RecordsController {
             </div>
         `;
         
-        // 绑定按钮事件
-        const editBtn = card.querySelector('[data-action="edit"]');
+        // 绑定删除按钮事件
         const deleteBtn = card.querySelector('[data-action="delete"]');
-        
-        editBtn.addEventListener('click', () => this.editRecord(workout.id));
-        deleteBtn.addEventListener('click', () => this.deleteRecord(workout.id));
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => this.deleteRecord(workout.id));
+        }
         
         return card;
     }
 
     updateCount() {
         const count = this.workouts.length;
-        this.elements.recordsCount.textContent = `${count} 条`;
-    }
-
-    editRecord(id) {
-        const workout = this.workouts.find(w => w.id === id);
-        if (!workout) {
-            window.showToast('找不到该记录', 'error');
-            return;
-        }
-        
-        // 这里可以实现编辑功能
-        window.showToast('编辑功能即将上线', 'info');
+        const countText = count === 1 ? '1 条' : `${count} 条`;
+        this.elements.recordsCount.textContent = countText;
     }
 
     deleteRecord(id) {
@@ -240,7 +219,7 @@ class RecordsController {
     }
 }
 
-// 初始化
+// 初始化记录控制器
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         if (!window.recordsController && document.getElementById('recordsList')) {
