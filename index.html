@@ -1,126 +1,4759 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <title>循迹 - 循身体之迹，见前行之路</title>
-    <meta name="description" content="探索你的身体地图，让运动数据转化为健康洞察">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>循迹 - 循身体之迹，见前行之路</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a3d1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<!-- 华为鸿蒙适配 -->
+<meta name="hmos-theme-color" content="#0a3d1a">
+<link rel="apple-touch-icon-precomposed" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="shortcut icon" type="image/png" href="icon-192.png">
+<link rel="favicon" href="icon-192.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- AI Vision Recognition -->
+<style>
+:root{
+  /* 深绿沉浸色彩系统 */
+  --color-bg: #0a3d1a;
+  --color-bg-dark: #062a12;
+  --color-bg-light: #0d4a22;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8faf8;
+  --color-text: #1a1a1a;
+  --color-text-muted: #5a5a5a;
+  --color-text-soft: #8a8a8a;
+  --color-primary: #2ecc71;
+  --color-primary-light: #58d68d;
+  --color-primary-soft: rgba(46, 204, 113, 0.15);
+  --color-accent: #27ae60;
+  --color-green: #27ae60;
+  --color-blue: #3498db;
+  --color-orange: #f39c12;
+  --color-purple: #9b59b6;
+  --color-danger: #e74c3c;
+  
+  /* 边框与阴影 */
+  --border-subtle: 1px solid rgba(255, 255, 255, 0.1);
+  --border-light: 1px solid rgba(255, 255, 255, 0.15);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-medium: 0 8px 40px rgba(0, 0, 0, 0.2);
+  --shadow-strong: 0 12px 60px rgba(0, 0, 0, 0.25);
+  
+  /* 圆角与过渡 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --transition-fast: 180ms ease-out;
+  --transition-med: 260ms ease-out;
+  --transition-slow: 400ms ease-out;
+  
+  /* 字体 */
+  --font-serif: 'Noto Serif SC', serif;
+  --font-sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* 兼容旧变量 */
+  --primary: #2ecc71;
+  --primary-light: #58d68d;
+  --secondary: #27ae60;
+  --success: #2ecc71;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --bg: #0a3d1a;
+  --bg-secondary: #062a12;
+  --card: #ffffff;
+  --card-solid: #ffffff;
+  --text: #1a1a1a;
+  --text2: #5a5a5a;
+  --text3: #8a8a8a;
+  --border: rgba(255, 255, 255, 0.1);
+  --radius: 16px;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+input, select, textarea, button {
+  font-family: inherit;
+  outline: none;
+  border: none;
+  background: none;
+}
+
+button { cursor: pointer; }
+
+/* 地图网格背景纹理 */
+.map-grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    linear-gradient(90deg, oklch(0.60 0.05 145 / 0.06) 1px, transparent 1px),
+    linear-gradient(oklch(0.60 0.05 145 / 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* 页面容器 */
+.page {
+  display: none;
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+.page.active { display: block; }
+.page{display:none;padding-bottom:80px}
+.page.active{display:block}
+
+/* Header - 深绿沉浸风格 */
+.header {
+  background: linear-gradient(180deg, #0a3d1a 0%, #062a12 100%);
+  padding: 60px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 80% 20%, rgba(46, 204, 113, 0.1) 0%, transparent 40%);
+}
+.header-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.header h1 {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+  letter-spacing: 4px;
+}
+.header p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1px;
+}
+
+/* User Card - 白色悬浮卡片 */
+.user-card {
+  background: #f5f0e8;
+  border-radius: 20px;
+  padding: 22px;
+  margin: -28px 20px 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user-card-left { flex: 1; }
+.user-card-streak {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.user-card-streak .streak-icon { font-size: 32px; }
+.user-card-streak .streak-num {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #2ecc71;
+}
+.user-card-streak .streak-label {
+  font-size: 12px;
+  color: #5a5a5a;
+  font-weight: 500;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.user-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+.user-avatar svg { width: 28px; height: 28px; }
+.user-meta h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: #1a1a1a;
+}
+.user-meta p {
+  font-size: 13px;
+  color: #5a5a5a;
+}
+.user-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.user-tag {
+  background: rgba(46, 204, 113, 0.1);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #27ae60;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+.user-tag svg { width: 12px; height: 12px; }
+
+/* Section */
+.section { padding: 0 20px 20px; }
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+.section-title svg { width: 20px; height: 20px; color: #2ecc71; }
+
+/* Stats Grid - 白色卡片 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: #f5f0e8;
+  border-radius: 16px;
+  padding: 18px 12px;
+  text-align: center;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+.stat-card .icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stat-card .icon.blue { background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.1)); }
+.stat-card .icon.purple { background: linear-gradient(135deg, rgba(155, 89, 182, 0.15), rgba(142, 68, 173, 0.1)); }
+.stat-card .icon.green { background: linear-gradient(135deg, rgba(39, 174, 96, 0.15), rgba(34, 139, 34, 0.1)); }
+.stat-card .icon svg { width: 22px; height: 22px; color: #2ecc71; }
+.stat-card .num {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+.stat-card .lbl { font-size: 12px; color: #5a5a5a; font-weight: 600; }
+
+/* Record Card - 白色卡片 */
+.record-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.record-card:active { transform: scale(0.995); }
+.record-card.has-img { cursor: pointer; }
+.record-card .delete-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(231, 76, 60, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.record-card:hover .delete-btn, .record-card:active .delete-btn { opacity: 1; }
+.record-card .delete-btn svg { width: 14px; height: 14px; color: #e74c3c; }
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.record-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.record-date svg { width: 16px; height: 16px; color: #2ecc71; }
+.record-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.record-status.good { background: rgba(46, 204, 113, 0.12); color: #27ae60; }
+.record-status.warn { background: rgba(243, 156, 18, 0.12); color: #d68910; }
+.record-status.bad { background: rgba(231, 76, 60, 0.12); color: #c0392b; }
+.record-status svg { width: 12px; height: 12px; }
+.record-thumb {
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 16px;
+  background: #f0f2eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.record-thumb .no-img{color:var(--text3);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.record-thumb .no-img svg{width:24px;height:24px}
+.record-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 14px;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+}
+.record-metric { text-align: center; }
+.record-metric .val {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.record-metric .unit { font-size: 10px; color: var(--color-text-soft); margin-left: 1px; }
+.record-metric .lbl { font-size: 10px; color: var(--color-text-soft); margin-top: 3px; }
+.record-analysis {
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+  padding: 18px;
+}
+.record-analysis .analysis-title {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.record-analysis .analysis-title svg { width: 20px; height: 20px; }
+.record-analysis.good .analysis-title {
+  color: #27ae60;
+  background: rgba(46, 204, 113, 0.12);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+}
+.record-analysis.warn .analysis-title {
+  color: #d68910;
+  background: rgba(243, 156, 18, 0.12);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+}
+.record-analysis.bad .analysis-title {
+  color: #c0392b;
+  background: rgba(231, 76, 60, 0.12);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+}
+.record-analysis p { font-size: 17px; color: #1a1a1a; line-height: 2; font-weight: 600; }
+.record-analysis p strong { color: #2ecc71; font-weight: 800; }
+.record-guidance {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 2px dashed #2ecc71;
+}
+.record-guidance .guidance-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.25);
+}
+.record-guidance .guidance-title svg { width: 18px; height: 18px; }
+.record-guidance ul { list-style: none; padding: 0; }
+.record-guidance li {
+  font-size: 16px;
+  color: #1a1a1a;
+  line-height: 2.2;
+  padding-left: 24px;
+  position: relative;
+  font-weight: 600;
+}
+.record-guidance li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #2ecc71;
+}
+
+/* Upload Zone - 白色卡片 */
+.upload-zone {
+  background: #f5f0e8;
+  border-radius: 20px;
+  padding: 24px 24px;
+  text-align: center;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  border: 2px dashed #b8b0a0;
+  transition: all 0.26s;
+  cursor: pointer;
+}
+.upload-zone:active, .upload-zone.dragover {
+  border-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.05);
+}
+.upload-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+}
+.upload-icon svg { width: 24px; height: 24px; color: #fff; }
+.upload-zone h3 {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #1a1a1a;
+}
+.upload-zone p { font-size: 13px; color: #8a8a8a; }
+
+/* Analysis Progress - 深绿遮罩 */
+.analysis-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(6, 42, 18, 0.85);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.progress-content {
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px 56px;
+  text-align: center;
+  box-shadow: 0 12px 60px rgba(0, 0, 0, 0.25);
+}
+.progress-spinner {
+  width: 52px;
+  height: 52px;
+  border: 4px solid #f0f2eb;
+  border-top-color: #2ecc71;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.progress-text {
+  font-size: 15px;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* Bottom Nav - 深绿沉浸 */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  padding: 8px 0 24px;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #8a8a8a;
+  font-size: 11px;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+.nav-item.active { color: #2ecc71; }
+.nav-item svg { width: 24px; height: 24px; }
+
+/* Modal / Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(6, 42, 18, 0.7);
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 28px 28px 0 0;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px 24px 48px;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.modal-header h2 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f0f2eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close svg { width: 18px; height: 18px; color: #5a5a5a; }
+
+/* Form - 白色表单 */
+.form-group { margin-bottom: 18px; }
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  display: block;
+}
+.form-input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 15px;
+  color: #1a1a1a;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
+}
+.form-input:focus {
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-select {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 15px;
+  color: #1a1a1a;
+  appearance: none;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a5a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 16px center;
+}
+.img-preview-area {
+  width: 100%;
+  min-height: 180px;
+  border: 2px dashed #e0e0e0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 18px;
+  position: relative;
+  background: #f8f9f5;
+}
+.img-preview-area img { max-width: 100%; max-height: 240px; object-fit: contain; }
+.img-preview-area .placeholder {
+  color: #8a8a8a;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.img-preview-area .placeholder svg { width: 36px; height: 36px; }
+.img-preview-area .change-img {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+.btn-primary {
+  width: 100%;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.3);
+}
+.btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
+}
+.btn-primary svg { width: 20px; height: 20px; }
+
+/* Stats Page - 白色卡片 */
+.chart-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+.chart-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1a1a1a;
+}
+.chart-title svg { width: 18px; height: 18px; color: #2ecc71; }
+.chart-container { width: 100%; height: 200px; position: relative; }
+.chart-container canvas { width: 100% !important; height: 100% !important; }
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 160px;
+  padding: 0 4px;
+}
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar {
+  width: 100%;
+  border-radius: 8px 8px 2px 2px;
+  min-height: 4px;
+  transition: height 0.5s ease;
+  position: relative;
+}
+.bar .bar-val {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 600;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+.bar-label { font-size: 10px; color: #8a8a8a; }
+
+/* 仪表盘样式 */
+.gauge-container {
+  background: linear-gradient(180deg, #0a3d1a 0%, #062a12 100%);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.gauge-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(46, 204, 113, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.gauge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.gauge-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gauge-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+.gauge-status-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+.gauge-date {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.gauge-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.gauge-svg {
+  width: 200px;
+  height: 110px;
+}
+.gauge-value {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 8px;
+}
+.gauge-max {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+}
+.gauge-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+.gauge-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+.gauge-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
+}
+.gauge-metric {
+  text-align: center;
+}
+.gauge-metric-value {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+.gauge-metric-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
+}
+.gauge-metric-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.gauge-metric-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* 趋势图样式 */
+.trend-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+.trend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.trend-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.trend-title svg {
+  width: 16px;
+  height: 16px;
+  color: #2ecc71;
+}
+.trend-value {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #2ecc71;
+}
+.trend-chart {
+  height: 80px;
+  position: relative;
+}
+.trend-chart svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hr-zone-bar {
+  display: flex;
+  height: 28px;
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 14px 0;
+}
+.hr-zone-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #fff;
+  font-weight: 600;
+}
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #8a8a8a;
+}
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* Profile Page - 白色卡片 */
+.profile-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.profile-row:last-child { border-bottom: none; }
+.profile-row .label { font-size: 14px; color: #5a5a5a; }
+.profile-row .value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.profile-row .value.editable { color: #2ecc71; cursor: pointer; }
+.profile-row .value input {
+  width: 80px;
+  text-align: right;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2ecc71;
+  border: none;
+  background: none;
+}
+.btn-outline {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid #e8e8e8;
+  color: #5a5a5a;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  background: #fff;
+  transition: all 0.2s;
+}
+.btn-outline:active {
+  background: #f8f9f5;
+}
+.btn-danger {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  color: #e74c3c;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  background: rgba(231, 76, 60, 0.08);
+}
+
+/* Weekly Report */
+.weekly-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.weekly-card h3{font-size:16px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:#1a1a1a}
+.weekly-card h3 svg{width:18px;height:18px;color:#2ecc71}
+.weekly-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.weekly-item{background:#f8faf8;border-radius:12px;padding:14px;text-align:center}
+.weekly-item .val{font-size:22px;font-weight:700;color:#1a1a1a}
+.weekly-item .lbl{font-size:12px;color:#8a8a8a;margin-top:2px}
+.weekly-text{font-size:14px;color:#5a5a5a;line-height:1.8}
+.weekly-text strong{color:#1a1a1a;font-weight:600}
+
+/* Image Viewer */
+.img-viewer{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,42,18,0.95);z-index:300;display:none;align-items:center;justify-content:center;flex-direction:column}
+.img-viewer.show{display:flex}
+.img-viewer img{max-width:95%;max-height:80vh;object-fit:contain;border-radius:12px}
+.img-viewer .close-viewer{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center}
+.img-viewer .close-viewer svg{width:20px;height:20px;color:#fff}
+
+/* Empty State */
+.empty-state{text-align:center;padding:40px 20px;color:#8a8a8a}
+.empty-state svg{width:48px;height:48px;margin-bottom:12px;opacity:.5}
+.empty-state p{font-size:13px}
+
+/* Toast */
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* Confirm Dialog */
+.confirm-dialog{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:350;display:none;align-items:center;justify-content:center;padding:20px}
+.confirm-dialog.show{display:flex}
+.confirm-box{background:var(--card);border-radius:16px;padding:24px;width:100%;max-width:320px;text-align:center}
+.confirm-box h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.confirm-box p{font-size:13px;color:var(--text2);margin-bottom:20px}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btns button{flex:1;height:40px;border-radius:10px;font-size:14px;font-weight:600}
+.btn-cancel{background:#F1F5F9;color:var(--text2)}
+.btn-confirm-del{background:var(--danger);color:#fff}
+
+/* Recognizing Indicator */
+.recognizing{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:5;white-space:nowrap}
+.recognizing::before{content:'';display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HRV Gauge Rings */
+.gauge-ring{width:80px;height:80px;border-radius:50%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge-ring svg{position:absolute;top:0;left:0;width:100%;height:100%;transform:rotate(-90deg)}
+.gauge-ring circle{fill:none;stroke-width:6;stroke-linecap:round}
+.gauge-ring .bg{stroke:#E2E8F0}
+.gauge-ring .fg{transition:stroke-dashoffset 1s ease}
+.gauge-ring .val{font-size:20px;font-weight:700;line-height:1}
+.gauge-ring .lbl{font-size:10px;color:var(--text2);margin-top:2px}
+
+/* HRV Status Card */
+.hrv-status-card{background:var(--card);border-radius:var(--radius);padding:20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.hrv-gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.hrv-gauge-item{display:flex;flex-direction:column;align-items:center;gap:6px}
+.hrv-gauge-label{font-size:12px;font-weight:600;color:var(--text)}
+.hrv-gauge-status{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+.hrv-gauge-status.excellent{background:#D1FAE5;color:#059669}
+.hrv-gauge-status.good{background:#DBEAFE;color:#2563EB}
+.hrv-gauge-status.normal{background:#FEF3C7;color:#D97706}
+.hrv-gauge-status.low{background:#FEE2E2;color:#DC2626}
+.hrv-gauge-status.alert{background:#FEE2E2;color:#DC2626}
+
+/* HRV Trend Chart */
+.hrv-trend-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.hrv-trend-card h3{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.hrv-trend-card h3 svg{width:16px;height:16px;color:var(--primary)}
+.hrv-chart{width:100%;height:180px;position:relative;overflow:hidden}
+.hrv-chart svg{width:100%;height:100%}
+.hrv-chart-tabs{display:flex;gap:8px;margin-bottom:14px}
+.hrv-chart-tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:#f0f2eb;color:#5a5a5a;cursor:pointer;transition:all .2s}
+.hrv-chart-tab.active{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff}
+
+/* AI Analysis Result Card */
+.analysis-result-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:4px solid #2ecc71}
+.analysis-result-card.green{border-top-color:#2ecc71}
+.analysis-result-card.yellow{border-top-color:#f39c12}
+.analysis-result-card.red{border-top-color:#e74c3c}
+
+.analysis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.analysis-date{font-size:16px;font-weight:700;color:#1a1a1a}
+.analysis-score-badge{font-size:14px;font-weight:700;padding:6px 14px;border-radius:20px}
+.analysis-score-badge.green{background:rgba(46,204,113,0.12);color:#27ae60}
+.analysis-score-badge.yellow{background:rgba(243,156,18,0.12);color:#d68910}
+.analysis-score-badge.red{background:rgba(231,76,60,0.12);color:#c0392b}
+
+.analysis-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;padding:14px;background:#f8faf8;border-radius:12px}
+.metric-item{text-align:center}
+.metric-val{font-size:20px;font-weight:800;color:#1a1a1a}
+.metric-unit{font-size:10px;color:#8a8a8a}
+.metric-lbl{font-size:11px;color:#8a8a8a;margin-top:2px}
+
+.analysis-content{background:rgba(46,204,113,0.08);border-radius:12px;padding:16px;margin-bottom:14px}
+.analysis-content .analysis-title{font-size:16px;font-weight:700;color:#27ae60;margin-bottom:10px}
+.analysis-content .analysis-text{font-size:18px;color:#1a1a1a;line-height:1.9}
+
+.guidance-content{background:rgba(52,152,219,0.08);border-radius:12px;padding:16px;margin-bottom:16px;border-left:4px solid #3498db}
+.guidance-content .guidance-title{font-size:15px;font-weight:700;color:#3498db;margin-bottom:10px}
+.guidance-content .guidance-text{font-size:18px;color:#1a1a1a;line-height:2}
+
+.analysis-actions{display:flex;gap:12px}
+.btn-save{flex:1;height:48px;border-radius:12px;background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;font-size:15px;font-weight:700;box-shadow:0 4px 12px rgba(46,204,113,0.25)}
+.btn-retry{height:48px;padding:0 24px;border-radius:12px;border:1px solid #e8e8e8;color:#5a5a5a;font-size:14px;font-weight:600;background:#fff}
+
+/* HRV Record Card */
+.hrv-record-card{background:#fff;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.06);position:relative;overflow:hidden}
+.hrv-record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.hrv-record-date{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#1a1a1a}
+.hrv-record-date svg{width:16px;height:16px;color:#2ecc71}
+.hrv-record-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;padding:12px;background:#f8faf8;border-radius:12px}
+.hrv-record-metric{text-align:center}
+.hrv-record-metric .val{font-size:18px;font-weight:700;color:#1a1a1a}
+.hrv-record-metric .unit{font-size:10px;color:#8a8a8a;margin-left:1px}
+.hrv-record-metric .lbl{font-size:10px;color:#8a8a8a;margin-top:3px}
+.hrv-analysis-item{padding:10px 0;border-bottom:1px dashed #f0f0f0}
+.hrv-analysis-item:last-child{border-bottom:none}
+.hrv-analysis-item .metric-name{font-size:12px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:4px;color:#1a1a1a}
+.hrv-analysis-item .metric-name .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hrv-analysis-item .metric-desc{font-size:12px;color:#5a5a5a;line-height:1.7}
+.hrv-analysis-item .metric-advice{font-size:11px;color:#2ecc71;line-height:1.7;margin-top:4px;padding-left:10px;border-left:2px solid #2ecc71}
+
+/* HRV Weekly Summary */
+.hrv-weekly-summary{background:#fff;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.hrv-weekly-summary h3{font-size:16px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:#1a1a1a}
+.hrv-weekly-summary h3 svg{width:18px;height:18px;color:#2ecc71}
+.hrv-weekly-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px}
+.hrv-weekly-item{background:#f8faf8;border-radius:12px;padding:14px;text-align:center}
+.hrv-weekly-item .val{font-size:22px;font-weight:700;color:#1a1a1a}
+.hrv-weekly-item .lbl{font-size:12px;color:#8a8a8a;margin-top:2px}
+
+/* Health Tip Card */
+.health-tip-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:16px;border-left:4px solid #2ecc71;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.health-tip-card .tip-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.health-tip-card .tip-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#2ecc71,#27ae60);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(46,204,113,0.3)}
+.health-tip-card .tip-icon svg{width:22px;height:22px;color:#fff}
+.health-tip-card .tip-title{font-size:16px;font-weight:700;color:#1a1a1a}
+.health-tip-card .tip-text{font-size:15px;color:#333;line-height:1.9}
+
+/* Streak Card */
+.streak-card{background:#f5f0e8;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);display:flex;align-items:center;gap:18px}
+.streak-fire{font-size:44px;line-height:1}
+.streak-info{flex:1}
+.streak-num{font-size:30px;font-weight:800;color:#2ecc71}
+.streak-label{font-size:14px;color:#5a5a5a;margin-top:3px}
+.streak-best{font-size:13px;color:#8a8a8a;margin-top:5px}
+
+/* Login Page - 沉浸式品牌故事 */
+.login-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: linear-gradient(180deg, #0a3d1a 0%, #062a12 100%);
+  overflow: hidden;
+}
+.login-hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 28px 100px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.login-hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.login-hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(46, 204, 113, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(39, 174, 96, 0.06) 0%, transparent 40%);
+}
+.login-hero-bg .orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(46, 204, 113, 0.12);
+}
+.login-hero-bg .orbit:nth-child(1) {
+  width: 250px;
+  height: 250px;
+  top: 10%;
+  right: -80px;
+}
+.login-hero-bg .orbit:nth-child(2) {
+  width: 350px;
+  height: 350px;
+  top: 5%;
+  right: -130px;
+  border-color: rgba(46, 204, 113, 0.08);
+}
+.login-hero-bg .map-line {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  opacity: 0.6;
+}
+.login-hero-content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.login-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.login-brand-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(46, 204, 113, 0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-brand-icon svg {
+  width: 22px;
+  height: 22px;
+  color: #2ecc71;
+}
+.login-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+.login-brand-name {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2px;
+}
+.login-brand-sub {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1.5px;
+}
+.login-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  color: #2ecc71;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+.login-tag::before {
+  content: '';
+  width: 16px;
+  height: 1px;
+  background: #2ecc71;
+  margin-right: 8px;
+}
+.login-title {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 24px;
+}
+.login-title .highlight {
+  color: #2ecc71;
+}
+.login-story-text {
+  margin-bottom: 32px;
+}
+.login-story-text p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 2;
+  margin-bottom: 12px;
+}
+.login-story-text .story-lead {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.login-story-text .story-highlight {
+  color: #2ecc71;
+  font-weight: 600;
+}
+.story-divider {
+  width: 30px;
+  height: 2px;
+  background: rgba(46, 204, 113, 0.4);
+  margin: 16px 0 20px;
+  border-radius: 1px;
+}
+.login-stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+  margin-bottom: 24px;
+}
+.login-stat {
+  display: flex;
+  flex-direction: column;
+}
+.login-stat-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.login-stat-value {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+}
+.login-stat-unit {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
+}
+.login-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.15);
+}
+.login-footer-slogan {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+/* 浮动箭头 - 点击进入 */
+.login-scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 10;
+  animation: floatHint 2s ease-in-out infinite;
+}
+@keyframes floatHint {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+.scroll-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 2px;
+}
+.scroll-arrow {
+  width: 44px;
+  height: 44px;
+  background: rgba(46, 204, 113, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+.scroll-arrow svg {
+  width: 20px;
+  height: 20px;
+  color: #2ecc71;
+}
+
+/* 登录表单面板 - 底部滑出 */
+.login-form-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 16px 24px 48px;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 20;
+  max-height: 65vh;
+  min-height: 360px;
+  overflow-y: auto;
+}
+.login-form-panel.show {
+  transform: translateY(0);
+}
+.login-form-handle {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 16px;
+  cursor: pointer;
+}
+.handle-bar {
+  width: 36px;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+}
+.login-form-content {
+  max-width: 320px;
+  margin: 0 auto;
+}
+.login-form-content .form-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.login-form-group {
+  margin-bottom: 12px;
+}
+.login-input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 15px;
+  color: #1a1a1a;
+  background: #fff;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+.login-input::placeholder { color: #aaa; }
+.login-input:focus {
+  outline: none;
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+}
+.login-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  margin-top: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.25);
+}
+.login-btn:active {
+  opacity: 0.95;
+  transform: scale(0.98);
+}
+.login-form-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #8a8a8a;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+.login-form-footer span {
+  color: #2ecc71;
+  cursor: pointer;
+  font-weight: 500;
+}
+.login-form-footer .divider {
+  color: #ddd;
+}
+
+/* 输入提示 */
+.input-hint {
+  font-size: 12px;
+  color: #8a8a8a;
+  margin-top: 6px;
+  padding-left: 4px;
+  transition: color 0.2s;
+}
+.input-hint.valid {
+  color: #2ecc71;
+}
+.input-hint.invalid {
+  color: #e74c3c;
+}
+.login-input.valid {
+  border-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.05);
+}
+.login-input.invalid {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.05);
+}
+
+/* 密码强度 */
+.password-strength {
+  height: 4px;
+  border-radius: 2px;
+  margin-top: 8px;
+  background: #e8e8e8;
+  overflow: hidden;
+}
+.password-strength-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.password-strength-bar.weak {
+  width: 33%;
+  background: #e74c3c;
+}
+.password-strength-bar.medium {
+  width: 66%;
+  background: #f39c12;
+}
+.password-strength-bar.strong {
+  width: 100%;
+  background: #2ecc71;
+}
+
+/* 按钮禁用状态 */
+.login-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 遮罩层 */
+.login-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 42, 18, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  z-index: 15;
+}
+.login-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5a5a5a;
+  cursor: pointer;
+}
+.login-remember input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #2ecc71;
+}
+.login-forgot {
+  color: #2ecc71;
+  text-decoration: none;
+  font-weight: 500;
+}
+.login-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.3);
+}
+.login-btn:active {
+  opacity: 0.95;
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
+}
+.login-switch {
+  color: #8a8a8a;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+.login-switch span {
+  color: #2ecc71;
+  font-weight: 600;
+}
+/* Record Summary Card (折叠) */
+.record-summary-card{background:#f5f0e8;border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid var(--primary);cursor:pointer;transition:all .2s;border:1px solid #e0d8c8;border-left:4px solid var(--primary)}
+.record-summary-card:active{transform:scale(.99)}
+.summary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.summary-date{font-size:14px;font-weight:600;color:#1a1a1a}
+.summary-badge{font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px}
+.summary-badge.green{background:rgba(46,184,114,.18);color:#1a7a45}
+.summary-badge.yellow{background:rgba(245,158,11,.18);color:#b87a08}
+.summary-badge.red{background:rgba(239,68,68,.18);color:#c53030}
+.summary-metrics{display:flex;gap:12px;font-size:12px;color:#444;margin-bottom:8px}
+.summary-metrics span{background:rgba(0,0,0,.06);padding:4px 10px;border-radius:6px;color:#333}
+.summary-toggle{font-size:12px;color:var(--primary);text-align:center;font-weight:600}
+.record-detail{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+.record-delete-btn{width:28px;height:28px;border-radius:50%;background:rgba(239,68,68,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+.record-delete-btn:active{background:rgba(239,68,68,.25)}
+.record-delete-btn svg{width:14px;height:14px;color:var(--danger)}
+</style>
 </head>
 <body>
-    <div id="app">
-        <main class="container">
-            <header class="header">
-                <h1 class="brand-title">循迹</h1>
-                <p class="brand-subtitle">循身体之迹，见前行之路</p>
-            </header>
 
-            <!-- 上传区域 -->
-            <section class="upload-section">
-                <h2 class="section-title">上传运动截图</h2>
-                
-                <!-- 上传交互区 -->
-                <div id="uploadArea" class="upload-area">
-                    <input type="file" id="fileInput" accept="image/*" capture="environment">
-                    
-                    <div id="uploadPrompt" class="upload-prompt">
-                        <div class="upload-icon">📷</div>
-                        <p class="upload-text">点击或拖拽上传</p>
-                        <p class="upload-hint">支持 JPG、PNG 等常见图片格式</p>
-                    </div>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
-                    <!-- 图片预览 -->
-                    <div id="previewSection" class="preview-section" style="display: none;">
-                        <img id="previewImage" class="preview-image" alt="预览图片">
-                        <div class="preview-actions">
-                            <button id="removeBtn" class="btn btn-secondary">重新选择</button>
-                            <button id="parseBtn" class="btn btn-primary">开始分析</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分析中动画 -->
-                <div id="analyzingSection" class="analyzing-section" style="display: none;">
-                    <div class="analysis-steps">
-                        <div class="step active" id="step-ocr">
-                            <div class="step-icon">🔍</div>
-                            <div class="step-text">OCR 识别文字</div>
-                            <div class="step-status">正在识别...</div>
-                        </div>
-                        <div class="step" id="step-extract">
-                            <div class="step-icon">📊</div>
-                            <div class="step-text">提取健康指标</div>
-                            <div class="step-status">等待中...</div>
-                        </div>
-                        <div class="step" id="step-analyze">
-                            <div class="step-icon">🤖</div>
-                            <div class="step-text">大模型分析</div>
-                            <div class="step-status">等待中...</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分析结果展示 -->
-                <div id="analysisResultSection" class="analysis-result-section" style="display: none;">
-                    <div class="result-header">
-                        <h3 class="result-title">📝 分析结果</h3>
-                        <button id="retryBtn" class="btn btn-secondary btn-small">重新分析</button>
-                    </div>
-
-                    <!-- 提取的指标 -->
-                    <div class="metrics-card">
-                        <h4 class="metrics-title">🏃 运动指标</h4>
-                        <div id="metricsDisplay" class="metrics-grid"></div>
-                    </div>
-
-                    <!-- 大白话解读 -->
-                    <div class="interpretation-card">
-                        <h4 class="interpretation-title">💡 大白话解读</h4>
-                        <div id="interpretationText" class="interpretation-text"></div>
-                    </div>
-
-                    <!-- 下次锻炼建议 -->
-                    <div class="recommendation-card">
-                        <h4 class="recommendation-title">🎯 下次锻炼建议</h4>
-                        <div id="recommendationText" class="recommendation-text"></div>
-                    </div>
-
-                    <!-- 保存按钮 -->
-                    <div class="result-actions">
-                        <button id="saveResultBtn" class="btn btn-primary">保存记录</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 运动记录列表 -->
-            <section class="records-section">
-                <div class="records-header">
-                    <h2 class="section-title">运动记录</h2>
-                    <span id="recordsCount" class="records-count">0 条</span>
-                </div>
-
-                <div id="recordsList" class="records-list">
-                    <div id="emptyState" class="empty-state">
-                        <div class="empty-icon">📝</div>
-                        <p class="empty-text">还没有运动记录</p>
-                        <p class="empty-hint">上传第一张截图开始记录</p>
-                    </div>
-                </div>
-            </section>
-        </main>
+<!-- Login Page - 沉浸式品牌故事 -->
+<div id="loginPage" style="display:none">
+  <div class="login-page">
+    <!-- 品牌故事全屏展示 -->
+    <div class="login-hero" id="loginHero">
+      <div class="login-hero-bg">
+        <div class="orbit"></div>
+        <div class="orbit"></div>
+        <!-- 装饰性地图线条 -->
+        <svg class="map-line" viewBox="0 0 400 600" preserveAspectRatio="none">
+          <path d="M200,100 Q300,200 200,300 T200,500" fill="none" stroke="rgba(46,204,113,0.15)" stroke-width="2"/>
+          <circle cx="200" cy="100" r="4" fill="#2ecc71"/>
+          <circle cx="200" cy="300" r="4" fill="#2ecc71"/>
+          <circle cx="200" cy="500" r="4" fill="#2ecc71"/>
+        </svg>
+      </div>
+      
+      <div class="login-hero-content">
+        <div class="login-brand-header">
+          <div class="login-brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2v20M2 12h20"/>
+            </svg>
+          </div>
+          <div class="login-brand-text">
+            <div class="login-brand-name">循迹</div>
+            <div class="login-brand-sub">XUNJI · HEALTH INTELLIGENCE</div>
+          </div>
+        </div>
+        
+        <div class="login-tag">BRAND STORY</div>
+        
+        <div class="login-title">
+          你的身体，<br>
+          即是<span class="highlight">地图</span>
+        </div>
+        
+        <div class="login-story-text">
+          <p class="story-lead">两张地图，读懂其一，方能真正前行</p>
+          <div class="story-divider"></div>
+          <p>我们不止步于记录你<span class="story-highlight">跑了多远</span>，<br>
+          更深耕于理解每一次奔跑如何<span class="story-highlight">塑造你</span>。</p>
+          <p>从心率变异性中解读压力与恢复，<br>
+          从长期趋势中预见过度训练的风险——<br>
+          我们是你身体语言的<span class="story-highlight">翻译与向导</span>。</p>
+        </div>
+        
+        <div class="login-stats-bar">
+          <div class="login-stat">
+            <div class="login-stat-label">HRV</div>
+            <div class="login-stat-value">68</div>
+            <div class="login-stat-unit">信号</div>
+          </div>
+          <div class="login-stat-divider"></div>
+          <div class="login-stat">
+            <div class="login-stat-label">恢复指数</div>
+            <div class="login-stat-value">82</div>
+            <div class="login-stat-unit">%</div>
+          </div>
+          <div class="login-stat-divider"></div>
+          <div class="login-stat">
+            <div class="login-stat-label">状态</div>
+            <div class="login-stat-value">蓄势待发</div>
+          </div>
+        </div>
+        
+        <div class="login-footer-slogan">循身体之迹，见前行之路</div>
+      </div>
+      
+      <!-- 浮动箭头 - 点击进入 -->
+      <div class="login-scroll-hint" id="loginScrollHint" onclick="showLoginForm()">
+        <div class="scroll-text">进入循迹</div>
+        <div class="scroll-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+          </svg>
+        </div>
+      </div>
     </div>
 
-    <script src="js/state.js"></script>
-    <script src="js/upload.js"></script>
-    <script src="js/records.js"></script>
-    <script src="js/app.js"></script>
+    <!-- 登录表单 - 底部滑出（最多占1/3屏幕） -->
+    <div class="login-form-panel" id="loginFormPanel">
+      <div class="login-form-handle" onclick="hideLoginForm()">
+        <div class="handle-bar"></div>
+      </div>
+      <div class="login-form-content">
+        <div id="loginRegisterArea">
+          <div class="form-title">欢迎回来</div>
+          <div class="login-form-group">
+            <input type="text" class="login-input" id="loginUser" placeholder="用户名 / 手机号" oninput="validateLogin()">
+            <div class="input-hint" id="loginUserHint">请输入注册时的用户名</div>
+          </div>
+          <div class="login-form-group">
+            <input type="password" class="login-input" id="loginPass" placeholder="密码" oninput="validateLogin()">
+            <div class="input-hint" id="loginPassHint">请输入密码</div>
+          </div>
+          <button class="login-btn" id="loginBtn" onclick="doLogin()">登 录</button>
+          <button class="login-btn" style="background:transparent;border:1.5px solid #2ecc71;color:#2ecc71;margin-top:10px" onclick="quickLogin()">⚡ 快速体验</button>
+          <div class="login-form-footer">
+            <span onclick="toggleLoginRegister()">注册账号</span>
+            <span class="divider">·</span>
+            <span>忘记密码</span>
+          </div>
+        </div>
+        <div id="registerArea" style="display:none">
+          <div class="form-title">创建账号</div>
+          <div class="login-form-group">
+            <input type="text" class="login-input" id="regUser" placeholder="用户名 / 手机号" oninput="validateRegister()">
+            <div class="input-hint" id="regUserHint">2-20位字母、数字或中文</div>
+          </div>
+          <div class="login-form-group">
+            <input type="password" class="login-input" id="regPass" placeholder="设置密码" oninput="validateRegister()">
+            <div class="input-hint" id="regPassHint">至少6位，建议包含字母和数字</div>
+            <div class="password-strength" id="passStrength"></div>
+          </div>
+          <div class="login-form-group">
+            <input type="password" class="login-input" id="regPass2" placeholder="确认密码" oninput="validateRegister()">
+            <div class="input-hint" id="regPass2Hint">再次输入密码</div>
+          </div>
+          <button class="login-btn" id="regBtn" onclick="doRegister()">注 册</button>
+          <div class="login-form-footer">
+            <span onclick="toggleLoginRegister()">已有账号，去登录</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 遮罩层 -->
+    <div class="login-overlay" id="loginOverlay" onclick="hideLoginForm()"></div>
+  </div>
+</div>
+
+<!-- Image Viewer -->
+<div class="img-viewer" id="imgViewer">
+  <div class="close-viewer" onclick="closeViewer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+  <img id="viewerImg" src="" alt="">
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-dialog" id="confirmDialog">
+  <div class="confirm-box">
+    <h3 id="confirmTitle">确认删除？</h3>
+    <p id="confirmMsg">删除后数据无法恢复</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="closeConfirm()">取消</button>
+      <button class="btn-confirm-del" id="confirmBtn" onclick="confirmAction()">删除</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PROFILE SETUP MODAL ==================== -->
+<div class="modal-overlay" id="profileSetupModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>完善个人档案</h2>
+    </div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">首次使用，请填写您的基本信息，以便我们为您提供更精准的运动建议。</p>
+    <div class="form-group">
+      <label class="form-label">昵称</label>
+      <input type="text" class="form-input" id="setupName" placeholder="如：运动达人">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">年龄</label>
+        <input type="number" class="form-input" id="setupAge" placeholder="如：35">
+      </div>
+      <div class="form-group">
+        <label class="form-label">身高(cm)</label>
+        <input type="number" class="form-input" id="setupHeight" placeholder="如：175">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">体重(kg)</label>
+        <input type="number" class="form-input" id="setupWeight" placeholder="如：70">
+      </div>
+      <div class="form-group">
+        <label class="form-label">目标体重(kg)</label>
+        <input type="number" class="form-input" id="setupTargetWeight" placeholder="如：65">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">健康状况/注意事项</label>
+      <input type="text" class="form-input" id="setupCondition" placeholder="如：腰肌劳损轻症（没有请留空）">
+    </div>
+    <div class="form-group">
+      <label class="form-label">每周运动目标（次）</label>
+      <select class="form-select" id="setupFreq">
+        <option value="2">2次</option>
+        <option value="3" selected>3次</option>
+        <option value="4">4次</option>
+        <option value="5">5次</option>
+      </select>
+    </div>
+    <button class="btn-primary" onclick="saveSetupProfile()">保存并开始使用</button>
+  </div>
+</div>
+
+<!-- ==================== PAGE: HOME ==================== -->
+<div class="page active" id="pageHome">
+  <div class="header">
+    <div class="header-content">
+      <h1>循迹</h1>
+      <p>循身体之迹，见前行之路</p>
+    </div>
+  </div>
+  <div class="user-card" id="userCard"></div>
+  <div class="section" id="healthTipSection"></div>
+  
+  <!-- 上传按钮 + 临时分析结果 -->
+  <div class="section" id="uploadSection"></div>
+  
+  <!-- 最新轨迹（已保存的最新记录） -->
+  <div class="section" id="latestAnalysisSection"></div>
+  
+  <!-- 轨迹回顾（除最新外的最近3次） -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      轨迹回顾
+    </div>
+    <div id="recordsList"></div>
+  </div>
+</div>
+
+<!-- ==================== PAGE: STATS ==================== -->
+<div class="page" id="pageStats">
+  <div class="header" style="padding-bottom:28px">
+    <div class="header-content">
+      <h1>身体地图</h1>
+      <p>读懂身体内在的轨迹</p>
+    </div>
+  </div>
+  <div class="section" id="statsContent"></div>
+</div>
+
+<!-- ==================== PAGE: PROFILE ==================== -->
+<div class="page" id="pageProfile">
+  <div class="header" style="padding-bottom:28px">
+    <div class="header-content">
+      <h1>身体档案</h1>
+      <p>绘制你的内在地图</p>
+    </div>
+  </div>
+  <div class="section" id="profileContent"></div>
+</div>
+
+<!-- ==================== PAGE: HRV ==================== -->
+<div class="page" id="pageHRV">
+  <div class="header" style="padding-bottom:28px">
+    <div class="header-content">
+      <h1>内在轨迹</h1>
+      <p>探索心率变异性中的身体语言</p>
+    </div>
+  </div>
+  <div class="section" id="hrvContent"></div>
+</div>
+
+<!-- ==================== ADD HRV RECORD MODAL ==================== -->
+<div class="modal-overlay" id="hrvModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>添加HRV记录</h2>
+      <div class="modal-close" onclick="closeHRVModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+    </div>
+
+    <div class="img-preview-area" id="hrvImgPreviewArea" onclick="document.getElementById('hrvFileInput').click()">
+      <div class="placeholder" id="hrvImgPlaceholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>点击上传HRV截图</span>
+      </div>
+      <img id="hrvImgPreview" src="" style="display:none" alt="">
+      <span class="change-img" id="hrvChangeImgBtn" style="display:none">更换图片</span>
+      <div class="recognizing" id="hrvRecognizingHint" style="display:none">AI识别中...</div>
+    </div>
+    <input type="file" id="hrvFileInput" accept="image/*" style="display:none" onchange="handleHRVFileSelect(event)">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">测量日期</label>
+        <input type="date" class="form-input" id="hrvFormDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">测量时间</label>
+        <input type="time" class="form-input" id="hrvFormTime">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">HRV值(ms)</label>
+        <input type="number" step="0.1" class="form-input" id="hrvFormHRV" placeholder="如：42.5">
+      </div>
+      <div class="form-group">
+        <label class="form-label">静息心率(bpm)</label>
+        <input type="number" class="form-input" id="hrvFormRestingHR" placeholder="如：62">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">压力值(0-100)</label>
+        <input type="number" class="form-input" id="hrvFormStress" placeholder="如：35">
+      </div>
+      <div class="form-group">
+        <label class="form-label">睡眠HRV均值(ms)</label>
+        <input type="number" step="0.1" class="form-input" id="hrvFormSleepHRV" placeholder="选填">
+      </div>
+    </div>
+    <button class="btn-primary" onclick="saveHRVRecord()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      保存HRV记录
+    </button>
+  </div>
+</div>
+
+<!-- ==================== BOTTOM NAV ==================== -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchPage('Home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    首页
+  </div>
+  <div class="nav-item" onclick="switchPage('Stats')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    地图
+  </div>
+  <div class="nav-item" onclick="switchPage('Profile')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    档案
+  </div>
+  <div class="nav-item" onclick="switchPage('HRV')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    HRV
+  </div>
+</div>
+
+<script>
+// ===================== DATA LAYER =====================
+// 注意：数据存储 key 已改为按用户隔离，通过 getRecordsKey() / getProfileKey() / getStreakKey() 动态获取
+function getStreak() {
+  // 基于实际运动记录计算连续打卡天数
+  const records = getRecords();
+  if (records.length === 0) return {current:0,best:0,lastDate:''};
+  
+  // 提取所有有记录的日期，去重，按日期降序排序
+  const dates = [...new Set(records.map(r => r.date))].sort((a, b) => new Date(b) - new Date(a));
+  
+  const today = new Date().toISOString().split('T')[0];
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  
+  let current = 0;
+  let best = 0;
+  let tempStreak = 0;
+  let prevDate = null;
+  
+  for (const date of dates) {
+    if (!prevDate) {
+      // 第一条记录
+      if (date === today || date === yesterday) {
+        tempStreak = 1;
+      } else {
+        // 最近记录不是今天或昨天，连续已断
+        break;
+      }
+    } else {
+      // 检查是否连续（相差1天）
+      const curr = new Date(date);
+      const prev = new Date(prevDate);
+      const diffDays = (prev - curr) / (1000 * 60 * 60 * 24);
+      if (diffDays === 1) {
+        tempStreak++;
+      } else {
+        break; // 不连续，停止计算
+      }
+    }
+    prevDate = date;
+  }
+  
+  current = tempStreak;
+  
+  // 计算历史最高连续天数
+  let maxStreak = 0;
+  tempStreak = 1;
+  const sortedDates = [...dates].sort((a, b) => new Date(a) - new Date(b)); // 升序
+  for (let i = 1; i < sortedDates.length; i++) {
+    const curr = new Date(sortedDates[i]);
+    const prev = new Date(sortedDates[i-1]);
+    const diffDays = (curr - prev) / (1000 * 60 * 60 * 24);
+    if (diffDays === 1) {
+      tempStreak++;
+    } else {
+      maxStreak = Math.max(maxStreak, tempStreak);
+      tempStreak = 1;
+    }
+  }
+  best = Math.max(maxStreak, tempStreak, current);
+  
+  return {current, best, lastDate: dates[0] || ''};
+}
+function saveStreak(s) {
+  // 不再单独存储，基于记录实时计算
+}
+function updateStreak() {
+  // 保存记录时自动重新计算
+  return getStreak();
+}
+function checkStreakBroken() {
+  // 基于记录自动计算，无需检查
+}
+
+// ===================== AUTH DATA LAYER =====================
+const AUTH_KEY = 'fitness_auth';
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem('fitness_users') || '{}'); }
+  catch { return {}; }
+}
+function saveUsers(u) { localStorage.setItem('fitness_users', JSON.stringify(u)); }
+function isLoggedIn() { return !!localStorage.getItem(AUTH_KEY); }
+function getCurrentUser() { return localStorage.getItem(AUTH_KEY) || ''; }
+
+// 快速体验：自动创建/登录测试账号
+function quickLogin() {
+  const testUser = 'test_user';
+  const testPass = 'test123';
+  const users = JSON.parse(localStorage.getItem('fitness_users') || '{}');
+  if (!users[testUser]) {
+    users[testUser] = testPass;
+    localStorage.setItem('fitness_users', JSON.stringify(users));
+  }
+  localStorage.setItem(AUTH_KEY, testUser);
+  hideLoginForm();
+  showApp();
+  showToast('已进入体验模式');
+}
+
+function doLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if (!user || !pass) { showToast('请填写用户名和密码'); return; }
+  const users = getUsers();
+  if (!users[user]) { showToast('用户不存在，请先注册'); return; }
+  if (users[user] !== pass) { showToast('密码错误'); return; }
+  localStorage.setItem(AUTH_KEY, user);
+  showApp(); // 这里会检查档案
+  showToast('登录成功，欢迎回来！');
+}
+// 登录验证
+function validateLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const userHint = document.getElementById('loginUserHint');
+  const passHint = document.getElementById('loginPassHint');
+  const btn = document.getElementById('loginBtn');
+
+  let valid = true;
+
+  if (user) {
+    document.getElementById('loginUser').classList.add('valid');
+    document.getElementById('loginUser').classList.remove('invalid');
+    userHint.textContent = '✓ 用户名已填写';
+    userHint.className = 'input-hint valid';
+  } else {
+    document.getElementById('loginUser').classList.remove('valid', 'invalid');
+    userHint.textContent = '请输入注册时的用户名';
+    userHint.className = 'input-hint';
+    valid = false;
+  }
+
+  if (pass) {
+    document.getElementById('loginPass').classList.add('valid');
+    document.getElementById('loginPass').classList.remove('invalid');
+    passHint.textContent = '✓ 密码已填写';
+    passHint.className = 'input-hint valid';
+  } else {
+    document.getElementById('loginPass').classList.remove('valid', 'invalid');
+    passHint.textContent = '请输入密码';
+    passHint.className = 'input-hint';
+    valid = false;
+  }
+
+  btn.disabled = !valid;
+}
+
+// 注册验证
+function validateRegister() {
+  const user = document.getElementById('regUser').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const pass2 = document.getElementById('regPass2').value;
+  const userHint = document.getElementById('regUserHint');
+  const passHint = document.getElementById('regPassHint');
+  const pass2Hint = document.getElementById('regPass2Hint');
+  const btn = document.getElementById('regBtn');
+
+  let valid = true;
+
+  // 用户名验证
+  const userValid = /^[a-zA-Z0-9\u4e00-\u9fa5]{2,20}$/.test(user);
+  if (user && userValid) {
+    document.getElementById('regUser').classList.add('valid');
+    document.getElementById('regUser').classList.remove('invalid');
+    userHint.textContent = '✓ 用户名可用';
+    userHint.className = 'input-hint valid';
+  } else if (user) {
+    document.getElementById('regUser').classList.add('invalid');
+    document.getElementById('regUser').classList.remove('valid');
+    userHint.textContent = '✗ 2-20位字母、数字或中文';
+    userHint.className = 'input-hint invalid';
+    valid = false;
+  } else {
+    document.getElementById('regUser').classList.remove('valid', 'invalid');
+    userHint.textContent = '2-20位字母、数字或中文';
+    userHint.className = 'input-hint';
+    valid = false;
+  }
+
+  // 密码强度
+  const strengthBar = document.getElementById('passStrength');
+  if (pass) {
+    let strength = 'weak';
+    if (pass.length >= 8 && /[a-zA-Z]/.test(pass) && /[0-9]/.test(pass)) {
+      strength = 'strong';
+    } else if (pass.length >= 6) {
+      strength = 'medium';
+    }
+    strengthBar.innerHTML = `<div class="password-strength-bar ${strength}"></div>`;
+
+    if (pass.length >= 6) {
+      document.getElementById('regPass').classList.add('valid');
+      document.getElementById('regPass').classList.remove('invalid');
+      passHint.textContent = strength === 'strong' ? '✓ 密码强度：强' : '✓ 密码强度：中';
+      passHint.className = 'input-hint valid';
+    } else {
+      document.getElementById('regPass').classList.add('invalid');
+      document.getElementById('regPass').classList.remove('valid');
+      passHint.textContent = '✗ 至少6位';
+      passHint.className = 'input-hint invalid';
+      valid = false;
+    }
+  } else {
+    strengthBar.innerHTML = '';
+    document.getElementById('regPass').classList.remove('valid', 'invalid');
+    passHint.textContent = '至少6位，建议包含字母和数字';
+    passHint.className = 'input-hint';
+    valid = false;
+  }
+
+  // 确认密码
+  if (pass2) {
+    if (pass2 === pass && pass.length >= 6) {
+      document.getElementById('regPass2').classList.add('valid');
+      document.getElementById('regPass2').classList.remove('invalid');
+      pass2Hint.textContent = '✓ 密码一致';
+      pass2Hint.className = 'input-hint valid';
+    } else {
+      document.getElementById('regPass2').classList.add('invalid');
+      document.getElementById('regPass2').classList.remove('valid');
+      pass2Hint.textContent = '✗ 密码不一致';
+      pass2Hint.className = 'input-hint invalid';
+      valid = false;
+    }
+  } else {
+    document.getElementById('regPass2').classList.remove('valid', 'invalid');
+    pass2Hint.textContent = '再次输入密码';
+    pass2Hint.className = 'input-hint';
+    valid = false;
+  }
+
+  btn.disabled = !valid;
+}
+
+function doRegister() {
+  const user = document.getElementById('regUser').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const pass2 = document.getElementById('regPass2').value;
+
+  // 最终验证
+  if (!user || !/^[a-zA-Z0-9\u4e00-\u9fa5]{2,20}$/.test(user)) {
+    showToast('用户名格式不正确');
+    return;
+  }
+  if (pass.length < 6) {
+    showToast('密码至少6位');
+    return;
+  }
+  if (pass !== pass2) {
+    showToast('两次密码不一致');
+    return;
+  }
+
+  const users = getUsers();
+  if (users[user]) { showToast('用户名已存在'); return; }
+  users[user] = pass;
+  saveUsers(users);
+  localStorage.setItem(AUTH_KEY, user);
+  showApp(); // 这里会检查档案并弹出填写窗口
+  showToast('注册成功！');
+}
+function toggleLoginRegister() {
+  const la = document.getElementById('loginRegisterArea');
+  const ra = document.getElementById('registerArea');
+  if (la.style.display === 'none') { la.style.display = 'block'; ra.style.display = 'none'; }
+  else { la.style.display = 'none'; ra.style.display = 'block'; }
+}
+
+// 登录框显示/隐藏
+function showLoginForm() {
+  const panel = document.getElementById('loginFormPanel');
+  const overlay = document.getElementById('loginOverlay');
+  const hint = document.getElementById('loginScrollHint');
+  if (panel) panel.classList.add('show');
+  if (overlay) overlay.classList.add('show');
+  if (hint) hint.style.opacity = '0';
+}
+
+function hideLoginForm() {
+  const panel = document.getElementById('loginFormPanel');
+  const overlay = document.getElementById('loginOverlay');
+  const hint = document.getElementById('loginScrollHint');
+  if (panel) panel.classList.remove('show');
+  if (overlay) overlay.classList.remove('show');
+  if (hint) hint.style.opacity = '1';
+}
+function doLogout() {
+  localStorage.removeItem(AUTH_KEY);
+  document.getElementById('loginPage').style.display = 'block';
+  document.querySelector('.bottom-nav').style.display = 'none';
+}
+function showApp() {
+  document.getElementById('loginPage').style.display = 'none';
+  document.querySelector('.bottom-nav').style.display = 'flex';
+  
+  // 检查是否需要填写档案
+  if (!hasProfile()) {
+    document.getElementById('profileSetupModal').classList.add('show');
+    return;
+  }
+  
+  renderUserCard();
+  renderUploadSection();
+  renderHealthTip();
+  checkStreakBroken();
+  renderRecords();
+}
+
+const defaultProfile = null; // 登录后首次引导填写
+
+function getProfileKey() {
+  const user = getCurrentUser();
+  return user ? 'fitness_profile_' + user : 'fitness_profile_guest';
+}
+
+function getRecordsKey() {
+  const user = getCurrentUser();
+  return user ? 'fitness_records_' + user : 'fitness_records_guest';
+}
+
+function getStreakKey() {
+  const user = getCurrentUser();
+  return user ? 'fitness_streak_' + user : 'fitness_streak_guest';
+}
+
+function getProfile() {
+  const key = getProfileKey();
+  try {
+    const d = localStorage.getItem(key);
+    if (!d) return null;
+    return JSON.parse(d);
+  } catch { return null; }
+}
+
+function saveProfile(p) {
+  const key = getProfileKey();
+  localStorage.setItem(key, JSON.stringify(p));
+}
+
+function hasProfile() {
+  return !!getProfile();
+}
+
+function saveSetupProfile() {
+  const name = document.getElementById('setupName').value.trim() || '运动达人';
+  const age = parseInt(document.getElementById('setupAge').value) || 30;
+  const height = parseInt(document.getElementById('setupHeight').value) || 170;
+  const weight = parseInt(document.getElementById('setupWeight').value) || 70;
+  const targetWeight = parseInt(document.getElementById('setupTargetWeight').value) || weight;
+  const condition = document.getElementById('setupCondition').value.trim() || '';
+  const freq = parseInt(document.getElementById('setupFreq').value) || 3;
+  
+  if (!document.getElementById('setupAge').value || !document.getElementById('setupHeight').value || !document.getElementById('setupWeight').value) {
+    showToast('请填写年龄、身高和体重');
+    return;
+  }
+  
+  const profile = { name, age, height, weight, targetWeight, condition, exerciseFreq: freq };
+  saveProfile(profile);
+  document.getElementById('profileSetupModal').classList.remove('show');
+  showApp();
+  showToast('档案已保存，开始您的健康之旅！');
+}
+
+function getRecords() {
+  const key = getRecordsKey();
+  try {
+    const d = localStorage.getItem(key);
+    return d ? JSON.parse(d) : [];
+  } catch { return []; }
+}
+
+function saveRecords(records) {
+  const key = getRecordsKey();
+  localStorage.setItem(key, JSON.stringify(records));
+}
+
+function addRecord(record) {
+  const records = getRecords();
+  records.unshift(record);
+  saveRecords(records);
+}
+
+function deleteRecord(id) {
+  const records = getRecords().filter(r => r.id !== id);
+  saveRecords(records);
+}
+
+// ===================== ANALYSIS ENGINE =====================
+function calcMaxHR(age) { return 220 - age; }
+
+function getHRZones(age) {
+  const max = calcMaxHR(age);
+  return {
+    max,
+    warmUp: { min: Math.round(max * 0.5), max: Math.round(max * 0.6), label: '热身区', color: '#94A3B8' },
+    fatBurn: { min: Math.round(max * 0.6), max: Math.round(max * 0.7), label: '减脂区', color: '#10B981' },
+    cardio: { min: Math.round(max * 0.7), max: Math.round(max * 0.8), label: '有氧区', color: '#F59E0B' },
+    anaerobic: { min: Math.round(max * 0.8), max: Math.round(max * 0.9), label: '无氧区', color: '#EF4444' },
+    maxZone: { min: Math.round(max * 0.9), max: max, label: '极限区', color: '#DC2626' }
+  };
+}
+
+function analyzeRecord(record, profile) {
+  const zones = getHRZones(profile.age);
+  const avgHR = record.avgHR || 0;
+  const maxHR = record.maxHR || 0;
+  const duration = record.duration || 0;
+  const cadence = record.cadence || 0;
+  const distance = record.distance || 0;
+  const pace = record.pace || 0;
+
+  let score = 100;
+  let issues = [];
+  let goods = [];
+  let guidance = [];
+  let status = 'good';
+  let statusText = '表现优秀';
+
+  // Heart rate analysis
+  if (avgHR >= zones.fatBurn.min && avgHR <= zones.fatBurn.max) {
+    goods.push(`心率${avgHR}bpm精准处于最佳减脂区间(${zones.fatBurn.min}-${zones.fatBurn.max})`);
+    score += 5;
+  } else if (avgHR >= zones.warmUp.min && avgHR < zones.fatBurn.min) {
+    issues.push(`心率${avgHR}bpm偏低，未达到最佳减脂区间(${zones.fatBurn.min}-${zones.fatBurn.max})`);
+    guidance.push(`下次尝试提速或加大摆臂，让心率升到${zones.fatBurn.min}-${zones.fatBurn.max}之间`);
+    score -= 15;
+    if (status === 'good') { status = 'warn'; statusText = '强度偏低'; }
+  } else if (avgHR > zones.fatBurn.max && avgHR <= zones.cardio.max) {
+    goods.push(`心率${avgHR}bpm处于有氧区，心肺锻炼效果好`);
+    guidance.push('心率偏高，如目标是减脂可适当放慢速度');
+    score -= 5;
+  } else if (avgHR > zones.cardio.max) {
+    issues.push(`心率${avgHR}bpm过高，超过有氧区间`);
+    guidance.push('注意控制强度，避免过度疲劳，保护心血管');
+    score -= 25;
+    status = 'bad'; statusText = '强度过高';
+  }
+
+  // Duration analysis
+  if (duration >= 45) {
+    goods.push(`运动时长${duration}分钟，达标`);
+  } else if (duration >= 30) {
+    goods.push(`运动时长${duration}分钟，基本合格`);
+    guidance.push('建议逐步延长到45-60分钟，减脂效果更佳');
+    score -= 5;
+    if (status === 'good') { status = 'warn'; statusText = '时长偏短'; }
+  } else {
+    issues.push(`运动时长仅${duration}分钟，不足`);
+    guidance.push('每次运动建议至少30分钟，目标45-60分钟');
+    score -= 20;
+    if (status !== 'bad') { status = 'warn'; statusText = '时长不足'; }
+  }
+
+  // Cadence analysis (for running/walking)
+  if (cadence > 0) {
+    if (record.type.includes('跑') && cadence < 155) {
+      issues.push(`步频${cadence}步/分偏低，步幅过大增加关节冲击`);
+      guidance.push('提高步频至160+，减小步幅，降低腰部和膝盖冲击');
+      score -= 10;
+      if (status === 'good') { status = 'warn'; statusText = '注意步频'; }
+    } else if (record.type.includes('跑') && cadence >= 160) {
+      goods.push(`步频${cadence}步/分，节奏良好`);
+      score += 5;
+    }
+    if (record.type.includes('跑') && cadence < 140) {
+      issues.push(`步频${cadence}步/分过低，对腰部冲击较大`);
+      guidance.push('强烈建议提高步频！小步快跑，保护腰肌');
+      score -= 15;
+      if (status !== 'bad') { status = 'warn'; statusText = '步频过低'; }
+    }
+  }
+
+  // Lumbar protection
+  if (profile.condition.includes('腰')) {
+    if (record.type.includes('跑') && cadence > 0 && cadence < 150) {
+      guidance.push('⚠️ 腰肌劳损提醒：低步频+大步幅对腰椎冲击大，务必提高步频');
+    }
+    if (record.type.includes('跑') && duration > 60) {
+      guidance.push('⚠️ 腰肌劳损提醒：单次跑步超过60分钟建议适当休息，避免腰部过劳');
+    }
+    guidance.push('跑后建议做腰部拉伸：猫牛式、婴儿式各保持30秒');
+  }
+
+  // Distance / pace
+  if (distance > 0 && pace > 0) {
+    if (pace > 15) {
+      guidance.push('配速偏慢，可以尝试快走或慢跑交替提升效率');
+    }
+  }
+
+  // Calories
+  if (record.calories > 0) {
+    if (record.calories >= 300) {
+      goods.push(`消耗${record.calories}大卡，减脂贡献可观`);
+    } else {
+      guidance.push(`消耗${record.calories}大卡，增加时长或强度可提升消耗`);
+    }
+  }
+
+  score = Math.max(0, Math.min(100, score));
+
+  // Color level (Noom style)
+  let colorLevel, colorLabel;
+  if (score >= 80) { colorLevel = 'green'; colorLabel = '优秀 🟢'; }
+  else if (score >= 60) { colorLevel = 'yellow'; colorLabel = '良好 🟡'; }
+  else { colorLevel = 'red'; colorLabel = '需改善 🔴'; }
+
+  // Build analysis text
+  let analysisText = '';
+  if (goods.length > 0) {
+    analysisText += goods.map(g => `<strong>✓</strong> ${g}`).join('<br>');
+  }
+  if (issues.length > 0) {
+    analysisText += (analysisText ? '<br>' : '') + issues.map(i => `<strong>!</strong> ${i}`).join('<br>');
+  }
+
+  return { score, status, statusText, analysisText, guidance, goods, issues, colorLevel, colorLabel };
+}
+
+function generateWeeklyReport(records, profile) {
+  if (records.length === 0) return null;
+
+  const now = new Date();
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - now.getDay() + 1);
+  weekStart.setHours(0, 0, 0, 0);
+
+  const weekRecords = records.filter(r => new Date(r.date) >= weekStart);
+  if (weekRecords.length === 0) return null;
+
+  const totalDuration = weekRecords.reduce((s, r) => s + (r.duration || 0), 0);
+  const totalDistance = weekRecords.reduce((s, r) => s + (r.distance || 0), 0);
+  const totalCalories = weekRecords.reduce((s, r) => s + (r.calories || 0), 0);
+  const avgHR = weekRecords.length > 0 ? Math.round(weekRecords.reduce((s, r) => s + (r.avgHR || 0), 0) / weekRecords.length) : 0;
+  const zones = getHRZones(profile.age);
+  const inZone = weekRecords.filter(r => r.avgHR >= zones.fatBurn.min && r.avgHR <= zones.fatBurn.max).length;
+  const avgScore = Math.round(weekRecords.reduce((s, r) => {
+    const a = analyzeRecord(r, profile);
+    return s + a.score;
+  }, 0) / weekRecords.length);
+
+  let summary = '';
+  summary += `本周共运动<strong>${weekRecords.length}</strong>次，累计<strong>${totalDuration}</strong>分钟，总距离<strong>${totalDistance.toFixed(2)}km</strong>，消耗<strong>${totalCalories}</strong>大卡。`;
+  summary += `平均心率<strong>${avgHR}bpm</strong>，其中<strong>${inZone}</strong>次处于最佳减脂区间。`;
+
+  let advice = '';
+  if (weekRecords.length >= 3) {
+    advice += '✅ 运动频率达标，保持这个节奏！';
+  } else {
+    advice += `⚠️ 本周仅运动${weekRecords.length}次，距离目标${profile.exerciseFreq}次还差${profile.exerciseFreq - weekRecords.length}次。`;
+  }
+  if (avgScore >= 80) {
+    advice += ' 整体运动质量优秀，继续保持。';
+  } else if (avgScore >= 60) {
+    advice += ' 运动质量中等，注意控制心率和步频。';
+  } else {
+    advice += ' 运动质量有待提升，建议关注心率区间和运动时长。';
+  }
+
+  if (profile.condition.includes('腰')) {
+    advice += ' 腰肌劳损期间注意：跑前热身、跑后拉伸、控制步频保护腰椎。';
+  }
+
+  return {
+    count: weekRecords.length,
+    totalDuration,
+    totalDistance: totalDistance.toFixed(2),
+    totalCalories,
+    avgHR,
+    inZone,
+    avgScore,
+    summary,
+    advice
+  };
+}
+
+// ===================== RENDERING =====================
+function renderUserCard() {
+  const p = getProfile();
+  if (!p) return; // 未填写档案时不渲染
+  
+  const bmi = (p.weight / ((p.height / 100) ** 2)).toFixed(1);
+  const zones = getHRZones(p.age);
+  const records = getRecords();
+  const streak = getStreak();
+  const fireEmoji = streak.current >= 7 ? '🔥' : streak.current >= 3 ? '💪' : streak.current > 0 ? '💪' : '';
+  let healthScoreHtml = '';
+  document.getElementById('userCard').innerHTML = `
+    <div class="user-card-left">
+      <div class="user-info">
+        <div class="user-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="user-meta">
+          <h3>${p.name}</h3>
+          <p>${p.age}岁 · ${p.height}cm · ${p.weight}kg · BMI ${bmi}</p>
+        </div>
+      </div>
+      <div class="user-tags">
+        <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>减脂心率 ${zones.fatBurn.min}-${zones.fatBurn.max}</span>
+        <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>目标 ${p.targetWeight}kg</span>
+        <span class="user-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>每周${p.exerciseFreq}次</span>
+      </div>
+      ${healthScoreHtml}
+    </div>
+    ${streak.current > 0 ? `
+    <div class="user-card-streak">
+      <div class="streak-icon">${fireEmoji}</div>
+      <div class="streak-num">${streak.current} 天</div>
+      <div class="streak-label">连续打卡</div>
+    </div>` : ''}
+  `;
+}
+
+let currentAnalysisResult = null; // 存储当前分析结果
+
+function renderUploadSection() {
+  const container = document.getElementById('uploadSection');
+  container.innerHTML = `
+    <div class="upload-zone" onclick="triggerFileUpload()">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <h3>上传运动截图</h3>
+      <p>让AI解读你身体的内在轨迹</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+    <div class="analysis-progress" id="analysisProgress" style="display:none">
+      <div class="progress-content">
+        <div class="progress-spinner"></div>
+        <div class="progress-text" id="progressText">正在上传图片...</div>
+      </div>
+    </div>
+  `;
+}
+
+function triggerFileUpload() {
+  document.getElementById('fileInput').click();
+}
+
+function clearAnalysis() {
+  currentAnalysisResult = null;
+  renderLatestAnalysis();  // 恢复显示已保存的最新记录
+}
+
+function saveCurrentAnalysis() {
+  if (!currentAnalysisResult) return;
+  const data = currentAnalysisResult.data;
+  const analysis = currentAnalysisResult.analysis;
+  const record = {
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+    date: data.date,
+    type: data.type,
+    duration: data.duration,
+    distance: data.distance,
+    avgHR: data.avgHR,
+    maxHR: data.maxHR,
+    calories: data.calories,
+    cadence: data.cadence,
+    steps: data.steps,
+    pace: data.pace,
+    aiAnalysis: analysis,
+    createdAt: new Date().toISOString()
+  };
+  
+  // 获取现有记录并添加新记录
+  const records = getRecords();
+  records.push(record);
+  
+  // 按日期降序排序（最新的在前）
+  records.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  saveRecords(records);
+  updateStreak();
+  currentAnalysisResult = null;
+  
+  // 刷新所有区域
+  renderLatestAnalysis();
+  renderUploadSection();
+  renderUserCard();
+  renderHealthTip();
+  checkStreakBroken();
+  renderRecords();
+  showToast('✅ 记录已保存');
+}
+
+function renderWeeklySection() {
+  // 此函数保留但不在首页使用，数据移到统计页面
+}
+
+function renderLatestAnalysis() {
+  const container = document.getElementById('latestAnalysisSection');
+  
+  // 优先显示临时分析结果（刚上传未保存）
+  if (currentAnalysisResult) {
+    const a = currentAnalysisResult.analysis;
+    const data = currentAnalysisResult.data;
+    const colorClass = a.colorLevel || 'green';
+    const colorLabel = a.colorLabel || '';
+    const statusIcon = a.statusIcon || '✓';
+    const guidanceArr = a.guidance || [];
+    
+    container.innerHTML = `
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        AI分析结果
+      </div>
+      <div class="analysis-result-card ${colorClass}">
+        <div class="analysis-header">
+          <div class="analysis-date">${data.date} · ${data.type}</div>
+          <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+        </div>
+        <div class="analysis-metrics">
+          <div class="metric-item"><span class="metric-val">${data.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
+          <div class="metric-item"><span class="metric-val">${data.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
+          <div class="metric-item"><span class="metric-val">${data.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
+          <div class="metric-item"><span class="metric-val">${data.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
+        </div>
+        <div class="analysis-content">
+          <div class="analysis-title">${statusIcon} 运动分析</div>
+          <div class="analysis-text">${a.analysisText || ''}</div>
+        </div>
+        ${guidanceArr.length > 0 ? `
+        <div class="guidance-content">
+          <div class="guidance-title">💡 专属健康指导</div>
+          <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+        </div>` : ''}
+        <div class="analysis-actions">
+          <button class="btn-save" onclick="saveCurrentAnalysis()">✓ 保存记录</button>
+          <button class="btn-retry" onclick="clearAnalysis()">重新上传</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  
+  // 没有临时结果，显示已保存的最新记录
+  const records = getRecords();
+  const savedRecords = [...records].sort((a, b) => {
+    const dateDiff = new Date(b.date) - new Date(a.date);
+    if (dateDiff !== 0) return dateDiff;
+    if (b.created_at && a.created_at) return new Date(b.created_at) - new Date(a.created_at);
+    if (b.id && a.id) return (b.id > a.id ? 1 : -1);
+    return 0;
+  });
+  
+  if (savedRecords.length === 0) {
+    // 没有记录时，显示上传引导
+    container.innerHTML = `
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        最新轨迹
+      </div>
+      <div class="empty-state" style="background:var(--card);border-radius:var(--radius);padding:30px 20px;margin-bottom:16px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:48px;height:48px;margin-bottom:12px;opacity:.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <p style="font-size:14px">还没有运动轨迹<br>点击上方"上传运动截图"开始记录</p>
+      </div>
+    `;
+    return;
+  }
+  
+  const latest = savedRecords[0];
+  const profile = getProfile();
+  const a = latest.aiAnalysis || analyzeRecord(latest, profile);
+  const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
+  const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀 🟢' : a.score >= 60 ? '良好 🟡' : '需改善 🔴');
+  const statusIcon = a.statusIcon || (a.score >= 80 ? '✓' : a.score >= 60 ? '⚠' : '✗');
+  const analysisText = a.analysisText || '';
+  const guidanceArr = a.guidance || [];
+  
+  container.innerHTML = `
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      最新轨迹
+    </div>
+    <div class="analysis-result-card ${colorClass}">
+      <div class="analysis-header">
+        <div class="analysis-date">${latest.date} · ${latest.type}</div>
+        <div class="analysis-score-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+      </div>
+      <div class="analysis-metrics">
+        <div class="metric-item"><span class="metric-val">${latest.duration}</span><span class="metric-unit">分钟</span><span class="metric-lbl">时长</span></div>
+        <div class="metric-item"><span class="metric-val">${latest.distance || '-'}</span><span class="metric-unit">km</span><span class="metric-lbl">距离</span></div>
+        <div class="metric-item"><span class="metric-val">${latest.avgHR || '-'}</span><span class="metric-unit">bpm</span><span class="metric-lbl">平均心率</span></div>
+        <div class="metric-item"><span class="metric-val">${latest.calories || '-'}</span><span class="metric-unit">大卡</span><span class="metric-lbl">消耗</span></div>
+      </div>
+      <div class="analysis-content">
+        <div class="analysis-title">${statusIcon} 运动分析</div>
+        <div class="analysis-text">${analysisText}</div>
+      </div>
+      ${guidanceArr.length > 0 ? `
+      <div class="guidance-content">
+        <div class="guidance-title">💡 专属健康指导</div>
+        <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+      </div>` : ''}
+    </div>
+  `;
+}
+
+function renderRecords() {
+  const records = getRecords();
+  const profile = getProfile();
+  const container = document.getElementById('recordsList');
+  
+  // 按日期降序排序，同一天按创建时间降序
+  const sortedRecords = [...records].sort((a, b) => {
+    const dateDiff = new Date(b.date) - new Date(a.date);
+    if (dateDiff !== 0) return dateDiff;
+    // 同一天按 id 或 created_at 降序（新的在前）
+    if (b.created_at && a.created_at) return new Date(b.created_at) - new Date(a.created_at);
+    if (b.id && a.id) return (b.id > a.id ? 1 : -1);
+    return 0;
+  });
+  
+  // 取第2到第6条（除最新外的最近5次，避免与最新轨迹重复）
+  const recentRecords = sortedRecords.slice(1, 6);
+  
+  if (recentRecords.length === 0) {
+    if (sortedRecords.length === 1) {
+      container.innerHTML = '<div class="empty-state"><p>已保存1条轨迹<br>继续记录更多轨迹</p></div>';
+    } else {
+      container.innerHTML = '<div class="empty-state"><p>开始记录你的第一条轨迹</p></div>';
+    }
+    return;
+  }
+  
+  container.innerHTML = recentRecords.map((r, idx) => {
+    const a = r.aiAnalysis || analyzeRecord(r, profile);
+    const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
+    const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀' : a.score >= 60 ? '良好' : '需改善');
+    const d = new Date(r.date);
+    const dateStr = `${d.getMonth() + 1}月${d.getDate()}日`;
+    const guidanceArr = a.guidance || [];
+    const analysisText = a.analysisText || '';
+    
+    return `
+      <div class="record-summary-card">
+        <div onclick="toggleRecordDetail('detail_${idx}')" style="cursor:pointer">
+          <div class="summary-header">
+            <div class="summary-date">${dateStr} · ${r.type}</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="summary-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+              <div class="record-delete-btn" onclick="event.stopPropagation();confirmDeleteRecord('${r.id}','home')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="summary-metrics">
+            <span>${r.duration}分钟</span>
+            <span>${r.distance ? r.distance + 'km' : '-'}</span>
+            <span>${r.avgHR ? r.avgHR + 'bpm' : '-'}</span>
+            <span>${r.calories ? r.calories + '大卡' : '-'}</span>
+          </div>
+          <div class="summary-toggle">点击查看详情 ▼</div>
+        </div>
+        <div class="record-detail" id="detail_${idx}" style="display:none">
+          <div class="analysis-content">
+            <div class="analysis-title">运动分析</div>
+            <div class="analysis-text">${analysisText}</div>
+          </div>
+          ${guidanceArr.length > 0 ? `
+          <div class="guidance-content">
+            <div class="guidance-title">💡 健康指导</div>
+            <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+          </div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleRecordDetail(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    const isHidden = el.style.display === 'none';
+    el.style.display = isHidden ? 'block' : 'none';
+    // 更新toggle文字
+    const card = el.closest('.record-summary-card');
+    const toggle = card.querySelector('.summary-toggle');
+    toggle.textContent = isHidden ? '点击收起 ▲' : '点击查看详情 ▼';
+  }
+}
+
+function confirmDeleteRecord(id, from) {
+  document.getElementById('confirmTitle').textContent = '确认删除？';
+  document.getElementById('confirmMsg').textContent = '删除后数据无法恢复';
+  document.getElementById('confirmDialog').classList.add('show');
+  document.getElementById('confirmBtn').onclick = function() {
+    deleteRecord(id);
+    closeConfirm();
+    if (from === 'home') {
+      renderLatestAnalysis();
+      renderRecords();
+    } else {
+      renderStats();
+    }
+    showToast('记录已删除');
+  };
+}
+
+// ===================== HEALTH TIP =====================
+const HEALTH_TIPS = [
+  "减脂最佳心率区间是你最大心率的60%-70%，保持在这个区间运动效果最好",
+  "步频低于155步/分时步幅过大，会增加膝盖和腰部冲击，建议提高步频",
+  "每次运动建议至少30分钟，45-60分钟减脂效果更佳",
+  "运动后做5-10分钟拉伸，可以有效预防肌肉酸痛和受伤",
+  "腰肌劳损期间建议避免高强度跑跳，选择快走或低冲击有氧运动",
+  "保持每周3-5次运动频率，比偶尔一次高强度运动更有效",
+  "运动前热身5-10分钟，让心率逐渐升高，避免心脏突然负荷",
+  "减脂不是越快越好，每周减0.5-1kg是最健康的速度",
+  "睡眠不足会影响运动恢复，保证每天7-8小时睡眠",
+  "运动后30分钟内补充蛋白质，有助于肌肉修复"
+];
+
+function renderHealthTip() {
+  const container = document.getElementById('healthTipSection');
+  const records = getRecords();
+  const profile = getProfile();
+  let tipTitle = '每日健康提示';
+  let tipText = '';
+
+  if (records.length === 0) {
+    tipTitle = '开始你的健康之旅';
+    tipText = '开始你的循迹之旅！上传运动截图，让AI为你解读身体的内在信号。';
+  } else {
+    const lastRecord = records[0];
+    const a = analyzeRecord(lastRecord, profile);
+    const streak = getStreak();
+
+    if (a.score < 60) {
+      tipTitle = '改善建议';
+      if (a.issues.length > 0) {
+        tipText = a.issues[0] + '。' + (a.guidance.length > 0 ? a.guidance[0] : '');
+      } else {
+        tipText = '最近运动评分偏低，建议关注心率和运动时长，逐步提升运动质量。';
+      }
+    } else if (streak.current >= 3) {
+      tipTitle = '连续打卡 ' + streak.current + ' 天';
+      tipText = '太棒了！你已经连续运动' + streak.current + '天，坚持就是胜利！保持这个节奏，身体会给你最好的回报。';
+    } else {
+      tipText = HEALTH_TIPS[Math.floor(Math.random() * HEALTH_TIPS.length)];
+    }
+  }
+
+  container.innerHTML = `
+    <div class="health-tip-card">
+      <div class="tip-header">
+        <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 1 4 12.9V17H8v-2.1A7 7 0 0 1 12 2z"/></svg></div>
+        <div class="tip-title">${tipTitle}</div>
+      </div>
+      <div class="tip-text">${tipText}</div>
+    </div>
+  `;
+}
+
+function renderStats() {
+  const records = getRecords();
+  const profile = getProfile();
+  const container = document.getElementById('statsContent');
+
+  if (records.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <p>暂无数据<br>添加运动记录后即可查看统计</p>
+      </div>
+    `;
+    return;
+  }
+
+  const zones = getHRZones(profile.age);
+  const sorted = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const last10 = sorted.slice(-10);
+
+  // 计算总体健康评分
+  const avgScore = Math.round(records.reduce((s, r) => {
+    const a = r.aiAnalysis || analyzeRecord(r, profile);
+    return s + (a.score || 70);
+  }, 0) / records.length);
+  
+  // 仪表盘角度计算 (0-100 -> -90 to 90度)
+  const gaugeAngle = (avgScore / 100) * 180 - 90;
+  const gaugeColor = avgScore >= 80 ? '#2ecc71' : avgScore >= 60 ? '#f39c12' : '#e74c3c';
+  const statusText = avgScore >= 80 ? '状态优秀' : avgScore >= 60 ? '状态良好' : '需要关注';
+  const statusColor = avgScore >= 80 ? '#2ecc71' : avgScore >= 60 ? '#f39c12' : '#e74c3c';
+
+  // Cumulative stats
+  const totalDur = records.reduce((s, r) => s + (r.duration || 0), 0);
+  const totalDist = records.reduce((s, r) => s + (r.distance || 0), 0);
+  const totalCal = records.reduce((s, r) => s + (r.calories || 0), 0);
+  const totalSteps = records.reduce((s, r) => s + (r.steps || 0), 0);
+  const avgHR = Math.round(records.reduce((s, r) => s + (r.avgHR || 0), 0) / records.length);
+
+  // 趋势数据
+  const trendData = last10.map(r => r.avgHR || 0);
+  const maxTrend = Math.max(...trendData, 1);
+  const trendPoints = trendData.map((v, i) => {
+    const x = (i / (trendData.length - 1 || 1)) * 100;
+    const y = 80 - (v / maxTrend) * 70;
+    return `${x},${y}`;
+  }).join(' ');
+
+  // 最新日期
+  const lastRecord = sorted[sorted.length - 1];
+  const lastDate = new Date(lastRecord.date);
+  const dateStr = `${lastDate.getFullYear()}.${String(lastDate.getMonth()+1).padStart(2,'0')}.${String(lastDate.getDate()).padStart(2,'0')}`;
+
+  // 全部历史记录列表
+  const historyListHtml = [...records].sort((a, b) => new Date(b.date) - new Date(a.date)).map((r, idx) => {
+    const a = r.aiAnalysis || analyzeRecord(r, profile);
+    const colorClass = a.colorLevel || (a.score >= 80 ? 'green' : a.score >= 60 ? 'yellow' : 'red');
+    const colorLabel = a.colorLabel || (a.score >= 80 ? '优秀' : a.score >= 60 ? '良好' : '需改善');
+    const d = new Date(r.date);
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const guidanceArr = a.guidance || [];
+    const analysisText = a.analysisText || '';
+    
+    return `
+      <div class="record-summary-card">
+        <div onclick="toggleRecordDetail('stat_${idx}')" style="cursor:pointer">
+          <div class="summary-header">
+            <div class="summary-date">${dateStr} · ${r.type}</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="summary-badge ${colorClass}">${a.score}分 · ${colorLabel}</div>
+              <div class="record-delete-btn" onclick="event.stopPropagation();confirmDeleteRecord('${r.id}','stats')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="summary-metrics">
+            <span>${r.duration}分钟</span>
+            <span>${r.distance ? r.distance + 'km' : '-'}</span>
+            <span>${r.avgHR ? r.avgHR + 'bpm' : '-'}</span>
+            <span>${r.calories ? r.calories + '大卡' : '-'}</span>
+          </div>
+          <div class="summary-toggle">点击查看详情 ▼</div>
+        </div>
+        <div class="record-detail" id="stat_${idx}" style="display:none">
+          <div class="analysis-content">
+            <div class="analysis-title">运动分析</div>
+            <div class="analysis-text">${analysisText}</div>
+          </div>
+          ${guidanceArr.length > 0 ? `
+          <div class="guidance-content">
+            <div class="guidance-title">💡 健康指导</div>
+            <div class="guidance-text">${guidanceArr.join('<br>')}</div>
+          </div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <!-- 仪表盘主卡片 -->
+    <div class="gauge-container">
+      <div class="gauge-header">
+        <div class="gauge-status">
+          <div class="gauge-status-dot" style="background:${statusColor}"></div>
+          <span class="gauge-status-text">${statusText}</span>
+        </div>
+        <div class="gauge-date">更新于 ${dateStr}</div>
+      </div>
+      <div class="gauge-body">
+        <svg class="gauge-svg" viewBox="0 0 200 110">
+          <defs>
+            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#e74c3c"/>
+              <stop offset="35%" style="stop-color:#f39c12"/>
+              <stop offset="65%" style="stop-color:#f1c40f"/>
+              <stop offset="100%" style="stop-color:#2ecc71"/>
+            </linearGradient>
+          </defs>
+          <!-- 背景弧 -->
+          <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="12" stroke-linecap="round"/>
+          <!-- 彩虹弧 -->
+          <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round"/>
+          <!-- 指针 -->
+          <line x1="100" y1="100" x2="${100 + 70 * Math.cos((gaugeAngle - 90) * Math.PI / 180)}" y2="${100 + 70 * Math.sin((gaugeAngle - 90) * Math.PI / 180)}" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <!-- 中心点 -->
+          <circle cx="100" cy="100" r="8" fill="#fff"/>
+        </svg>
+        <div class="gauge-value">${avgScore}<span class="gauge-max">/100</span></div>
+        <div class="gauge-label">综合健康指数</div>
+      </div>
+      <div class="gauge-subtitle">基于${records.length}次运动数据智能分析</div>
+      <div class="gauge-metrics">
+        <div class="gauge-metric">
+          <div class="gauge-metric-value">${records.length}</div>
+          <div class="gauge-metric-label">运动次数</div>
+          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(records.length / 30 * 100, 100)}%;background:#2ecc71"></div></div>
+        </div>
+        <div class="gauge-metric">
+          <div class="gauge-metric-value">${totalDur}</div>
+          <div class="gauge-metric-label">总时长(分)</div>
+          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(totalDur / 600 * 100, 100)}%;background:#3498db"></div></div>
+        </div>
+        <div class="gauge-metric">
+          <div class="gauge-metric-value">${totalCal}</div>
+          <div class="gauge-metric-label">总消耗(大卡)</div>
+          <div class="gauge-metric-bar"><div class="gauge-metric-bar-fill" style="width:${Math.min(totalCal / 5000 * 100, 100)}%;background:#e74c3c"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 趋势图 -->
+    <div class="trend-card">
+      <div class="trend-header">
+        <div class="trend-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          心率趋势
+        </div>
+        <div class="trend-value">${avgHR} bpm</div>
+      </div>
+      <div class="trend-chart">
+        <svg viewBox="0 0 100 80" preserveAspectRatio="none">
+          <polyline points="${trendPoints}" fill="none" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="${100}" cy="${80 - (trendData[trendData.length-1] / maxTrend) * 70}" r="3" fill="#2ecc71"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 总距离 -->
+    ${totalDist > 0 ? `
+    <div class="trend-card">
+      <div class="trend-header">
+        <div class="trend-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          累计里程
+        </div>
+        <div class="trend-value">${totalDist.toFixed(1)} km</div>
+      </div>
+    </div>` : ''}
+
+    <!-- 历史记录 -->
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      全部运动记录（${records.length}条）
+    </div>
+    ${historyListHtml}
+  `;
+}
+
+function renderProfile() {
+  const p = getProfile();
+  const bmi = (p.weight / ((p.height / 100) ** 2)).toFixed(1);
+  const zones = getHRZones(p.age);
+  const container = document.getElementById('profileContent');
+
+  container.innerHTML = `
+    <div class="profile-card">
+      <div class="profile-row"><span class="label">昵称</span><span class="value editable" onclick="editField('name','${p.name}')">${p.name}</span></div>
+      <div class="profile-row"><span class="label">年龄</span><span class="value editable" onclick="editField('age',${p.age})">${p.age}岁</span></div>
+      <div class="profile-row"><span class="label">身高</span><span class="value editable" onclick="editField('height',${p.height})">${p.height}cm</span></div>
+      <div class="profile-row"><span class="label">体重</span><span class="value editable" onclick="editField('weight',${p.weight})">${p.weight}kg</span></div>
+      <div class="profile-row"><span class="label">BMI</span><span class="value">${bmi} ${bmi < 18.5 ? '偏瘦' : bmi < 24 ? '正常' : bmi < 28 ? '偏胖' : '肥胖'}</span></div>
+      <div class="profile-row"><span class="label">目标体重</span><span class="value editable" onclick="editField('targetWeight',${p.targetWeight})">${p.targetWeight}kg</span></div>
+      <div class="profile-row"><span class="label">每周运动次数</span><span class="value editable" onclick="editField('exerciseFreq',${p.exerciseFreq})">${p.exerciseFreq}次</span></div>
+      <div class="profile-row"><span class="label">健康状况</span><span class="value editable" onclick="editField('condition','${p.condition}')">${p.condition}</span></div>
+    </div>
+
+    <div class="profile-card">
+      <div class="section-title" style="margin-bottom:8px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        心率区间参考
+      </div>
+      <div class="profile-row"><span class="label">最大心率</span><span class="value">${zones.max}bpm</span></div>
+      <div class="profile-row"><span class="label">热身区</span><span class="value">${zones.warmUp.min}-${zones.warmUp.max}bpm</span></div>
+      <div class="profile-row"><span class="label" style="color:#10B981;font-weight:600">减脂区(推荐)</span><span class="value" style="color:#10B981">${zones.fatBurn.min}-${zones.fatBurn.max}bpm</span></div>
+      <div class="profile-row"><span class="label">有氧区</span><span class="value">${zones.cardio.min}-${zones.cardio.max}bpm</span></div>
+      <div class="profile-row"><span class="label">无氧区</span><span class="value">${zones.anaerobic.min}-${zones.anaerobic.max}bpm</span></div>
+    </div>
+
+    <div class="profile-card">
+      <div class="section-title" style="margin-bottom:8px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        AI识别服务
+      </div>
+      <div class="profile-row">
+        <span class="label">识别引擎</span>
+        <span class="value">Kimi AI 视觉</span>
+      </div>
+      <div class="profile-row">
+        <span class="label">API Key</span>
+        <span class="value editable" onclick="setKimiKey()">${AI_API_KEY ? '已设置 ✓' : '点击设置'}</span>
+      </div>
+      <p style="font-size:11px;color:var(--text3);padding:4px 0 0">获取地址：platform.moonshot.cn → API Keys</p>
+    </div>
+
+    <div class="profile-card">
+      <button class="btn-outline" onclick="exportData()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        导出所有数据
+      </button>
+      <button class="btn-outline" onclick="importDataTrigger()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        导入数据
+      </button>
+      <input type="file" id="importInput" accept=".json" style="display:none" onchange="importData(event)">
+      <button class="btn-danger" onclick="confirmClearAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        清除所有数据
+      </button>
+      <button class="btn-danger" onclick="doLogout()" style="margin-top:12px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        退出登录
+      </button>
+    </div>
+  `;
+}
+
+// ===================== HRV DATA LAYER =====================
+const HRV_STORAGE_KEY = 'hrv_records';
+
+function getHRVRecords() {
+  try {
+    const d = localStorage.getItem(HRV_STORAGE_KEY);
+    return d ? JSON.parse(d) : [];
+  } catch { return []; }
+}
+
+function saveHRVRecords(records) {
+  localStorage.setItem(HRV_STORAGE_KEY, JSON.stringify(records));
+}
+
+function addHRVRecord(record) {
+  const records = getHRVRecords();
+  records.unshift(record);
+  saveHRVRecords(records);
+}
+
+function deleteHRVRecord(id) {
+  const records = getHRVRecords().filter(r => r.id !== id);
+  saveHRVRecords(records);
+}
+
+// ===================== HRV ANALYSIS ENGINE =====================
+function analyzeHRV(record, profile) {
+  const hrv = record.hrv || 0;
+  const restingHR = record.restingHR || 0;
+  const age = profile.age || 46;
+
+  // Age-adjusted HRV norms (approximate)
+  const hrvMin = Math.max(15, 65 - age);
+  const hrvMax = Math.max(40, 120 - age);
+  const hrvMid = (hrvMin + hrvMax) / 2;
+
+  // Health score (0-100)
+  let health;
+  if (hrv >= hrvMax) health = 95;
+  else if (hrv >= hrvMid) health = 70 + ((hrv - hrvMid) / (hrvMax - hrvMid)) * 25;
+  else if (hrv >= hrvMin) health = 40 + ((hrv - hrvMin) / (hrvMid - hrvMin)) * 30;
+  else health = Math.max(5, (hrv / hrvMin) * 40);
+
+  // Stress score (0-100, higher = more stressed)
+  let stress;
+  if (hrv >= hrvMax) stress = 10;
+  else if (hrv >= hrvMid) stress = 20 + ((hrvMax - hrv) / (hrvMax - hrvMid)) * 20;
+  else if (hrv >= hrvMin) stress = 40 + ((hrvMid - hrv) / (hrvMid - hrvMin)) * 30;
+  else stress = Math.min(95, 70 + ((hrvMin - hrv) / hrvMin) * 30);
+  if (restingHR > 80) stress = Math.min(95, stress + 15);
+  if (restingHR > 90) stress = Math.min(95, stress + 10);
+
+  // Energy score (0-100)
+  let energy = Math.round(health * 0.6 + (100 - stress) * 0.4);
+
+  // Focus score (0-100)
+  let focus = Math.round((100 - stress) * 0.5 + energy * 0.3 + health * 0.2);
+
+  // Clamp scores
+  health = Math.round(Math.max(0, Math.min(100, health)));
+  stress = Math.round(Math.max(0, Math.min(100, stress)));
+  energy = Math.round(Math.max(0, Math.min(100, energy)));
+  focus = Math.round(Math.max(0, Math.min(100, focus)));
+
+  // Generate status labels
+  function getStatus(score) {
+    if (score >= 85) return { label: '优秀', cls: 'excellent' };
+    if (score >= 70) return { label: '良好', cls: 'good' };
+    if (score >= 50) return { label: '一般', cls: 'normal' };
+    if (score >= 30) return { label: '偏低', cls: 'low' };
+    return { label: '注意', cls: 'alert' };
+  }
+
+  const healthStatus = getStatus(health);
+  const stressStatus = getStatus(100 - stress); // invert: low stress = good
+  const energyStatus = getStatus(energy);
+  const focusStatus = getStatus(focus);
+
+  // Plain-language explanations (Chinese)
+  let healthDesc = '';
+  if (health >= 85) healthDesc = `你的HRV值${hrv}ms，处于同龄人优秀水平，说明自主神经系统调节能力很强，身体恢复状态很好。`;
+  else if (health >= 70) healthDesc = `你的HRV值${hrv}ms，处于同龄人良好水平，身体状态不错，继续保持健康的生活方式。`;
+  else if (health >= 50) healthDesc = `你的HRV值${hrv}ms，处于同龄人正常范围，但还有提升空间。注意规律作息和适度运动。`;
+  else if (health >= 30) healthDesc = `你的HRV值${hrv}ms，偏低于同龄人平均水平，可能存在疲劳积累或睡眠不足，建议关注休息质量。`;
+  else healthDesc = `你的HRV值${hrv}ms，明显偏低，身体可能处于高压状态。建议减少高强度运动，增加休息，必要时咨询医生。`;
+
+  let stressDesc = '';
+  if (stress <= 20) stressDesc = `当前压力水平很低，身心放松，适合进行高强度训练或挑战性工作。`;
+  else if (stress <= 40) stressDesc = `压力水平适中，身体状态良好，可以正常工作和运动。`;
+  else if (stress <= 60) stressDesc = `存在一定压力，建议适当放松，避免过度劳累。可以做深呼吸或轻度拉伸。`;
+  else if (stress <= 80) stressDesc = `压力较大，身体处于紧张状态。建议减少运动强度，增加休息时间，尝试冥想放松。`;
+  else stressDesc = `压力过大，身体可能处于疲劳或应激状态。强烈建议充分休息，暂停高强度运动，关注睡眠质量。`;
+
+  let energyDesc = '';
+  if (energy >= 85) energyDesc = `精力充沛！你的身体恢复能力很强，今天是运动和工作的好时机。`;
+  else if (energy >= 70) energyDesc = `精力良好，可以正常进行日常活动和中等强度运动。`;
+  else if (energy >= 50) energyDesc = `精力中等，建议以轻度运动为主，如散步、快走，避免高强度训练。`;
+  else if (energy >= 30) energyDesc = `精力偏低，身体可能还没完全恢复。建议以休息为主，做做拉伸和放松。`;
+  else energyDesc = `精力不足，身体需要充分恢复。建议今天休息，早睡早起，补充营养。`;
+
+  let focusDesc = '';
+  if (focus >= 85) focusDesc = `专注力极佳，头脑清晰，适合处理复杂任务或学习新知识。`;
+  else if (focus >= 70) focusDesc = `专注力良好，可以高效完成日常工作。`;
+  else if (focus >= 50) focusDesc = `专注力一般，容易分心。建议将重要任务安排在精力最好的时段。`;
+  else if (focus >= 30) focusDesc = `专注力偏低，注意力难以集中。建议先休息放松，再处理重要事务。`;
+  else focusDesc = `专注力很差，头脑昏沉。建议先小睡或冥想15分钟，恢复后再工作。`;
+
+  // Actionable advice
+  let healthAdvice = [];
+  if (health < 50) {
+    healthAdvice.push('保证每晚7-8小时高质量睡眠');
+    healthAdvice.push('减少咖啡因和酒精摄入');
+    healthAdvice.push('尝试4-7-8呼吸法：吸气4秒，屏息7秒，呼气8秒');
+  } else if (health < 70) {
+    healthAdvice.push('保持规律作息，尽量在11点前入睡');
+    healthAdvice.push('每周进行3-4次中等强度有氧运动');
+  } else {
+    healthAdvice.push('继续保持当前的健康生活方式');
+    healthAdvice.push('可以尝试增加运动多样性，如游泳、瑜伽');
+  }
+
+  let stressAdvice = [];
+  if (stress > 60) {
+    stressAdvice.push('每天安排15-20分钟冥想或深呼吸练习');
+    stressAdvice.push('减少看手机和电脑的时间');
+    stressAdvice.push('到户外散步，接触自然环境');
+  } else if (stress > 40) {
+    stressAdvice.push('工作每50分钟休息5-10分钟');
+    stressAdvice.push('适当进行轻度运动帮助减压');
+  } else {
+    stressAdvice.push('当前压力管理良好，继续保持');
+  }
+
+  let energyAdvice = [];
+  if (energy < 50) {
+    energyAdvice.push('今天以低强度运动为主，如散步或瑜伽');
+    energyAdvice.push('注意补充水分和营养');
+    energyAdvice.push('如果持续疲劳，建议增加休息日');
+  } else if (energy < 70) {
+    energyAdvice.push('可以进行中等强度运动，如快走、慢跑');
+    energyAdvice.push('运动后注意补充蛋白质和碳水化合物');
+  } else {
+    energyAdvice.push('精力充沛，适合进行较高强度训练');
+    energyAdvice.push('注意运动后充分拉伸和恢复');
+  }
+
+  let focusAdvice = [];
+  if (focus < 50) {
+    focusAdvice.push('使用番茄工作法：25分钟专注+5分钟休息');
+    focusAdvice.push('减少多任务处理，一次只做一件事');
+    focusAdvice.push('保持工作环境整洁，减少干扰');
+  } else {
+    focusAdvice.push('利用好高效时段处理重要工作');
+    focusAdvice.push('适当休息保持专注力的持续性');
+  }
+
+  return {
+    health, stress, energy, focus,
+    healthStatus, stressStatus, energyStatus, focusStatus,
+    healthDesc, stressDesc, energyDesc, focusDesc,
+    healthAdvice, stressAdvice, energyAdvice, focusAdvice,
+    hrvMin, hrvMax, hrvMid
+  };
+}
+
+// ===================== HRV OCR PARSING =====================
+function parseHRVData(text) {
+  const data = {};
+
+  // Date: 2026/5/12 or 2026年5月12日
+  const dateMatch = text.match(/(\d{4})[\/年](\d{1,2})[\/月](\d{1,2})[日]?/);
+  if (dateMatch) {
+    data.date = dateMatch[1] + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[3].padStart(2, '0');
+  }
+
+  // Time: HH:MM or HH:MM:SS
+  const timeMatch = text.match(/(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (timeMatch && !text.match(/(\d{1,2}):(\d{2}):(\d{2})/) || timeMatch) {
+    // Only use if it looks like a time (not duration) - check context
+    const timeIdx = text.indexOf(timeMatch[0]);
+    const beforeText = text.substring(Math.max(0, timeIdx - 10), timeIdx);
+    if (beforeText.match(/时间|测量|早上|上午|下午|晚上|早晨/)) {
+      data.measurementTime = timeMatch[1].padStart(2, '0') + ':' + timeMatch[2];
+    }
+  }
+
+  // HRV: "心率变异性" or "HRV" + number + "ms"
+  const hrvMatch1 = text.match(/心率变异性[^\d]*(\d{1,3}[.\d]*)\s*ms/i);
+  const hrvMatch2 = text.match(/HRV[^\d]*(\d{1,3}[.\d]*)\s*ms/i);
+  const hrvMatch3 = text.match(/(?:心率变异|HRV)[^\d]*(\d{1,3}[.\d]*)/i);
+  if (hrvMatch1) data.hrv = parseFloat(hrvMatch1[1]);
+  else if (hrvMatch2) data.hrv = parseFloat(hrvMatch2[1]);
+  else if (hrvMatch3) data.hrv = parseFloat(hrvMatch3[1]);
+
+  // Resting HR: "静息心率" + number + "bpm" or "次/分"
+  const restingHRMatch1 = text.match(/静息心率[^\d]*(\d{2,3})\s*(?:bpm|次\/分(?:钟)?)/i);
+  const restingHRMatch2 = text.match(/静息心率[^\d]*(\d{2,3})/);
+  if (restingHRMatch1) data.restingHR = parseInt(restingHRMatch1[1]);
+  else if (restingHRMatch2) data.restingHR = parseInt(restingHRMatch2[1]);
+
+  // Stress: "压力" + number (0-100)
+  const stressMatch = text.match(/压力[^\d]*(\d{1,3})/);
+  if (stressMatch) {
+    const val = parseInt(stressMatch[1]);
+    if (val >= 0 && val <= 100) data.stress = val;
+  }
+
+  // Sleep HRV: "睡眠HRV" or "睡眠心率变异" + number + "ms"
+  const sleepHRVMatch1 = text.match(/睡眠HRV[^\d]*(\d{1,3}[.\d]*)\s*ms/i);
+  const sleepHRVMatch2 = text.match(/睡眠心率变异[^\d]*(\d{1,3}[.\d]*)\s*ms/i);
+  const sleepHRVMatch3 = text.match(/睡眠.*?HRV[^\d]*(\d{1,3}[.\d]*)/i);
+  if (sleepHRVMatch1) data.sleepHRV = parseFloat(sleepHRVMatch1[1]);
+  else if (sleepHRVMatch2) data.sleepHRV = parseFloat(sleepHRVMatch2[1]);
+  else if (sleepHRVMatch3) data.sleepHRV = parseFloat(sleepHRVMatch3[1]);
+
+  // Validation
+  if (data.hrv && (data.hrv < 5 || data.hrv > 200)) delete data.hrv;
+  if (data.restingHR && (data.restingHR < 30 || data.restingHR > 150)) delete data.restingHR;
+  if (data.sleepHRV && (data.sleepHRV < 5 || data.sleepHRV > 200)) delete data.sleepHRV;
+
+  return data;
+}
+
+// ===================== HRV MODAL FUNCTIONS =====================
+let currentHRVImage = '';
+
+function openHRVModal() {
+  document.getElementById('hrvModal').classList.add('show');
+  document.getElementById('hrvFormDate').value = new Date().toISOString().split('T')[0];
+  resetHRVForm();
+}
+
+function closeHRVModal() {
+  document.getElementById('hrvModal').classList.remove('show');
+  resetHRVForm();
+}
+
+function resetHRVForm() {
+  currentHRVImage = '';
+  document.getElementById('hrvImgPreview').style.display = 'none';
+  document.getElementById('hrvImgPlaceholder').style.display = 'flex';
+  document.getElementById('hrvChangeImgBtn').style.display = 'none';
+  document.getElementById('hrvFormDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('hrvFormTime').value = '';
+  document.getElementById('hrvFormHRV').value = '';
+  document.getElementById('hrvFormRestingHR').value = '';
+  document.getElementById('hrvFormStress').value = '';
+  document.getElementById('hrvFormSleepHRV').value = '';
+}
+
+function handleHRVFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    currentHRVImage = ev.target.result;
+    document.getElementById('hrvImgPreview').src = currentHRVImage;
+    document.getElementById('hrvImgPreview').style.display = 'block';
+    document.getElementById('hrvImgPlaceholder').style.display = 'none';
+    document.getElementById('hrvChangeImgBtn').style.display = 'block';
+    recognizeHRVImage(currentHRVImage);
+  };
+  reader.readAsDataURL(file);
+}
+
+async function recognizeHRVImage(imageData) {
+  const hint = document.getElementById('hrvRecognizingHint');
+  hint.style.display = 'block';
+  hint.textContent = 'AI识别中...';
+
+  try {
+    const base64 = imageData.split(',')[1];
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/png' });
+
+    const formData = new FormData();
+    formData.append('file', blob, 'hrv_screenshot.png');
+    formData.append('apikey', OCR_API_KEY);
+    formData.append('language', 'chs');
+    formData.append('isOverlayRequired', 'false');
+    formData.append('detectOrientation', 'true');
+    formData.append('scale', 'true');
+
+    const resp = await fetch('https://api.ocr.space/parse/image', {
+      method: 'POST',
+      body: formData
+    });
+
+    const result = await resp.json();
+    console.log('[HRV OCR] Response:', result);
+
+    if (result.IsErroredOnProcessing) {
+      hint.style.display = 'none';
+      showToast('AI识别失败：' + (result.ErrorMessage?.[0] || '未知错误'));
+      return;
+    }
+
+    if (result.ParsedResults && result.ParsedResults.length > 0) {
+      const text = result.ParsedResults[0].ParsedText || '';
+      console.log('[HRV OCR] Extracted text:', text);
+
+      const data = parseHRVData(text);
+      fillHRVFormFromData(data);
+
+      const filledCount = Object.values(data).filter(v => v && v !== 0).length;
+      hint.style.display = 'none';
+      if (filledCount > 0) {
+        showToast('AI识别完成，请确认HRV数据（识别' + filledCount + '项）');
+      } else {
+        showToast('AI未能识别HRV数据，请手动填写');
+      }
+    } else {
+      hint.style.display = 'none';
+      showToast('AI未能识别HRV数据，请手动填写');
+    }
+  } catch (err) {
+    console.error('[HRV OCR] Error:', err);
+    hint.style.display = 'none';
+    showToast('AI识别失败，请手动填写');
+  }
+}
+
+function fillHRVFormFromData(data) {
+  if (data.date) document.getElementById('hrvFormDate').value = data.date;
+  if (data.measurementTime) document.getElementById('hrvFormTime').value = data.measurementTime;
+  if (data.hrv) document.getElementById('hrvFormHRV').value = data.hrv;
+  if (data.restingHR) document.getElementById('hrvFormRestingHR').value = data.restingHR;
+  if (data.stress) document.getElementById('hrvFormStress').value = data.stress;
+  if (data.sleepHRV) document.getElementById('hrvFormSleepHRV').value = data.sleepHRV;
+}
+
+function saveHRVRecord() {
+  const date = document.getElementById('hrvFormDate').value;
+  const measurementTime = document.getElementById('hrvFormTime').value;
+  const hrv = parseFloat(document.getElementById('hrvFormHRV').value) || 0;
+  const restingHR = parseInt(document.getElementById('hrvFormRestingHR').value) || 0;
+  const stress = parseInt(document.getElementById('hrvFormStress').value) || 0;
+  const sleepHRV = parseFloat(document.getElementById('hrvFormSleepHRV').value) || 0;
+
+  if (!date) { showToast('请选择测量日期'); return; }
+  if (hrv <= 0) { showToast('请填写HRV值'); return; }
+
+  const record = {
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+    date, hrv, restingHR, stress, sleepHRV, measurementTime,
+    image: currentHRVImage,
+    createdAt: new Date().toISOString()
+  };
+
+  addHRVRecord(record);
+  closeHRVModal();
+  renderHRV();
+  showToast('HRV记录已保存');
+}
+
+function confirmDeleteHRV(id) {
+  pendingDeleteId = id;
+  pendingAction = 'deleteHRV';
+  document.getElementById('confirmTitle').textContent = '确认删除？';
+  document.getElementById('confirmMsg').textContent = '删除后HRV数据无法恢复';
+  document.getElementById('confirmBtn').textContent = '删除';
+  document.getElementById('confirmDialog').classList.add('show');
+}
+
+// ===================== HRV RENDERING =====================
+function createGaugeSVG(score, color) {
+  const r = 34;
+  const c = 2 * Math.PI * r;
+  const offset = c - (score / 100) * c;
+  return `<svg viewBox="0 0 80 80"><circle class="bg" cx="40" cy="40" r="${r}"/><circle class="fg" cx="40" cy="40" r="${r}" stroke="${color}" stroke-dasharray="${c}" stroke-dashoffset="${offset}"/></svg>`;
+}
+
+function renderHRV() {
+  const records = getHRVRecords();
+  const profile = getProfile();
+  const container = document.getElementById('hrvContent');
+
+  if (records.length === 0) {
+    container.innerHTML = `
+      <div class="upload-zone" onclick="openHRVModal()" style="margin-bottom:16px">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3>上传HRV截图</h3>
+        <p>华为健康App心率变异性截图</p>
+      </div>
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <p>还没有HRV记录<br>上传华为健康截图开始分析</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Latest record analysis
+  const latest = records[0];
+  const analysis = analyzeHRV(latest, profile);
+
+  // Build gauges
+  const gauges = [
+    { key: 'health', label: '健康', score: analysis.health, status: analysis.healthStatus, color: '#10B981' },
+    { key: 'stress', label: '压力', score: analysis.stress, status: analysis.stressStatus, color: '#EF4444' },
+    { key: 'energy', label: '能量', score: analysis.energy, status: analysis.energyStatus, color: '#F59E0B' },
+    { key: 'focus', label: '专注力', score: analysis.focus, status: analysis.focusStatus, color: '#8B5CF6' }
+  ];
+
+  const gaugesHtml = gauges.map(g => `
+    <div class="hrv-gauge-item">
+      <div class="gauge-ring">
+        ${createGaugeSVG(g.score, g.color)}
+        <span class="val">${g.score}</span>
+      </div>
+      <span class="hrv-gauge-label">${g.label}</span>
+      <span class="hrv-gauge-status ${g.status.cls}">${g.status.label}</span>
+    </div>
+  `).join('');
+
+  // Latest record date
+  const latestDate = new Date(latest.date);
+  const latestDateStr = `${latestDate.getFullYear()}年${latestDate.getMonth() + 1}月${latestDate.getDate()}日`;
+
+  // HRV trend chart
+  const trendHtml = renderHRVTrend(records, 7);
+
+  // Records list
+  const recordsHtml = records.slice(0, 10).map(r => {
+    const a = analyzeHRV(r, profile);
+    const d = new Date(r.date);
+    const dateStr = `${d.getMonth() + 1}月${d.getDate()}日`;
+    const timeStr = r.measurementTime || '';
+
+    return `
+      <div class="hrv-record-card">
+        <div class="delete-btn" style="position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;z-index:3;opacity:0;transition:opacity .2s" onclick="event.stopPropagation();confirmDeleteHRV('${r.id}')" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--danger)"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </div>
+        <div class="hrv-record-header">
+          <div class="hrv-record-date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            ${dateStr}${timeStr ? ' ' + timeStr : ''}
+          </div>
+          <span class="record-status ${a.healthStatus.cls === 'excellent' || a.healthStatus.cls === 'good' ? 'good' : a.healthStatus.cls === 'normal' ? 'warn' : 'bad'}">
+            ${a.healthStatus.label}
+          </span>
+        </div>
+        <div class="hrv-record-metrics">
+          <div class="hrv-record-metric"><div class="val">${r.hrv}<span class="unit">ms</span></div><div class="lbl">HRV</div></div>
+          <div class="hrv-record-metric"><div class="val">${r.restingHR || '-'}<span class="unit">bpm</span></div><div class="lbl">静息心率</div></div>
+          <div class="hrv-record-metric"><div class="val">${r.stress || '-'}<span class="unit"></span></div><div class="lbl">压力值</div></div>
+        </div>
+        <div class="hrv-analysis-item">
+          <div class="metric-name"><span class="dot" style="background:#10B981"></span>健康 (${a.health}分)</div>
+          <div class="metric-desc">${a.healthDesc}</div>
+          ${a.healthAdvice.length > 0 ? `<div class="metric-advice">${a.healthAdvice[0]}</div>` : ''}
+        </div>
+        <div class="hrv-analysis-item">
+          <div class="metric-name"><span class="dot" style="background:#EF4444"></span>压力 (${a.stress}分)</div>
+          <div class="metric-desc">${a.stressDesc}</div>
+          ${a.stressAdvice.length > 0 ? `<div class="metric-advice">${a.stressAdvice[0]}</div>` : ''}
+        </div>
+        <div class="hrv-analysis-item">
+          <div class="metric-name"><span class="dot" style="background:#F59E0B"></span>能量 (${a.energy}分)</div>
+          <div class="metric-desc">${a.energyDesc}</div>
+          ${a.energyAdvice.length > 0 ? `<div class="metric-advice">${a.energyAdvice[0]}</div>` : ''}
+        </div>
+        <div class="hrv-analysis-item">
+          <div class="metric-name"><span class="dot" style="background:#8B5CF6"></span>专注力 (${a.focus}分)</div>
+          <div class="metric-desc">${a.focusDesc}</div>
+          ${a.focusAdvice.length > 0 ? `<div class="metric-advice">${a.focusAdvice[0]}</div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Weekly HRV summary
+  const weeklyHtml = renderHRVWeeklySummary(records, profile);
+
+  container.innerHTML = `
+    <div class="upload-zone" onclick="openHRVModal()" style="margin-bottom:16px;padding:18px 20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="upload-icon" style="width:44px;height:44px;margin:0;flex-shrink:0;border-radius:12px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:22px;height:22px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <div style="text-align:left">
+          <h3 style="font-size:14px;font-weight:600;margin-bottom:2px">上传HRV截图</h3>
+          <p style="font-size:12px;color:var(--text2)">华为健康App心率变异性截图</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hrv-status-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div>
+          <div style="font-size:16px;font-weight:700">当前状态</div>
+          <div style="font-size:12px;color:var(--text2)">${latestDateStr} 测量</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:28px;font-weight:700;color:var(--primary)">${latest.hrv}<span style="font-size:14px;font-weight:400;color:var(--text2)">ms</span></div>
+          <div style="font-size:11px;color:var(--text2)">HRV值</div>
+        </div>
+      </div>
+      <div class="hrv-gauges">${gaugesHtml}</div>
+    </div>
+
+    ${trendHtml}
+    ${weeklyHtml}
+
+    <div class="section-title" style="margin-top:4px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      HRV记录
+    </div>
+    ${recordsHtml}
+  `;
+}
+
+function renderHRVTrend(records, days) {
+  const now = new Date();
+  const cutoff = new Date(now);
+  cutoff.setDate(now.getDate() - days);
+  cutoff.setHours(0, 0, 0, 0);
+
+  const filtered = records.filter(r => new Date(r.date) >= cutoff).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  if (filtered.length < 2) {
+    return `
+      <div class="hrv-trend-card">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>HRV趋势</h3>
+        <div class="empty-state" style="padding:20px"><p>需要至少2条记录才能显示趋势</p></div>
+      </div>
+    `;
+  }
+
+  const hrvValues = filtered.map(r => r.hrv);
+  const minVal = Math.max(0, Math.min(...hrvValues) - 5);
+  const maxVal = Math.max(...hrvValues) + 5;
+  const range = Math.max(1, maxVal - minVal);
+
+  const chartW = 300;
+  const chartH = 140;
+  const padL = 35;
+  const padR = 10;
+  const padT = 10;
+  const padB = 30;
+  const plotW = chartW - padL - padR;
+  const plotH = chartH - padT - padB;
+
+  // Build data points
+  const points = hrvValues.map((v, i) => {
+    const x = padL + (i / (hrvValues.length - 1)) * plotW;
+    const y = padT + plotH - ((v - minVal) / range) * plotH;
+    return { x, y, v };
+  });
+
+  // Build polyline
+  const linePoints = points.map(p => `${p.x},${p.y}`).join(' ');
+
+  // Build area fill
+  const areaPoints = `${padL},${padT + plotH} ${linePoints} ${points[points.length - 1].x},${padT + plotH}`;
+
+  // Build date labels
+  const labels = filtered.map((r, i) => {
+    const d = new Date(r.date);
+    const x = points[i].x;
+    const label = `${d.getMonth() + 1}/${d.getDate()}`;
+    return `<text x="${x}" y="${chartH - 5}" text-anchor="middle" fill="#94A3B8" font-size="9">${label}</text>`;
+  }).join('');
+
+  // Build Y axis labels
+  const yLabels = [
+    { val: maxVal, y: padT },
+    { val: Math.round((minVal + maxVal) / 2), y: padT + plotH / 2 },
+    { val: minVal, y: padT + plotH }
+  ];
+  const yAxisLabels = yLabels.map(l => `
+    <text x="${padL - 5}" y="${l.y + 3}" text-anchor="end" fill="#94A3B8" font-size="9">${l.val}</text>
+    <line x1="${padL}" y1="${l.y}" x2="${chartW - padR}" y2="${l.y}" stroke="#F1F5F9" stroke-width="1"/>
+  `).join('');
+
+  // Build data point dots
+  const dots = points.map(p => `
+    <circle cx="${p.x}" cy="${p.y}" r="4" fill="white" stroke="#2563EB" stroke-width="2"/>
+    <text x="${p.x}" y="${p.y - 8}" text-anchor="middle" fill="#1E293B" font-size="9" font-weight="600">${p.v}</text>
+  `).join('');
+
+  // Average line
+  const avg = Math.round(hrvValues.reduce((s, v) => s + v, 0) / hrvValues.length);
+  const avgY = padT + plotH - ((avg - minVal) / range) * plotH;
+
+  return `
+    <div class="hrv-trend-card">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>HRV趋势（近${days}天）<span style="margin-left:auto;font-size:12px;color:var(--text2);font-weight:400">均值 ${avg}ms</span></h3>
+      <div class="hrv-chart">
+        <svg viewBox="0 0 ${chartW} ${chartH}" preserveAspectRatio="xMidYMid meet">
+          ${yAxisLabels}
+          <polygon points="${areaPoints}" fill="url(#hrvGrad)" opacity="0.3"/>
+          <polyline points="${linePoints}" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="${padL}" y1="${avgY}" x2="${chartW - padR}" y2="${avgY}" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+          ${dots}
+          ${labels}
+          <defs>
+            <linearGradient id="hrvGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2563EB" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#2563EB" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  `;
+}
+
+function renderHRVWeeklySummary(records, profile) {
+  const now = new Date();
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - now.getDay() + 1);
+  weekStart.setHours(0, 0, 0, 0);
+
+  const weekRecords = records.filter(r => new Date(r.date) >= weekStart);
+  if (weekRecords.length === 0) return '';
+
+  const avgHRV = weekRecords.length > 0 ? (weekRecords.reduce((s, r) => s + r.hrv, 0) / weekRecords.length).toFixed(1) : 0;
+  const maxHRV = weekRecords.length > 0 ? Math.max(...weekRecords.map(r => r.hrv)) : 0;
+  const minHRV = weekRecords.length > 0 ? Math.min(...weekRecords.map(r => r.hrv)) : 0;
+  const avgRestingHR = weekRecords.filter(r => r.restingHR > 0).length > 0
+    ? Math.round(weekRecords.filter(r => r.restingHR > 0).reduce((s, r) => s + r.restingHR, 0) / weekRecords.filter(r => r.restingHR > 0).length)
+    : '-';
+
+  // Analyze the latest record for overall status
+  const latestAnalysis = analyzeHRV(weekRecords[0], profile);
+
+  let summaryText = `本周共测量<strong>${weekRecords.length}</strong>次HRV，平均值为<strong>${avgHRV}ms</strong>。`;
+  if (parseFloat(avgHRV) >= latestAnalysis.hrvMid) {
+    summaryText += 'HRV整体水平良好，身体恢复状态不错。';
+  } else if (parseFloat(avgHRV) >= latestAnalysis.hrvMin) {
+    summaryText += 'HRV处于正常范围，注意保持规律作息。';
+  } else {
+    summaryText += 'HRV偏低，建议增加休息，减少高强度运动。';
+  }
+
+  return `
+    <div class="hrv-weekly-summary">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>本周HRV总结</h3>
+      <div class="hrv-weekly-grid">
+        <div class="hrv-weekly-item"><div class="val">${avgHRV}<span style="font-size:12px;font-weight:400">ms</span></div><div class="lbl">平均HRV</div></div>
+        <div class="hrv-weekly-item"><div class="val">${weekRecords.length}<span style="font-size:12px;font-weight:400">次</span></div><div class="lbl">测量次数</div></div>
+        <div class="hrv-weekly-item"><div class="val">${maxHRV}<span style="font-size:12px;font-weight:400">ms</span></div><div class="lbl">最高HRV</div></div>
+        <div class="hrv-weekly-item"><div class="val">${avgRestingHR}<span style="font-size:12px;font-weight:400">${avgRestingHR !== '-' ? 'bpm' : ''}</span></div><div class="lbl">平均静息心率</div></div>
+      </div>
+      <div class="weekly-text">${summaryText}</div>
+    </div>
+  `;
+}
+
+// ===================== NAVIGATION =====================
+function switchPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach((n, i) => {
+    n.classList.toggle('active', ['Home', 'Stats', 'Profile', 'HRV'][i] === name);
+  });
+  if (name === 'Home') { renderUserCard(); renderHealthTip(); checkStreakBroken(); renderLatestAnalysis(); renderUploadSection(); renderRecords(); }
+  if (name === 'Stats') renderStats();
+  if (name === 'Profile') renderProfile();
+  if (name === 'HRV') renderHRV();
+  window.scrollTo(0, 0);
+}
+
+// ===================== FILE UPLOAD HANDLER =====================
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  // 显示上传进度
+  const progress = document.getElementById('analysisProgress');
+  const progressText = document.getElementById('progressText');
+  if (progress) {
+    progress.style.display = 'flex';
+    if (progressText) progressText.textContent = '正在上传图片...';
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    currentImage = ev.target.result;
+    // 更新为分析中
+    if (progressText) progressText.textContent = 'AI正在分析图片...';
+    recognizeImage(currentImage);
+  };
+  reader.onerror = function() {
+    if (progress) progress.style.display = 'none';
+    showToast('图片读取失败，请重试');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ===================== AI IMAGE RECOGNITION (Kimi Vision) =====================
+// 使用 Kimi (月之暗面) 视觉模型 - 支持图像识别、OCR文字提取
+// 注册地址：https://platform.moonshot.cn/ → API Key管理 → 创建
+const AI_API_KEY = localStorage.getItem('kimi_api_key') || 'sk-lNdlIBGQji7HF7eyftL4VnilTeLWSgnxRRkQUAjnhDWkFMdR';
+const AI_API_URL = 'https://api.moonshot.cn/v1/chat/completions';
+const AI_MODEL = 'moonshot-v1-8k-vision-preview';
+
+async function recognizeImage(imageData) {
+  const progress = document.getElementById('analysisProgress');
+  const progressText = document.getElementById('progressText');
+  
+  try {
+    if (!AI_API_KEY) {
+      if (progress) progress.style.display = 'none';
+      showToast('请先设置AI API Key');
+      return;
+    }
+    
+    // 更新进度
+    if (progressText) progressText.textContent = 'AI正在识别运动数据...';
+    
+    // 添加等待提示（每10秒更新）
+    let waitSeconds = 0;
+    const waitTimer = setInterval(() => {
+      waitSeconds += 10;
+      if (progressText && progress) {
+        if (waitSeconds <= 10) progressText.textContent = 'AI正在识别运动数据...';
+        else if (waitSeconds <= 20) progressText.textContent = '正在深度分析，请稍候...';
+        else if (waitSeconds <= 30) progressText.textContent = '分析较复杂，请耐心等待...';
+        else progressText.textContent = `已等待${waitSeconds}秒，即将完成...`;
+      }
+    }, 10000);
+    
+    const prompt = `你是一位专业的运动健康分析师。请分析这张运动健康App截图，提取运动数据并给出千人千面的个性化分析。
+
+如果是运动记录截图，请提取数据并返回以下JSON格式：
+{
+  "valid": true,
+  "date": "YYYY-MM-DD",
+  "type": "运动类型",
+  "duration": 分钟数,
+  "distance": 公里数,
+  "avgHR": 平均心率,
+  "maxHR": 最大心率,
+  "calories": 消耗大卡,
+  "cadence": 步频,
+  "steps": 步数,
+  "pace": 配速,
+  "analysis": {
+    "score": 0-100的评分,
+    "colorLevel": "green/yellow/red",
+    "colorLabel": "优秀/良好/需改善",
+    "statusIcon": "✓/⚠/✗",
+    "analysisText": "详细的差异化分析文字，根据具体数据给出个性化评价",
+    "guidance": ["针对性的健康建议1", "建议2", "建议3"]
+  }
+}
+
+分析要求（千人千面）：
+1. 根据用户的具体数据（心率、时长、步频等）给出个性化评价，不要套话
+2. 分析要具体：比如心率95bpm对于45岁用户意味着什么，是否达到减脂区间
+3. 步频160和140的评价要完全不同
+4. 时长30分钟和60分钟的评价要体现差异
+5. 结合运动类型（跑步/步行/骑行）给出针对性建议
+6. 如果检测到异常数据（如心率过高、步频过低），要特别提醒
+
+如果不是运动截图，返回：
+{"valid": false, "reason": "不是运动健康截图"}
+
+只返回JSON，不要有其他文字。`;
+
+    const body = {
+      model: AI_MODEL,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image_url', image_url: { url: imageData } },
+          { type: 'text', text: prompt }
+        ]
+      }]
+    };
+
+    // 设置超时
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60秒超时（图片分析较慢）
+    
+    const resp = await fetch(AI_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + AI_API_KEY
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    clearInterval(waitTimer);
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      console.error('[AI] API error:', errText);
+      if (progress) progress.style.display = 'none';
+      showToast('AI分析失败: ' + (errText.includes('401') ? 'API Key无效' : errText.substring(0, 50)));
+      return;
+    }
+
+    if (progressText) progressText.textContent = '正在解析分析结果...';
+    
+    const result = await resp.json();
+    const text = result.choices && result.choices[0] && result.choices[0].message ? result.choices[0].message.content : '';
+    console.log('[AI] Response:', text);
+
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      let data;
+      try {
+        data = JSON.parse(jsonMatch[0]);
+      } catch (parseErr) {
+        console.error('[AI] JSON parse error:', parseErr);
+        if (progress) progress.style.display = 'none';
+        showToast('AI分析格式错误，请重试');
+        return;
+      }
+      
+      // 成功后隐藏进度
+      if (progress) progress.style.display = 'none';
+      
+      if (data.valid === false) {
+        showToast(data.reason || '请上传运动健康App截图');
+        return;
+      }
+      
+      if (data.date || data.duration) {
+        // 自动保存分析结果
+        const analysis = data.analysis || generateDefaultAnalysis(data);
+        const record = {
+          id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+          date: data.date,
+          type: data.type,
+          duration: data.duration,
+          distance: data.distance,
+          avgHR: data.avgHR,
+          maxHR: data.maxHR,
+          calories: data.calories,
+          cadence: data.cadence,
+          steps: data.steps,
+          pace: data.pace,
+          aiAnalysis: analysis,
+          createdAt: new Date().toISOString()
+        };
+        const records = getRecords();
+        records.push(record);
+        records.sort((a, b) => new Date(b.date) - new Date(a.date));
+        saveRecords(records);
+        updateStreak();
+        currentAnalysisResult = null;
+        // 刷新所有区域
+        renderLatestAnalysis();
+        renderRecords();
+        renderUserCard();
+        renderHealthTip();
+        checkStreakBroken();
+        showToast('✅ AI分析完成，轨迹已保存');
+      } else {
+        showToast('未能识别运动数据，请重试');
+      }
+    } else {
+      if (progress) progress.style.display = 'none';
+      showToast('AI分析失败，请重试');
+    }
+  } catch (err) {
+    console.error('[AI] Error:', err);
+    clearInterval(waitTimer);
+    if (progress) progress.style.display = 'none';
+    
+    if (err.name === 'AbortError') {
+      showToast('AI分析超时，请重试');
+    } else {
+      showToast('AI分析出错: ' + err.message);
+    }
+  }
+}
+
+// 兼容旧版AI返回格式
+function generateDefaultAnalysis(data) {
+  const profile = getProfile();
+  return analyzeRecord(data, profile);
+}
+
+function parseFitnessData(text) {
+  const data = {};
+
+  // 预处理：统一全角/半角，清理OCR乱码
+  let t = text.replace(/\uff1a/g, ':').replace(/\uff0f/g, '/').replace(/\uff0c/g, ',').replace(/\u00b7/g, '.').replace(/\u2103/g, "'").replace(/\u300a/g, "'").replace(/\u300b/g, "'").replace(/\u201c/g, '"').replace(/\u201d/g, '"').replace(/\u2018/g, "'").replace(/\u2019/g, "'").replace(/\u3001/g, ',');
+  t = t.replace(/\n+/g, ' ');
+
+  // Date
+  const dateMatch = t.match(/(\d{4})[\/\u5e74](\d{1,2})[\/\u6708](\d{1,2})/);
+  if (dateMatch) {
+    const y = parseInt(dateMatch[1]), m = parseInt(dateMatch[2]), d = parseInt(dateMatch[3]);
+    if (y >= 2020 && y <= 2030 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+      data.date = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    }
+  }
+
+  // Type
+  if (t.includes('\u6237\u5916\u8dd1\u6b65') || t.includes('\u6237\u5916\u8dd1')) data.type = '\u6237\u5916\u8dd1\u6b65';
+  else if (t.includes('\u5ba4\u5185\u8dd1\u6b65') || t.includes('\u8dd1\u6b65\u673a')) data.type = '\u5ba4\u5185\u8dd1\u6b65';
+  else if (t.includes('\u6237\u5916\u6b65\u884c')) data.type = '\u6237\u5916\u6b65\u884c';
+  else if (t.includes('\u5065\u8d70') || t.includes('\u5feb\u8d70')) data.type = '\u5feb\u8d70';
+  else if (t.includes('\u9a91\u884c')) data.type = '\u9a91\u884c';
+  else if (t.includes('\u6e38\u6cf3')) data.type = '\u6e38\u6cf3';
+
+  // Duration (支持全角冒号)
+  let durMatch = t.match(/(\d{1,2})\uff1a(\d{2})\uff1a(\d{2})/);
+  if (!durMatch) durMatch = t.match(/(\d{1,2}):(\d{2}):(\d{2})/);
+  if (durMatch) {
+    const mins = parseInt(durMatch[1]) * 60 + parseInt(durMatch[2]);
+    if (mins > 0 && mins <= 300) data.duration = mins;
+  }
+
+  // Distance - 排除"公里/小时"（速度）
+  const distMatch = t.match(/([\d]+\.[\d]+)\s*\u516c\u91cc(?!\s*\/\s*\u5c0f\u65f6)/i);
+  if (distMatch) {
+    const dist = parseFloat(distMatch[1]);
+    if (dist >= 0.1 && dist <= 100) data.distance = dist;
+  }
+
+  // Heart rate - 标签后紧跟数字（可能隔空格）
+  const avgHRMatch = t.match(/\u5e73\u5747\u5fc3\u7387\s{0,5}(\d{2,3})/);
+  if (avgHRMatch) { const v = parseInt(avgHRMatch[1]); if (v >= 50 && v <= 200) data.avgHR = v; }
+  const maxHRMatch = t.match(/\u6700\u5927\u5fc3\u7387\s{0,5}(\d{2,3})/);
+  if (maxHRMatch) { const v = parseInt(maxHRMatch[1]); if (v >= 60 && v <= 220) data.maxHR = v; }
+
+  // Calories
+  const calMatch = t.match(/(\d{2,4})\s*(?:\u5343\u5361|\u5927\u5361|kcal)/i);
+  if (calMatch) { const v = parseInt(calMatch[1]); if (v >= 10 && v <= 5000) data.calories = v; }
+
+  // Cadence
+  const cadMatch = t.match(/\u5e73\u5747\u6b65\u9891\s{0,5}(\d{2,3})/);
+  if (cadMatch) { const v = parseInt(cadMatch[1]); if (v >= 60 && v <= 250) data.cadence = v; }
+
+  // Steps
+  const stepsMatch = t.match(/\u6b65\u6570\s{0,5}([\d,]+)/);
+  if (stepsMatch) { const v = parseInt(stepsMatch[1].replace(/,/g, '')); if (v >= 100 && v <= 100000) data.steps = v; }
+
+  // Pace - 支持各种引号（《 ' ℃等）
+  const paceMatch = t.match(/(\d{1,2})['\u300a\u300b\u2103\u00b0\u2018\u2019](\d{2})[\"\u300c\u300d\u00b2\u00b0\u201c\u201d]\s*\/\s*\u516c\u91cc/i);
+  if (paceMatch) {
+    const pace = parseInt(paceMatch[1]) + parseInt(paceMatch[2]) / 60;
+    if (pace >= 1 && pace <= 30) data.pace = Math.round(pace * 100) / 100;
+  }
+
+  // Data validation
+  if (data.avgHR && data.maxHR && data.avgHR > data.maxHR) {
+    const tmp = data.avgHR; data.avgHR = data.maxHR; data.maxHR = tmp;
+  }
+
+  return data;
+}
+
+// ===================== DELETE =====================
+let pendingDeleteId = '';
+let pendingAction = null;
+
+function confirmDelete(id) {
+  pendingDeleteId = id;
+  pendingAction = 'delete';
+  document.getElementById('confirmTitle').textContent = '确认删除？';
+  document.getElementById('confirmMsg').textContent = '删除后数据无法恢复';
+  document.getElementById('confirmBtn').textContent = '删除';
+  document.getElementById('confirmDialog').classList.add('show');
+}
+
+function confirmClearAll() {
+  pendingAction = 'clearAll';
+  document.getElementById('confirmTitle').textContent = '清除所有数据？';
+  document.getElementById('confirmMsg').textContent = '包括所有运动记录和个人档案，此操作不可撤销';
+  document.getElementById('confirmBtn').textContent = '全部清除';
+  document.getElementById('confirmDialog').classList.add('show');
+}
+
+function closeConfirm() {
+  document.getElementById('confirmDialog').classList.remove('show');
+  pendingDeleteId = '';
+  pendingAction = null;
+}
+
+function confirmAction() {
+  if (pendingAction === 'delete' && pendingDeleteId) {
+    deleteRecord(pendingDeleteId);
+    renderUserCard();
+    renderUploadSection();
+    renderRecords();
+    showToast('已删除');
+  } else if (pendingAction === 'deleteHRV' && pendingDeleteId) {
+    deleteHRVRecord(pendingDeleteId);
+    renderHRV();
+    showToast('已删除');
+  } else if (pendingAction === 'clearAll') {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(PROFILE_KEY);
+    localStorage.removeItem(HRV_STORAGE_KEY);
+    renderUserCard();
+    renderUploadSection();
+    renderRecords();
+    renderHRV();
+    showToast('已清除所有数据');
+  }
+  closeConfirm();
+}
+
+// ===================== IMAGE VIEWER =====================
+function viewImage(src) {
+  document.getElementById('viewerImg').src = src;
+  document.getElementById('imgViewer').classList.add('show');
+}
+
+function closeViewer() {
+  document.getElementById('imgViewer').classList.remove('show');
+}
+
+function viewRecordDetail(id) {
+  const record = getRecords().find(r => r.id === id);
+  if (record && record.image) {
+    viewImage(record.image);
+  }
+}
+
+// ===================== KIMI KEY =====================
+function setKimiKey() {
+  var current = localStorage.getItem('kimi_api_key') || '';
+  var key = prompt('请输入Kimi (Moonshot) API Key', current);
+  if (key === null) return;
+  if (key.trim()) {
+    localStorage.setItem('kimi_api_key', key.trim());
+    showToast('API Key已保存');
+  } else {
+    localStorage.removeItem('kimi_api_key');
+    showToast('API Key已清除');
+  }
+  renderProfile();
+}
+
+// ===================== PROFILE EDIT =====================
+function editField(field, currentVal) {
+  const val = prompt(`请输入新的${field === 'name' ? '昵称' : field === 'age' ? '年龄' : field === 'height' ? '身高(cm)' : field === 'weight' ? '体重(kg)' : field === 'targetWeight' ? '目标体重(kg)' : field === 'exerciseFreq' ? '每周运动次数' : '健康状况'}`, currentVal);
+  if (val === null || val.trim() === '') return;
+  const p = getProfile();
+  if (['age', 'height', 'weight', 'targetWeight', 'exerciseFreq'].includes(field)) {
+    p[field] = parseInt(val) || p[field];
+  } else {
+    p[field] = val.trim();
+  }
+  saveProfile(p);
+  renderProfile();
+  renderUserCard();
+  renderUploadSection();
+  renderRecords();
+  showToast('已更新');
+}
+
+// ===================== DATA EXPORT/IMPORT =====================
+function exportData() {
+  const data = {
+    account: {
+      username: getCurrentUser(),
+      users: getUsers()
+    },
+    profile: getProfile(),
+    records: getRecords(),
+    hrvRecords: getHRVRecords(),
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `循迹数据备份_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('数据已导出（含账户信息）');
+}
+
+function importDataTrigger() {
+  document.getElementById('importInput').click();
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      
+      // 导入账户信息
+      if (data.account && data.account.users) {
+        saveUsers(data.account.users);
+        if (data.account.username) {
+          localStorage.setItem(AUTH_KEY, data.account.username);
+        }
+      }
+      
+      if (data.profile) saveProfile(data.profile);
+      if (data.records) {
+        const existing = getRecords();
+        const existingIds = new Set(existing.map(r => r.id));
+        const newRecords = data.records.filter(r => !existingIds.has(r.id));
+        saveRecords([...newRecords, ...existing]);
+      }
+      if (data.hrvRecords) {
+        const existingHRV = getHRVRecords();
+        const existingHRVIds = new Set(existingHRV.map(r => r.id));
+        const newHRVRecords = data.hrvRecords.filter(r => !existingHRVIds.has(r.id));
+        saveHRVRecords([...newHRVRecords, ...existingHRV]);
+      }
+      renderAll();
+      
+      // 如果有账户信息，自动登录
+      if (data.account && data.account.username) {
+        showToast(`导入成功，已自动登录 ${data.account.username}`);
+        showApp();
+      } else {
+        showToast('导入成功');
+      }
+    } catch {
+      showToast('导入失败，文件格式不正确');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ===================== TOAST =====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ===================== INIT =====================
+function renderAll() {
+  renderUserCard();
+  renderUploadSection();
+  renderRecords();
+}
+
+// Drag & drop support
+document.addEventListener('dragover', e => { 
+  const uploadZone = document.getElementById('uploadZone');
+  if (uploadZone && uploadZone.contains(e.target)) {
+    e.preventDefault(); 
+    uploadZone.classList.add('dragover'); 
+  }
+});
+document.addEventListener('dragleave', e => {
+  const uploadZone = document.getElementById('uploadZone');
+  if (uploadZone && !uploadZone.contains(e.relatedTarget)) {
+    uploadZone.classList.remove('dragover');
+  }
+});
+document.addEventListener('drop', e => {
+  const uploadZone = document.getElementById('uploadZone');
+  if (uploadZone && uploadZone.contains(e.target)) {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      const fileInput = document.getElementById('fileInput');
+      if (fileInput) {
+        fileInput.files = dt.files;
+        handleFileSelect({ target: { files: [file] } });
+      }
+    }
+  }
+});
+
+// Init
+// URL 参数 dev=1 自动快速登录
+if (new URLSearchParams(location.search).get('dev') === '1' && !isLoggedIn()) {
+  quickLogin();
+} else if (!isLoggedIn()) {
+  document.getElementById('loginPage').style.display = 'block';
+  document.querySelector('.bottom-nav').style.display = 'none';
+} else {
+  showApp();
+}
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// PWA Install Prompt
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallPrompt();
+});
+
+function showInstallPrompt() {
+  let prompt = document.getElementById('pwaInstallPrompt');
+  if (!prompt) {
+    prompt = document.createElement('div');
+    prompt.id = 'pwaInstallPrompt';
+    prompt.innerHTML = `
+      <div class="pwa-prompt-content">
+        <div class="pwa-prompt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+        </div>
+        <div class="pwa-prompt-text">
+          <div class="pwa-prompt-title">添加到主屏幕</div>
+          <div class="pwa-prompt-desc" id="pwaPromptDesc">安装循迹，享受独立应用体验</div>
+        </div>
+        <div class="pwa-prompt-actions">
+          <button class="pwa-prompt-btn-install" id="pwaInstallBtn" onclick="installPWA()">安装</button>
+          <button class="pwa-prompt-btn-close" onclick="closeInstallPrompt()">✕</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(prompt);
+  }
+  // 检测是否支持自动安装
+  const canInstall = !!deferredPrompt;
+  const btn = document.getElementById('pwaInstallBtn');
+  const desc = document.getElementById('pwaPromptDesc');
+  if (!canInstall) {
+    btn.textContent = '查看教程';
+    desc.textContent = '点击查看如何添加到主屏幕';
+  }
+  prompt.classList.add('show');
+}
+
+function installPWA() {
+  if (deferredPrompt) {
+    // 支持自动安装
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        closeInstallPrompt();
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    // 不支持自动安装，显示手动教程
+    showInstallGuide();
+  }
+}
+
+function showInstallGuide() {
+  closeInstallPrompt();
+  const ua = navigator.userAgent.toLowerCase();
+  const isHuawei = ua.includes('huawei') || ua.includes('hmos');
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isAndroid = ua.includes('android');
+  
+  let guideHtml = '';
+  if (isHuawei) {
+    guideHtml = `
+      <div class="install-guide-title">华为浏览器添加方法</div>
+      <div class="install-guide-steps">
+        <div class="install-guide-step">
+          <div class="step-num">1</div>
+          <div class="step-text">点击浏览器底部 <b>菜单</b> 按钮（三条横线 ≡）</div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">2</div>
+          <div class="step-text">找到并点击 <b>「添加到主屏幕」</b></div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">3</div>
+          <div class="step-text">点击 <b>「添加」</b>，即可在桌面看到循迹图标</div>
+        </div>
+      </div>
+      <div class="install-guide-tip">💡 如果没有「添加到主屏幕」选项，请尝试使用系统自带的「浏览器」App 打开此页面</div>
+    `;
+  } else if (isIOS) {
+    guideHtml = `
+      <div class="install-guide-title">Safari 添加方法</div>
+      <div class="install-guide-steps">
+        <div class="install-guide-step">
+          <div class="step-num">1</div>
+          <div class="step-text">点击底部 <b>分享</b> 按钮（方框+向上箭头 ↑）</div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">2</div>
+          <div class="step-text">向下滑动，找到 <b>「添加到主屏幕」</b></div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">3</div>
+          <div class="step-text">点击 <b>「添加」</b></div>
+        </div>
+      </div>
+    `;
+  } else if (isAndroid) {
+    guideHtml = `
+      <div class="install-guide-title">Android 添加方法</div>
+      <div class="install-guide-steps">
+        <div class="install-guide-step">
+          <div class="step-num">1</div>
+          <div class="step-text">点击浏览器右上角 <b>菜单</b> 按钮（⋮）</div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">2</div>
+          <div class="step-text">找到并点击 <b>「添加到主屏幕」</b> 或 <b>「安装应用」</b></div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">3</div>
+          <div class="step-text">确认添加即可</div>
+        </div>
+      </div>
+      <div class="install-guide-tip">💡 推荐使用 Chrome 浏览器获得最佳体验</div>
+    `;
+  } else {
+    guideHtml = `
+      <div class="install-guide-title">添加到主屏幕</div>
+      <div class="install-guide-steps">
+        <div class="install-guide-step">
+          <div class="step-num">1</div>
+          <div class="step-text">在浏览器菜单中找到 <b>「添加到主屏幕」</b> 或 <b>「安装应用」</b></div>
+        </div>
+        <div class="install-guide-step">
+          <div class="step-num">2</div>
+          <div class="step-text">确认添加即可在桌面看到循迹图标</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  let guide = document.getElementById('installGuide');
+  if (!guide) {
+    guide = document.createElement('div');
+    guide.id = 'installGuide';
+    guide.innerHTML = `
+      <div class="install-guide-overlay" onclick="closeInstallGuide()"></div>
+      <div class="install-guide-panel">
+        <div class="install-guide-header">
+          <div class="install-guide-logo">循迹</div>
+          <div class="install-guide-close" onclick="closeInstallGuide()">✕</div>
+        </div>
+        <div class="install-guide-body" id="installGuideBody"></div>
+      </div>
+    `;
+    document.body.appendChild(guide);
+  }
+  document.getElementById('installGuideBody').innerHTML = guideHtml;
+  guide.classList.add('show');
+}
+
+function closeInstallGuide() {
+  const guide = document.getElementById('installGuide');
+  if (guide) guide.classList.remove('show');
+}
+
+function closeInstallPrompt() {
+  const prompt = document.getElementById('pwaInstallPrompt');
+  if (prompt) {
+    prompt.classList.remove('show');
+    localStorage.setItem('pwaPromptClosed', 'true');
+  }
+}
+
+// Auto-show install prompt after login (only once)
+window.addEventListener('load', () => {
+  const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
+  if (!isInstalled && !localStorage.getItem('pwaPromptClosed') && isLoggedIn()) {
+    setTimeout(showInstallPrompt, 2000);
+  }
+});
+</script>
+
+<!-- PWA Install Prompt Styles -->
+<style>
+.pwa-prompt {
+  position: fixed;
+  bottom: -100px;
+  left: 12px;
+  right: 12px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  z-index: 9999;
+  transition: bottom 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pwa-prompt.show {
+  bottom: 90px;
+}
+.pwa-prompt-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pwa-prompt-icon svg {
+  width: 24px;
+  height: 24px;
+  color: #fff;
+}
+.pwa-prompt-text {
+  flex: 1;
+}
+.pwa-prompt-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.pwa-prompt-desc {
+  font-size: 12px;
+  color: #8a8a8a;
+  margin-top: 2px;
+}
+.pwa-prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pwa-prompt-btn-install {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pwa-prompt-btn-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f0f2eb;
+  border: none;
+  font-size: 16px;
+  color: #8a8a8a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Install Guide */
+.install-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s;
+}
+.install-guide.show {
+  visibility: visible;
+  opacity: 1;
+}
+.install-guide-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 42, 18, 0.7);
+  backdrop-filter: blur(4px);
+}
+.install-guide-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 24px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+.install-guide.show .install-guide-panel {
+  transform: translateY(0);
+}
+.install-guide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.install-guide-logo {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #0a3d1a;
+  letter-spacing: 2px;
+}
+.install-guide-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f0f2eb;
+  border: none;
+  font-size: 18px;
+  color: #5a5a5a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.install-guide-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+}
+.install-guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.install-guide-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-text {
+  font-size: 15px;
+  color: #1a1a1a;
+  line-height: 1.6;
+  padding-top: 4px;
+}
+.step-text b {
+  color: #2ecc71;
+}
+.install-guide-tip {
+  font-size: 13px;
+  color: #8a8a8a;
+  line-height: 1.6;
+  padding: 12px 16px;
+  background: #f8faf8;
+  border-radius: 12px;
+}
+</style>
 </body>
 </html>
